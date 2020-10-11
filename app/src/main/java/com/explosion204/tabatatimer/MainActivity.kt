@@ -6,18 +6,25 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import androidx.viewpager.widget.ViewPager
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import com.explosion204.tabatatimer.data.entities.Timer
 import com.explosion204.tabatatimer.ui.main.SectionsPagerAdapter
-import com.explosion204.tabatatimer.viewmodels.TimerViewModel
+import com.explosion204.tabatatimer.viewmodels.TimerListViewModel
+import com.explosion204.tabatatimer.viewmodels.ViewModelFactory
+import dagger.android.support.DaggerAppCompatActivity
+import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
-    private val timerViewModel by viewModels<TimerViewModel>()
+class MainActivity : DaggerAppCompatActivity() {
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
+    val timerViewModel : TimerListViewModel by viewModels {
+        viewModelFactory
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
 
         val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
         val viewPager: ViewPager = findViewById(R.id.view_pager)
@@ -31,7 +38,7 @@ class MainActivity : AppCompatActivity() {
                     .setAction("Action", null).show()
         }
 
-        timerViewModel.getAllTimers().observe(this, Observer<List<Timer>> {
-        })
+//        timerViewModel.getAllTimers().observe(this, Observer<List<Timer>> {
+//        })
     }
 }
