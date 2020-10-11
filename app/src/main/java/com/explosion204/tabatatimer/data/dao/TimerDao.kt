@@ -5,16 +5,10 @@ import androidx.room.*
 import com.explosion204.tabatatimer.data.entities.Timer
 
 @Dao
-interface TimerDao {
+interface TimerDao : BaseDao<Timer> {
     @Query("SELECT * FROM timer_table ORDER BY title DESC")
     fun getAll(): LiveData<List<Timer>>
 
-    @Update
-    fun update(timer: Timer)
-
-    @Insert
-    fun insert(timer: Timer)
-
-    @Delete
-    fun delete(timer: Timer)
+    @Query("SELECT * FROM timer_table WHERE timerId=:id")
+    fun get(id: Int) : LiveData<Timer>
 }

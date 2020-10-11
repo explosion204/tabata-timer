@@ -1,42 +1,14 @@
 package com.explosion204.tabatatimer.data.repos
 
-import android.app.Application
 import androidx.lifecycle.LiveData
 import com.explosion204.tabatatimer.data.dao.TimerDao
-import com.explosion204.tabatatimer.data.db.AppDatabase
-import com.explosion204.tabatatimer.data.db.AppDatabaseProvider
 import com.explosion204.tabatatimer.data.entities.Timer
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class TimerRepository(application: Application) {
-    private var timerDao: TimerDao
-    private var appDatabase: AppDatabase
-    private var allTimers: LiveData<List<Timer>>
+class TimerRepository @Inject constructor(private val timerDao: TimerDao) :
+    BaseRepository<Timer, TimerDao>(timerDao) {
 
-    init {
-        appDatabase = AppDatabaseProvider.getInstance(application)
-        timerDao = appDatabase.timerDao()
-        allTimers = timerDao.getAll()
-    }
-
-    suspend fun insert(timer: Timer) {
-        return withContext(Dispatchers.IO) {
-            timerDao.insert(timer)
-        }
-    }
-
-    suspend fun update(timer: Timer) {
-        return withContext(Dispatchers.IO) {
-            timerDao.update(timer)
-        }
-    }
-
-    suspend fun delete(timer: Timer) {
-        return withContext(Dispatchers.IO) {
-            timerDao.delete(timer)
-        }
-    }
+    private var allTimers: LiveData<List<Timer>> = timerDao.getAll()
 
     fun getAll() : LiveData<List<Timer>> {
         return allTimers
