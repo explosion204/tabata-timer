@@ -62,6 +62,9 @@ dependencies {
     def lifecycle_version = "2.2.0"
     def room_version = "2.2.5"
     def dagger_version = "2.29.1"
+    def material_version = "1.2.1"
+    def nav_version = "2.3.0"
+
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -79,14 +82,21 @@ dependencies {
 
     // CardView
     implementation "androidx.cardview:cardview:1.0.0"
+
     // Material Design
-    implementation "com.google.android.material:material:1.2.0"
+    implementation "com.google.android.material:material:$material_version"
+
+    // Navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
+
     // LiveData
     implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
+
     // Annotation processor
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
 

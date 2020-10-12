@@ -2,13 +2,15 @@ package com.explosion204.tabatatimer
 
 import android.os.Bundle
 import androidx.activity.viewModels
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.tabs.TabLayout
-import androidx.viewpager.widget.ViewPager
-import com.explosion204.tabatatimer.ui.main.SectionsPagerAdapter
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupWithNavController
 import com.explosion204.tabatatimer.viewmodels.TimerListViewModel
 import com.explosion204.tabatatimer.viewmodels.ViewModelFactory
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
@@ -24,21 +26,12 @@ class MainActivity : DaggerAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setUpBottomNavigation()
+    }
 
-
-        val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
-        val viewPager: ViewPager = findViewById(R.id.view_pager)
-        viewPager.adapter = sectionsPagerAdapter
-        val tabs: TabLayout = findViewById(R.id.tabs)
-        tabs.setupWithViewPager(viewPager)
-        val fab: FloatingActionButton = findViewById(R.id.fab)
-
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
-
-//        timerViewModel.getAllTimers().observe(this, Observer<List<Timer>> {
-//        })
+    private fun setUpBottomNavigation() {
+        val bottomNavView = findViewById<BottomNavigationView>(R.id.bottom_nav)
+        val navController = findNavController(R.id.nav_fragment)
+        bottomNavView.setupWithNavController(navController)
     }
 }

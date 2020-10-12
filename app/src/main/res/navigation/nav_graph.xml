@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav"
+    app:startDestination="@id/timers_page">
+    <fragment
+        android:id="@+id/timers_page"
+        android:name="com.explosion204.tabatatimer.ui.list_fragments.TimersListFragment"
+        android:label="fragment_timers_list"
+        tools:layout="@layout/fragment_timers_list" />
+    <fragment
+        android:id="@+id/sequences_page"
+        android:name="com.explosion204.tabatatimer.ui.list_fragments.SequencesListFragment"
+        android:label="fragment_sequences_list"
+        tools:layout="@layout/fragment_sequences_list" />
+</navigation>
