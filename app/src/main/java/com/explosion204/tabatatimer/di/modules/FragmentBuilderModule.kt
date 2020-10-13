@@ -1,12 +1,15 @@
 package com.explosion204.tabatatimer.di.modules
 
-import com.explosion204.tabatatimer.MainActivity
-import com.explosion204.tabatatimer.ui.list_fragments.TimersListFragment
+import com.explosion204.tabatatimer.ui.list_fragments.SequenceListFragment
+import com.explosion204.tabatatimer.ui.list_fragments.TimerListFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
 @Module
-abstract class ActivityBuilderModule {
+abstract class FragmentBuilderModule {
     @ContributesAndroidInjector(modules = [ViewModelModule::class])
-    abstract fun contributesInjectTimersListFragment(): TimersListFragment
+    abstract fun contributesInjectTimersListFragment(): TimerListFragment
+
+    @ContributesAndroidInjector(modules = [ViewModelModule::class])
+    abstract fun contributesInjectSequencesListFragment(): SequenceListFragment
 }
