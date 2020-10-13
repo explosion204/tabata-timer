@@ -9,19 +9,19 @@ import com.explosion204.tabatatimer.data.repos.SequenceRepository
 import kotlinx.coroutines.launch
 
 open class ListViewModel<T, D : BaseDao<T>>(private val repository: BaseRepository<T, D>) : ViewModel() {
-    suspend fun insert(item: T) {
+    fun insert(item: T) {
         viewModelScope.launch {
             repository.insert(item)
         }
     }
 
-    suspend fun update(item: T) {
+    fun update(item: T) {
         viewModelScope.launch {
             repository.update(item)
         }
     }
 
-    suspend fun delete(item: T) {
+    fun delete(item: T) {
         viewModelScope.launch {
             repository.delete(item)
         }

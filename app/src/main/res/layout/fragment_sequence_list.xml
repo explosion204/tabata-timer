@@ -5,9 +5,12 @@
     android:layout_height="match_parent"
     tools:context=".ui.list_fragments.SequencesListFragment">
 
-    <TextView
-        android:layout_width="match_parent"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_height="match_parent"
-        android:text="sequences" />
+        android:layout_width="match_parent"
+        tools:listitem="@layout/list_item">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
 </FrameLayout>

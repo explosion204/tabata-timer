@@ -16,7 +16,7 @@ import javax.inject.Inject
 class SequenceListViewModel @Inject constructor(private val sequenceRepo: SequenceRepository) :
     ListViewModel<Sequence, SequenceDao>(sequenceRepo) {
 
-    fun getAll() : LiveData<List<SequenceWithTimers>> {
+    fun getAll() : LiveData<List<Sequence>> {
         return sequenceRepo.getAll()
     }
 }
