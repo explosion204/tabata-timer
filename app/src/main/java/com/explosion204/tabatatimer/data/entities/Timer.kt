@@ -7,10 +7,14 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "timer_table")
 data class Timer(
     @PrimaryKey(autoGenerate = true)
-    val timerId: Int,
+    @ColumnInfo(name = "timerId")
+    override val id: Int,
 
     @ColumnInfo(name = "title")
-    val title: String,
+    override val title: String,
+
+    @ColumnInfo(name = "description")
+    override val description: String,
 
     @ColumnInfo(name = "preparations")
     val preparations: Int,
@@ -23,4 +27,9 @@ data class Timer(
 
     @ColumnInfo(name = "cycles")
     val cycles: Int
-)
+) : BaseEntity {
+
+    override fun <T : BaseEntity> isSame(anotherObj: T): Boolean {
+        return copy(id = anotherObj.id).hashCode() == anotherObj.hashCode()
+    }
+}
