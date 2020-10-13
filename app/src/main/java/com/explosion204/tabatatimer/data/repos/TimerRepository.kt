@@ -5,7 +5,7 @@ import com.explosion204.tabatatimer.data.dao.TimerDao
 import com.explosion204.tabatatimer.data.entities.Timer
 import javax.inject.Inject
 
-class TimerRepository @Inject constructor(private val timerDao: TimerDao) :
+class TimerRepository(private val timerDao: TimerDao) :
     BaseRepository<Timer, TimerDao>(timerDao) {
 
     private var allTimers: LiveData<List<Timer>> = timerDao.getAll()

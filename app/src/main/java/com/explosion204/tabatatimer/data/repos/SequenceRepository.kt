@@ -6,12 +6,12 @@ import com.explosion204.tabatatimer.data.entities.Sequence
 import com.explosion204.tabatatimer.data.entities.SequenceWithTimers
 import javax.inject.Inject
 
-class SequenceRepository @Inject constructor(private val sequenceDao: SequenceDao) :
+class SequenceRepository(private val sequenceDao: SequenceDao) :
     BaseRepository<Sequence, SequenceDao>(sequenceDao) {
 
-    private var allSequences: LiveData<List<SequenceWithTimers>> = sequenceDao.getAll()
+    private var allSequences: LiveData<List<Sequence>> = sequenceDao.getAll()
 
-    fun getAll() : LiveData<List<SequenceWithTimers>> {
+    fun getAll() : LiveData<List<Sequence>> {
         return allSequences
     }
 }

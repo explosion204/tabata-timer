@@ -8,8 +8,8 @@ import com.explosion204.tabatatimer.data.entities.SequenceWithTimers
 @Dao
 interface SequenceDao : BaseDao<Sequence> {
     @Query("SELECT * FROM seq_table ORDER BY title DESC")
-    fun getAll(): LiveData<List<SequenceWithTimers>>
+    fun getAll(): LiveData<List<Sequence>>
 
     @Query("SELECT * FROM seq_table WHERE seqId=:id")
-    fun get(id: Int) : LiveData<SequenceWithTimers>
+    fun get(id: Int) : LiveData<Sequence>
 }
