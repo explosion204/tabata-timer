@@ -33,12 +33,14 @@ class ItemListAdapter<T : BaseEntity> :
         val currentItem = getItem(position)
 
         holder.title.text = currentItem.title
+        holder.description.text = currentItem.description
     }
 
     fun getItemAt(position: Int): T = getItem(position)
 
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val title: TextView = itemView.findViewById(R.id.item_title)
+        val description: TextView = itemView.findViewById(R.id.item_desc)
     }
 
 }
