@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class Sequence(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "seqId")
-    override val id: Int,
+    override val id: Int = 0,
 
     @ColumnInfo(name = "title")
     override val title: String,
