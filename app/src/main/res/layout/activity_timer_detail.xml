@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activities.TimerDetailActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/timer_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Title"
+                        android:backgroundTint="@color/colorPrimary" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp">
+
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/timer_desc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Description"
+                        android:backgroundTint="@color/colorPrimary" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Preparation"
+                    android:gravity="center"/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/prep_decrement"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:padding="0dp"
+                        android:textColor="@android:color/white"
+                        android:background="@color/colorPrimary"
+                        android:textStyle="bold"
+                        android:text="—" />
+
+                    <EditText
+                        android:id="@+id/prep_display"
+                        android:layout_width="0dp"
+                        android:layout_weight="10"
+                        android:background="@drawable/border_gray"
+                        android:layout_height="match_parent"
+                        android:text="0"
+                        android:maxLength="4"
+                        android:textColor="@android:color/black"
+                        android:inputType="number"
+                        android:gravity="center" />
+                    <Button
+                        android:id="@+id/prep_increment"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:padding="0dp"
+                        android:textSize="25sp"
+                        android:textColor="@android:color/white"
+                        android:background="@color/colorPrimary"
+                        android:text="+"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Workout"
+                    android:gravity="center"/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/workout_decrement"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:padding="0dp"
+                        android:textColor="@android:color/white"
+                        android:background="@color/colorPrimary"
+                        android:textStyle="bold"
+                        android:text="—" />
+
+                    <EditText
+                        android:id="@+id/workout_display"
+                        android:layout_width="0dp"
+                        android:layout_weight="10"
+                        android:background="@drawable/border_gray"
+                        android:layout_height="match_parent"
+                        android:text="0"
+                        android:maxLength="4"
+                        android:textColor="@android:color/black"
+                        android:inputType="number"
+                        android:gravity="center" />
+                    <Button
+                        android:id="@+id/workout_increment"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:padding="0dp"
+                        android:textSize="25sp"
+                        android:textColor="@android:color/white"
+                        android:background="@color/colorPrimary"
+                        android:text="+"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Rest"
+                    android:gravity="center"/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/rest_decrement"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:padding="0dp"
+                        android:textColor="@android:color/white"
+                        android:background="@color/colorPrimary"
+                        android:textStyle="bold"
+                        android:text="—" />
+
+                    <EditText
+                        android:id="@+id/rest_display"
+                        android:layout_width="0dp"
+                        android:layout_weight="10"
+                        android:background="@drawable/border_gray"
+                        android:layout_height="match_parent"
+                        android:text="0"
+                        android:maxLength="4"
+                        android:textColor="@android:color/black"
+                        android:inputType="number"
+                        android:gravity="center" />
+                    <Button
+                        android:id="@+id/rest_increment"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:padding="0dp"
+                        android:textSize="25sp"
+                        android:textColor="@android:color/white"
+                        android:background="@color/colorPrimary"
+                        android:text="+"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cycles"
+                    android:gravity="center"/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/cycles_decrement"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:padding="0dp"
+                        android:textColor="@android:color/white"
+                        android:background="@color/colorPrimary"
+                        android:textStyle="bold"
+                        android:text="—" />
+
+                    <EditText
+                        android:id="@+id/cycles_display"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="10"
+                        android:background="@drawable/border_gray"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:maxLength="4"
+                        android:text="0"
+                        android:textColor="@android:color/black" />
+                    <Button
+                        android:id="@+id/cycles_increment"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:padding="0dp"
+                        android:textSize="25sp"
+                        android:textColor="@android:color/white"
+                        android:background="@color/colorPrimary"
+                        android:text="+"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+
+
+
+
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+
+
+
+</ScrollView>
