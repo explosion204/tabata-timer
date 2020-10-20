@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setUpBottomNavigation()
 
-        fabMenu = findViewById<FloatingActionMenu>(R.id.fab_menu)
+        fabMenu = findViewById(R.id.fab_menu)
 
         findViewById<FloatingActionButton>(R.id.fab_timer).setOnClickListener {
             val intent = Intent(this, TimerDetailActivity::class.java)

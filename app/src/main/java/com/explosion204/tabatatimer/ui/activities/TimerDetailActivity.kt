@@ -1,6 +1,5 @@
 package com.explosion204.tabatatimer.ui.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,27 +8,32 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import com.explosion204.tabatatimer.MainActivity
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.viewmodels.TimerDetailViewModel
 import com.explosion204.tabatatimer.viewmodels.ViewModelFactory
 import dagger.android.support.DaggerAppCompatActivity
-import org.w3c.dom.Text
 import javax.inject.Inject
-import kotlin.concurrent.timer
 
 class TimerDetailActivity : DaggerAppCompatActivity(), View.OnClickListener {
+    companion object {
+        const val EXTRA_ID = "com.explosion204.tabatatimer.ui.activities.EXTRA_ID"
+        const val EXTRA_TITLE = "com.explosion204.tabatatimer.ui.activities.EXTRA_TITLE"
+        const val EXTRA_DESCRIPTION = "com.explosion204.tabatatimer.ui.activities.EXTRA_DESCRIPTION"
+        const val EXTRA_PREP = "com.explosion204.tabatatimer.ui.activities.EXTRA_PREP"
+        const val EXTRA_WORKOUT = "com.explosion204.tabatatimer.ui.activities.EXTRA_WORKOUT"
+        const val EXTRA_REST = "com.explosion204.tabatatimer.ui.activities.EXTRA_REST"
+        const val EXTRA_CYCLES = "com.explosion204.tabatatimer.ui.activities.EXTRA_DESC"
+    }
+
     private lateinit var titleEditText: EditText
     private lateinit var descEditText: EditText
     private lateinit var prepEditText: EditText
     private lateinit var workoutEditText: EditText
     private lateinit var restEditText: EditText
     private lateinit var cyclesEditText: EditText
+
+    private var timerId: Int = 0
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -41,7 +45,6 @@ class TimerDetailActivity : DaggerAppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_timer_detail)
-        setTitle(R.string.bottom_nav_timers)
 
         titleEditText = findViewById(R.id.timer_title)
         descEditText = findViewById(R.id.timer_desc)
@@ -50,9 +53,38 @@ class TimerDetailActivity : DaggerAppCompatActivity(), View.OnClickListener {
         restEditText = findViewById(R.id.rest_display)
         cyclesEditText = findViewById(R.id.cycles_display)
 
+        title = if (intent.hasExtra(EXTRA_ID)) {
+            getString(R.string.edit_timer)
+        } else {
+            getString(R.string.new_timer)
+        }
+
+        initViewModel()
         setOnFocusChangedListeners()
         setOnClickListeners()
         setOnEditTextChangedListeners()
+    }
+
+    private fun initViewModel() {
+        timerId = intent.getIntExtra(EXTRA_ID, 0)
+
+        titleEditText.setText(intent.getStringExtra(EXTRA_TITLE))
+        viewModel.title = titleEditText.text.toString()
+
+        descEditText.setText(intent.getStringExtra(EXTRA_DESCRIPTION))
+        viewModel.desc = descEditText.text.toString()
+
+        prepEditText.setText(intent.getIntExtra(EXTRA_PREP, 0).toString())
+        viewModel.prep = prepEditText.text.toString().toInt()
+
+        workoutEditText.setText(intent.getIntExtra(EXTRA_WORKOUT, 0).toString())
+        viewModel.workout = workoutEditText.text.toString().toInt()
+
+        restEditText.setText(intent.getIntExtra(EXTRA_REST, 0).toString())
+        viewModel.rest = restEditText.text.toString().toInt()
+
+        cyclesEditText.setText(intent.getIntExtra(EXTRA_CYCLES, 0).toString())
+        viewModel.cycles = cyclesEditText.text.toString().toInt()
     }
 
     private fun setOnClickListeners() {
@@ -91,7 +123,7 @@ class TimerDetailActivity : DaggerAppCompatActivity(), View.OnClickListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.save_timer -> {
-                if (viewModel.saveTimer()) {
+                if (viewModel.saveTimer(timerId)) {
                     finish()
                 }
 
@@ -168,13 +200,15 @@ class TimerDetailActivity : DaggerAppCompatActivity(), View.OnClickListener {
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             val newVal = editText.text.toString()
 
-            when (editText.id) {
-                R.id.timer_title -> viewModel.title = newVal
-                R.id.timer_desc -> viewModel.desc = newVal
-                R.id.prep_display -> viewModel.prep = newVal.toInt()
-                R.id.workout_display -> viewModel.workout = newVal.toInt()
-                R.id.rest_display -> viewModel.rest = newVal.toInt()
-                R.id.cycles_display -> viewModel.cycles = newVal.toInt()
+            if (newVal.isNotEmpty()) {
+                when (editText.id) {
+                    R.id.timer_title -> viewModel.title = newVal
+                    R.id.timer_desc -> viewModel.desc = newVal
+                    R.id.prep_display -> viewModel.prep = newVal.toInt()
+                    R.id.workout_display -> viewModel.workout = newVal.toInt()
+                    R.id.rest_display -> viewModel.rest = newVal.toInt()
+                    R.id.cycles_display -> viewModel.cycles = newVal.toInt()
+                }
             }
         }
 

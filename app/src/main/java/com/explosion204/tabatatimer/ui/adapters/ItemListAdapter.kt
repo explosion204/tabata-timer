@@ -22,10 +22,20 @@ class ItemListAdapter<T : BaseEntity> :
 
     }) {
 
+    private var itemClickListener: OnItemClickListener? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
+        val viewHolder = ItemViewHolder(view)
 
-        return ItemViewHolder(view)
+        viewHolder.itemView.setOnClickListener {
+            val position = viewHolder.adapterPosition
+            if (itemClickListener != null && position != RecyclerView.NO_POSITION) {
+                itemClickListener!!.onItemClick(getItem(position))
+            }
+        }
+
+        return viewHolder
     }
 
 
@@ -41,6 +51,14 @@ class ItemListAdapter<T : BaseEntity> :
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val title: TextView = itemView.findViewById(R.id.item_title)
         val description: TextView = itemView.findViewById(R.id.item_desc)
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(item: Any)
+    }
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        itemClickListener = listener
     }
 
 }

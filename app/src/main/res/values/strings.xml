@@ -2,8 +2,9 @@
     <string name="app_name">Tabata Timer</string>
     <string name="bottom_nav_timers">Timers</string>
     <string name="bottom_nav_sequences">Sequences</string>
-    <string name="new_timer_label">New timer</string>
-    <string name="new_sequence_label">New sequence</string>
-    <string name="undo_delete_label">Item removed</string>
-    <string name="undo">Undo</string>
+    <string name="new_timer">New timer</string>
+    <string name="new_sequence">New sequence</string>
+    <string name="item_removed">Item removed</string>
+    <string name="undo_action">Undo</string>
+    <string name="edit_timer">Edit timer</string>
 </resources>

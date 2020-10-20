@@ -21,9 +21,11 @@ class TimerDetailViewModel @Inject constructor(private val timerRepository: Time
     var cycles = 0
 
 
-    fun saveTimer() : Boolean {
+    fun saveTimer(id: Int) : Boolean {
         if (title.isNotEmpty() and desc.isNotEmpty()) {
-            val timer = Timer(title = title,
+            val timer = Timer(
+                id = id,
+                title = title,
                 description = desc,
                 preparations = prep,
                 workout = workout,
