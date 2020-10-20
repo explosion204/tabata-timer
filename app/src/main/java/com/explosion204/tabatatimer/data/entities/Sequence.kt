@@ -19,6 +19,7 @@ data class Sequence(
 ) : BaseEntity {
 
     override fun <T : BaseEntity> isSame(anotherObj: T): Boolean {
-        return copy(id = anotherObj.id).hashCode() == anotherObj.hashCode()
+        // return copy(id = anotherObj.id).hashCode() == anotherObj.hashCode()
+        return this == anotherObj
     }
 }

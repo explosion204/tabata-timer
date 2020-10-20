@@ -8,7 +8,7 @@ interface BaseDao<T : BaseEntity> {
     @Update
     fun update(item: T)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: T)
 
     @Delete
