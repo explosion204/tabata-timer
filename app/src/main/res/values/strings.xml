@@ -4,4 +4,6 @@
     <string name="bottom_nav_sequences">Sequences</string>
     <string name="new_timer_label">New timer</string>
     <string name="new_sequence_label">New sequence</string>
+    <string name="undo_delete_label">Item removed</string>
+    <string name="undo">Undo</string>
 </resources>

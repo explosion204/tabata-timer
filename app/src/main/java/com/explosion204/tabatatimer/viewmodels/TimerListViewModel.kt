@@ -8,13 +8,17 @@ import com.explosion204.tabatatimer.data.entities.Timer
 import com.explosion204.tabatatimer.data.repos.TimerRepository
 import kotlinx.coroutines.launch
 import java.sql.Time
+import java.util.*
 import javax.inject.Inject
 
 class TimerListViewModel @Inject constructor(private val timerRepo: TimerRepository) :
     ListViewModel<Timer, TimerDao>(timerRepo) {
 
+    var recentlyDeletedTimer: Timer? = null
+
     fun getAll() : LiveData<List<Timer>> {
         return timerRepo.getAll()
     }
-    
+
+
 }

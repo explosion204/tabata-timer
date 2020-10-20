@@ -1,6 +1,7 @@
 package com.explosion204.tabatatimer.ui.fragments
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,14 +15,16 @@ import com.explosion204.tabatatimer.data.entities.Timer
 import com.explosion204.tabatatimer.ui.adapters.ItemListAdapter
 import com.explosion204.tabatatimer.viewmodels.TimerListViewModel
 import com.explosion204.tabatatimer.viewmodels.ViewModelFactory
+import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
+import javax.security.auth.callback.Callback
 
 class TimerListFragment : DaggerFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    private val timerListViewModel : TimerListViewModel by viewModels {
+    private val viewModel : TimerListViewModel by viewModels {
         viewModelFactory
     }
 
@@ -43,7 +46,7 @@ class TimerListFragment : DaggerFragment() {
         val adapter = ItemListAdapter<Timer>()
         recyclerView.adapter = adapter
 
-        timerListViewModel.getAll().observe(viewLifecycleOwner, Observer {
+        viewModel.getAll().observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
 
@@ -57,17 +60,31 @@ class TimerListFragment : DaggerFragment() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                timerListViewModel.delete(adapter.getItemAt(viewHolder.adapterPosition))
+                val timer = adapter.getItemAt(viewHolder.adapterPosition)
+                viewModel.delete(timer)
+                Snackbar.make(view, R.string.undo_delete_label, Snackbar.LENGTH_LONG)
+                        .setAction(R.string.undo) {
+                            if (viewModel.recentlyDeletedTimer != null) {
+                                viewModel.insert(viewModel.recentlyDeletedTimer!!)
+                            }
+                        }
+                        .addCallback(object : Snackbar.Callback() {
+                            override fun onShown(sb: Snackbar?) {
+                                viewModel.recentlyDeletedTimer = timer
+                                super.onShown(sb)
+                            }
+                        })
+                        .show()
             }
         }).attachToRecyclerView(recyclerView)
     }
 
     fun populate() {
-        timerListViewModel.insert(Timer(1, "Timer 1", "Desedddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddc", 0, 0, 0, 0))
-        timerListViewModel.insert(Timer(2, "Timer 2", "Desc", 0, 0, 0, 0))
-        timerListViewModel.insert(Timer(3, "Timer 3", "Desc", 0, 0, 0, 0))
-        timerListViewModel.insert(Timer(4, "Timer 4", "Desc", 0, 0, 0, 0))
-        timerListViewModel.insert(Timer(5, "Timer 5", "Desc", 0, 0, 0, 0))
+        viewModel.insert(Timer(1, "Timer 1", "Desedddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddc", 0, 0, 0, 0))
+        viewModel.insert(Timer(2, "Timer 2", "Desc", 0, 0, 0, 0))
+        viewModel.insert(Timer(3, "Timer 3", "Desc", 0, 0, 0, 0))
+        viewModel.insert(Timer(4, "Timer 4", "Desc", 0, 0, 0, 0))
+        viewModel.insert(Timer(5, "Timer 5", "Desc", 0, 0, 0, 0))
 
 
     }
