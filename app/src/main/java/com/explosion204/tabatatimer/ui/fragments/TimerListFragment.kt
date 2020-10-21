@@ -146,7 +146,7 @@ class TimerListFragment : DaggerFragment() {
                 }
 
                 if (listAdapter.isContextualMenuEnabled) {
-                    toolbar.title = "${selectedItems.size} Items Selected"
+                    toolbar.title = "${selectedItems.size} ${getString(R.string.items_selected)}"
                 }
             }
         })
