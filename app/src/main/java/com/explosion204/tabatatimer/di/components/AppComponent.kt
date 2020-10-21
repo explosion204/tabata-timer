@@ -2,10 +2,7 @@ package com.explosion204.tabatatimer.di.components
 
 import android.app.Application
 import com.explosion204.tabatatimer.TabataTimerApp
-import com.explosion204.tabatatimer.di.modules.FragmentBuilderModule
-import com.explosion204.tabatatimer.di.modules.DatabaseModule
-import com.explosion204.tabatatimer.di.modules.ViewModelFactoryModule
-import com.explosion204.tabatatimer.di.modules.ViewModelModule
+import com.explosion204.tabatatimer.di.modules.*
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
@@ -18,6 +15,7 @@ import javax.inject.Singleton
     modules = [
         AndroidInjectionModule::class,
         AndroidSupportInjectionModule::class,
+        ActivityBuilderModule::class,
         FragmentBuilderModule::class,
         DatabaseModule::class,
         ViewModelFactoryModule::class,

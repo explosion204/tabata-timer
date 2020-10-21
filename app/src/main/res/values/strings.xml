@@ -7,4 +7,6 @@
     <string name="item_removed">Item removed</string>
     <string name="undo_action">Undo</string>
     <string name="edit_timer">Edit timer</string>
+    <string name="delete_item">Delete item</string>
+    <string name="items_selected">Items Selected</string>
 </resources>

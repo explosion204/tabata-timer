@@ -3,6 +3,7 @@ package com.explosion204.tabatatimer.di.modules
 import androidx.lifecycle.ViewModel
 import com.explosion204.tabatatimer.di.annotations.ViewModelKey
 import com.explosion204.tabatatimer.viewmodels.SequenceListViewModel
+import com.explosion204.tabatatimer.viewmodels.TimerDetailViewModel
 import com.explosion204.tabatatimer.viewmodels.TimerListViewModel
 import dagger.Binds
 import dagger.Module
@@ -19,4 +20,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SequenceListViewModel::class)
     abstract fun bindSequenceListViewModel(sequenceListViewModel: SequenceListViewModel) : ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(TimerDetailViewModel::class)
+    abstract fun bindTimerDetailViewModel(timerViewModel: TimerDetailViewModel) : ViewModel
 }

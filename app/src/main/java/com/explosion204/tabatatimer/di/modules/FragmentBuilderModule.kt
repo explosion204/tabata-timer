@@ -1,7 +1,7 @@
 package com.explosion204.tabatatimer.di.modules
 
-import com.explosion204.tabatatimer.ui.list_fragments.SequenceListFragment
-import com.explosion204.tabatatimer.ui.list_fragments.TimerListFragment
+import com.explosion204.tabatatimer.ui.fragments.SequenceListFragment
+import com.explosion204.tabatatimer.ui.fragments.TimerListFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
