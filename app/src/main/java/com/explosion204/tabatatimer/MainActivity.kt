@@ -9,6 +9,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -29,6 +30,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setUpBottomNavigation()
+
+        val toolbar = findViewById<Toolbar>(R.id.app_bar)
+        setSupportActionBar(toolbar)
+        toolbar.setTitle(R.string.app_name)
 
         fabMenu = findViewById(R.id.fab_menu)
 

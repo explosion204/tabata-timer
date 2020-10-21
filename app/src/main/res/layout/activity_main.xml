@@ -6,26 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        android:id="@+id/app_bar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:minHeight="?actionBarSize"
-            android:padding="@dimen/appbar_padding"
-            android:text="@string/app_name"
-            android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title" />
-
-    </com.google.android.material.appbar.AppBarLayout>
+    <include layout="@layout/toolbar" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav"
@@ -69,7 +50,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_timer_24"
             android:layout_margin="8dp"
-            app:fab_label="@string/new_timer_label"
+            app:fab_label="@string/new_timer"
             app:fab_colorRipple="@android:color/transparent"/>
 
         <com.github.clans.fab.FloatingActionButton
@@ -78,7 +59,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_sequence_24"
             android:layout_margin="8dp"
-            app:fab_label="@string/new_sequence_label" />
+            app:fab_label="@string/new_sequence" />
 
 
 
