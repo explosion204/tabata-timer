@@ -6,11 +6,13 @@
 
     <item
         android:id="@+id/timers_page"
+        android:icon="@drawable/ic_timer_24"
         android:enabled="true"
         android:title="@string/bottom_nav_timers" />
 
     <item
         android:id="@+id/sequences_page"
+        android:icon="@drawable/ic_sequence_24"
         android:enabled="true"
         android:title="@string/bottom_nav_sequences"/>
 
