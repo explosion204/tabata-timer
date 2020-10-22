@@ -1,6 +1,5 @@
 package com.explosion204.tabatatimer.ui.fragments
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -187,12 +186,12 @@ class TimerListFragment : DaggerFragment() {
             R.id.delete_item -> {
                 if (selectedItems.size != 0) {
                     val builder = AlertDialog.Builder(requireContext())
-                    builder.setMessage("Delete selected items?")
-                        .setPositiveButton("Delete") { _, _ ->
+                    builder.setMessage(getString(R.string.delete_selected_items))
+                        .setPositiveButton(getString(R.string.delete)) { _, _ ->
                             viewModel.delete(selectedItems)
                             quitContextualActionMode()
                         }
-                        .setNegativeButton("Cancel") { _, _ ->
+                        .setNegativeButton(getString(R.string.cancel)) { _, _ ->
                             quitContextualActionMode()
                         }
                         .setCancelable(true)

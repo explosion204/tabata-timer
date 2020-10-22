@@ -9,4 +9,9 @@
     <string name="edit_timer">Edit timer</string>
     <string name="delete_item">Delete item</string>
     <string name="items_selected">Items Selected</string>
+    <string name="delete_selected_items">Delete selected items?</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="discard_changes">Discard changes?</string>
+    <string name="discard">Discard</string>
 </resources>

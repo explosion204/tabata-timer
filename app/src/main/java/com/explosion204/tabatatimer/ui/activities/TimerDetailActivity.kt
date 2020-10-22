@@ -1,5 +1,7 @@
 package com.explosion204.tabatatimer.ui.activities
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -168,6 +170,23 @@ class TimerDetailActivity : DaggerAppCompatActivity(), View.OnClickListener {
         }
     }
 
+    override fun onBackPressed() {
+        if (viewModel.title.isNotEmpty() || viewModel.desc.isNotEmpty()) {
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage(getString(R.string.discard_changes))
+                .setPositiveButton(getString(R.string.discard)) { _, _ ->
+                    super.onBackPressed()
+                }
+                .setNegativeButton(getString(R.string.cancel)) { _, _ -> }
+                .setCancelable(true)
+                .create()
+                .show()
+        }
+        else {
+            super.onBackPressed()
+        }
+    }
+
 
     inner class OnEditTextFocusChangeListener : View.OnFocusChangeListener {
         override fun onFocusChange(view: View, hasFocus: Boolean) {
@@ -189,7 +208,6 @@ class TimerDetailActivity : DaggerAppCompatActivity(), View.OnClickListener {
                 }
             }
         }
-
     }
 
     inner class EditTextWatcher(private val editText: EditText) : TextWatcher {
