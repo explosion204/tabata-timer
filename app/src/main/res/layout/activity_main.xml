@@ -48,7 +48,8 @@
             android:id="@+id/fab_timer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_timer_24"
+            android:src="@drawable/ic_plus_24"
+            app:fab_size="mini"
             android:layout_margin="8dp"
             app:fab_label="@string/new_timer"
             app:fab_colorRipple="@android:color/transparent"/>
@@ -57,7 +58,8 @@
             android:id="@+id/fab_sequence"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_sequence_24"
+            android:src="@drawable/ic_plus_24"
+            app:fab_size="mini"
             android:layout_margin="8dp"
             app:fab_label="@string/new_sequence" />
 
