@@ -73,7 +73,18 @@ class TimerListFragment : DaggerFragment() {
     }
 
     private fun setAdapterListeners() {
-        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+        ItemTouchHelper(object : ItemTouchHelper.Callback() {
+            override fun getMovementFlags(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder
+            ): Int {
+                return if (!listAdapter.isContextualMenuEnabled) {
+                    makeMovementFlags(0, ItemTouchHelper.LEFT)
+                } else {
+                    makeMovementFlags(0, 0)
+                }
+            }
+
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
@@ -125,12 +136,14 @@ class TimerListFragment : DaggerFragment() {
 
         listAdapter.setOnItemLongClickListener(object : ItemListAdapter.OnItemLongClickListener {
             override fun onItemLongClick(item: Any) {
-                listAdapter.isContextualMenuEnabled = true
-                (activity as DaggerAppCompatActivity).invalidateOptionsMenu()
-                toolbar.title = "0 ${getString(R.string.items_selected)}"
-                toolbar.setDisplayHomeAsUpEnabled(true)
+                if (!listAdapter.isContextualMenuEnabled) {
+                    listAdapter.isContextualMenuEnabled = true
+                    (activity as DaggerAppCompatActivity).invalidateOptionsMenu()
+                    toolbar.title = "0 ${getString(R.string.items_selected)}"
+                    toolbar.setDisplayHomeAsUpEnabled(true)
 
-                viewModel.sendAction(CALLBACK_ACTION_CONTEXTUAL_MENU, true)
+                    viewModel.sendAction(CALLBACK_ACTION_CONTEXTUAL_MENU, true)
+                }
             }
         })
 
@@ -191,5 +204,6 @@ class TimerListFragment : DaggerFragment() {
         super.onPause()
 
         toolbar.title = getString(R.string.app_name)
+        toolbar.setDisplayHomeAsUpEnabled(false)
     }
 }
