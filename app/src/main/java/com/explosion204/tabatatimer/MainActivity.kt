@@ -29,6 +29,7 @@ import com.github.clans.fab.FloatingActionMenu
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity() {
@@ -64,7 +65,7 @@ class MainActivity : DaggerAppCompatActivity() {
             }, 100)
         }
 
-        timerListViewModel.setActionCallback(object : ListViewModel.ActionCallback {
+        timerListViewModel.setActivityCallback(object : ListViewModel.ActionCallback {
             override fun callback(action: String, arg: Any) {
                 when (action) {
                     TimerListFragment.CALLBACK_ACTION_CONTEXTUAL_MENU -> {
@@ -80,8 +81,6 @@ class MainActivity : DaggerAppCompatActivity() {
                 }
             }
         })
-
-
     }
 
     private fun setUpBottomNavigation() {

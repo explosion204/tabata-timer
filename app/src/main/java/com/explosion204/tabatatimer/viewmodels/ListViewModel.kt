@@ -12,15 +12,26 @@ open class ListViewModel<T : BaseEntity, D : BaseDao<T>>(private val repository:
         fun callback(action: String, arg: Any)
     }
 
-    private var actionCallback: ActionCallback? = null
+    private var activityCallback: ActionCallback? = null
+    private var fragmentCallback: ActionCallback? = null
 
-    fun setActionCallback(callback: ActionCallback) {
-        actionCallback = callback
+    fun setActivityCallback(callback: ActionCallback) {
+        activityCallback = callback
     }
 
-    fun sendAction(action: String, arg: Any) {
-        if (actionCallback != null) {
-            actionCallback!!.callback(action, arg)
+    fun setFragmentCallback(callback: ActionCallback) {
+        fragmentCallback = callback
+    }
+
+    fun sendActionToActivity(action: String, arg: Any) {
+        if (activityCallback != null) {
+            activityCallback!!.callback(action, arg)
+        }
+    }
+
+    fun sendActionToFragment(action: String, arg: Any) {
+        if (fragmentCallback != null) {
+            fragmentCallback!!.callback(action, arg)
         }
     }
 

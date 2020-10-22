@@ -26,7 +26,8 @@ import javax.inject.Inject
 
 class TimerListFragment : DaggerFragment() {
     companion object {
-        const val CALLBACK_ACTION_CONTEXTUAL_MENU = "contextual_menu_change"
+        const val CALLBACK_ACTION_CONTEXTUAL_MENU =
+            "com.explosion204.tabatatimer.ui.fragments.CONTEXTUAL_MENU_ACTION"
     }
 
     @Inject
@@ -142,7 +143,7 @@ class TimerListFragment : DaggerFragment() {
                     toolbar.title = "0 ${getString(R.string.items_selected)}"
                     toolbar.setDisplayHomeAsUpEnabled(true)
 
-                    viewModel.sendAction(CALLBACK_ACTION_CONTEXTUAL_MENU, true)
+                    viewModel.sendActionToActivity(CALLBACK_ACTION_CONTEXTUAL_MENU, true)
                 }
             }
         })
@@ -183,27 +184,29 @@ class TimerListFragment : DaggerFragment() {
         when (item.itemId) {
             R.id.delete_item -> {
                 viewModel.delete(selectedItems)
-                listAdapter.isContextualMenuEnabled = false
-                (activity as DaggerAppCompatActivity).invalidateOptionsMenu()
-                viewModel.sendAction(CALLBACK_ACTION_CONTEXTUAL_MENU, false)
-                toolbar.setDisplayHomeAsUpEnabled(false)
+                quitContextualActionMode()
             }
             android.R.id.home -> {
-                listAdapter.isContextualMenuEnabled = false
-                (activity as DaggerAppCompatActivity).invalidateOptionsMenu()
-                viewModel.sendAction(CALLBACK_ACTION_CONTEXTUAL_MENU, false)
-                toolbar.setDisplayHomeAsUpEnabled(false)
+                quitContextualActionMode()
             }
         }
 
         return true
     }
 
+    private fun quitContextualActionMode() {
+        listAdapter.isContextualMenuEnabled = false
+        (activity as DaggerAppCompatActivity).invalidateOptionsMenu()
+        viewModel.sendActionToActivity(CALLBACK_ACTION_CONTEXTUAL_MENU, false)
+        toolbar.setDisplayHomeAsUpEnabled(false)
+        toolbar.title = getString(R.string.app_name)
+    }
 
     override fun onPause() {
         super.onPause()
 
-        toolbar.title = getString(R.string.app_name)
-        toolbar.setDisplayHomeAsUpEnabled(false)
+        quitContextualActionMode()
     }
+
+
 }
