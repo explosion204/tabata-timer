@@ -18,17 +18,18 @@ import com.explosion204.tabatatimer.data.entities.Timer
 import com.explosion204.tabatatimer.ui.Constants.CALLBACK_ACTION_CONTEXTUAL_MENU
 import com.explosion204.tabatatimer.ui.Constants.CALLBACK_ACTION_PAUSE
 import com.explosion204.tabatatimer.ui.Constants.EXTRA_ALL_TIMERS
-import com.explosion204.tabatatimer.ui.Constants.EXTRA_CYCLES
 import com.explosion204.tabatatimer.ui.Constants.EXTRA_DESCRIPTION
 import com.explosion204.tabatatimer.ui.Constants.EXTRA_ID
+import com.explosion204.tabatatimer.ui.Constants.EXTRA_ASSOCIATED_TIMERS
+import com.explosion204.tabatatimer.ui.Constants.EXTRA_CYCLES
 import com.explosion204.tabatatimer.ui.Constants.EXTRA_PREP
 import com.explosion204.tabatatimer.ui.Constants.EXTRA_REST
-import com.explosion204.tabatatimer.ui.Constants.EXTRA_ASSOCIATED_TIMERS
 import com.explosion204.tabatatimer.ui.Constants.EXTRA_TITLE
 import com.explosion204.tabatatimer.ui.Constants.EXTRA_WORKOUT
 import com.explosion204.tabatatimer.ui.activities.SequenceDetailActivity
 import com.explosion204.tabatatimer.ui.activities.TimerDetailActivity
 import com.explosion204.tabatatimer.ui.adapters.TimerListAdapter
+import com.explosion204.tabatatimer.ui.interfaces.OnDialogButtonClickListener
 import com.explosion204.tabatatimer.ui.interfaces.OnItemCheckedChangeListener
 import com.explosion204.tabatatimer.ui.interfaces.OnItemClickListener
 import com.explosion204.tabatatimer.ui.interfaces.OnItemLongClickListener
@@ -141,22 +142,56 @@ class TimerListFragment : DaggerFragment() {
 
         listAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(item: Any) {
-                val timer = item as Timer
-                val intent = Intent(context, TimerDetailActivity::class.java)
-                intent.putExtra(EXTRA_ID, timer.timerId)
-                intent.putExtra(EXTRA_TITLE, timer.title)
-                intent.putExtra(EXTRA_DESCRIPTION, timer.description)
-                intent.putExtra(EXTRA_PREP, timer.preparations)
-                intent.putExtra(EXTRA_WORKOUT, timer.workout)
-                intent.putExtra(EXTRA_REST, timer.rest)
-                intent.putExtra(EXTRA_CYCLES, timer.cycles)
+                val item = item as Timer
 
-                Handler(Looper.getMainLooper()).postDelayed({
-                    startActivity(intent)
-                    if (activity != null) {
-                        activity!!.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                val args = Bundle()
+                args.putString(EXTRA_TITLE, item.title)
+                args.putString(EXTRA_DESCRIPTION, item.description)
+
+                val dialogFragment = ItemDialogFragment()
+                dialogFragment.arguments = args
+                dialogFragment.setOnDialogButtonClickListener(object : OnDialogButtonClickListener {
+                    override fun onStartButtonClick() {
+                        dialogFragment.dismiss()
                     }
-                }, 100)
+
+                    override fun onEditButtonClick() {
+                        val intent = Intent(context, TimerDetailActivity::class.java)
+                        intent.putExtra(EXTRA_ID, item.timerId)
+                        intent.putExtra(EXTRA_TITLE, item.title)
+                        intent.putExtra(EXTRA_DESCRIPTION, item.description)
+                        intent.putExtra(EXTRA_PREP, item.preparations)
+                        intent.putExtra(EXTRA_WORKOUT, item.workout)
+                        intent.putExtra(EXTRA_REST, item.rest)
+                        intent.putExtra(EXTRA_CYCLES, item.cycles)
+
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            startActivity(intent)
+                            if (activity != null) {
+                                activity!!.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                            }
+                        }, 100)
+
+                        dialogFragment.dismiss()
+                    }
+
+                    override fun onDeleteButtonClick() {
+                        val builder = AlertDialog.Builder(requireContext())
+                        builder.setMessage(getString(R.string.delete_this_item))
+                            .setPositiveButton(getString(R.string.delete)) { _, _ ->
+                                viewModel.delete(item)
+                                dialogFragment.dismiss()
+                            }
+                            .setNegativeButton(getString(R.string.cancel)) { _, _ ->
+                                dialogFragment.dismiss()
+                            }
+                            .setCancelable(true)
+                            .create()
+                            .show()
+                    }
+
+                })
+                dialogFragment.show(requireActivity().supportFragmentManager, "DIALOG_FRAGMENT")
             }
 
         })
@@ -205,8 +240,6 @@ class TimerListFragment : DaggerFragment() {
                     menu.getItem(1).isVisible = true
                 }
             }
-
-
         }
         else {
             toolbar.title = getString(R.string.app_name)

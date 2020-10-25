@@ -23,6 +23,7 @@ import com.explosion204.tabatatimer.ui.Constants.EXTRA_ID
 import com.explosion204.tabatatimer.ui.Constants.EXTRA_TITLE
 import com.explosion204.tabatatimer.ui.activities.SequenceDetailActivity
 import com.explosion204.tabatatimer.ui.adapters.SequenceListAdapter
+import com.explosion204.tabatatimer.ui.interfaces.OnDialogButtonClickListener
 import com.explosion204.tabatatimer.ui.interfaces.OnItemCheckedChangeListener
 import com.explosion204.tabatatimer.ui.interfaces.OnItemClickListener
 import com.explosion204.tabatatimer.ui.interfaces.OnItemLongClickListener
@@ -123,19 +124,53 @@ class SequenceListFragment : DaggerFragment() {
         listAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(item: Any) {
                 val item = item as SequenceWithTimers
-                val intent = Intent(context, SequenceDetailActivity::class.java)
 
-                intent.putExtra(EXTRA_ID, item.sequence.seqId)
-                intent.putExtra(EXTRA_TITLE, item.sequence.title)
-                intent.putExtra(EXTRA_DESCRIPTION, item.sequence.description)
+                val args = Bundle()
+                args.putString(EXTRA_TITLE, item.sequence.title)
+                args.putString(EXTRA_DESCRIPTION, item.sequence.description)
 
-                intent.putParcelableArrayListExtra(EXTRA_ALL_TIMERS, viewModel.allTimers)
-                intent.putParcelableArrayListExtra(EXTRA_ASSOCIATED_TIMERS, item.timers as ArrayList<Timer>)
+                val dialogFragment = ItemDialogFragment()
+                dialogFragment.arguments = args
+                dialogFragment.setOnDialogButtonClickListener(object : OnDialogButtonClickListener {
+                    override fun onStartButtonClick() {
+                        dialogFragment.dismiss()
+                    }
 
-                Handler(Looper.getMainLooper()).postDelayed({
-                    startActivity(intent)
-                    (context as DaggerAppCompatActivity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-                }, 100)
+                    override fun onEditButtonClick() {
+                        val intent = Intent(context, SequenceDetailActivity::class.java)
+
+                        intent.putExtra(EXTRA_ID, item.sequence.seqId)
+                        intent.putExtra(EXTRA_TITLE, item.sequence.title)
+                        intent.putExtra(EXTRA_DESCRIPTION, item.sequence.description)
+
+                        intent.putParcelableArrayListExtra(EXTRA_ALL_TIMERS, viewModel.allTimers)
+                        intent.putParcelableArrayListExtra(EXTRA_ASSOCIATED_TIMERS, item.timers as ArrayList<Timer>)
+
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            startActivity(intent)
+                            (context as DaggerAppCompatActivity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                        }, 100)
+
+                        dialogFragment.dismiss()
+                    }
+
+                    override fun onDeleteButtonClick() {
+                        val builder = AlertDialog.Builder(requireContext())
+                        builder.setMessage(getString(R.string.delete_this_item))
+                            .setPositiveButton(getString(R.string.delete)) { _, _ ->
+                                viewModel.delete(item)
+                                dialogFragment.dismiss()
+                            }
+                            .setNegativeButton(getString(R.string.cancel)) { _, _ ->
+                                dialogFragment.dismiss()
+                            }
+                            .setCancelable(true)
+                            .create()
+                            .show()
+                    }
+
+                })
+                dialogFragment.show(requireActivity().supportFragmentManager, "DIALOG_FRAGMENT")
             }
         })
 
