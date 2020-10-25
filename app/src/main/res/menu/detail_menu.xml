@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/save_timer"
+        android:id="@+id/save"
         android:icon="@drawable/ic_check_24"
         android:title="Save"
         app:showAsAction="ifRoom" />

@@ -1,9 +1,5 @@
 package com.explosion204.tabatatimer.viewmodels
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.explosion204.tabatatimer.data.entities.Timer
 import com.explosion204.tabatatimer.data.repos.TimerRepository
@@ -11,8 +7,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class TimerDetailViewModel @Inject constructor(private val timerRepository: TimerRepository) :
-    ViewModel() {
+    BaseViewModel() {
 
+    var id = 0
     var title = ""
     var desc = ""
     var prep = 0
@@ -21,10 +18,10 @@ class TimerDetailViewModel @Inject constructor(private val timerRepository: Time
     var cycles = 0
 
 
-    fun saveTimer(id: Int) : Boolean {
+    fun saveTimer() : Boolean {
         if (title.isNotEmpty() and desc.isNotEmpty()) {
             val timer = Timer(
-                id = id,
+                timerId = id,
                 title = title,
                 description = desc,
                 preparations = prep,

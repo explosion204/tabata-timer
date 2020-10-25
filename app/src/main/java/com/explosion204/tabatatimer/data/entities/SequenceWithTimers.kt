@@ -9,7 +9,8 @@ data class SequenceWithTimers(
     @Relation(
         parentColumn = "seqId",
         entityColumn = "timerId",
-        associateBy = Junction(TimerSequenceCrossRef::class)
+        entity = Timer::class,
+        associateBy = Junction(SequenceTimerCrossRef::class)
     )
     val timers: List<Timer>
 )

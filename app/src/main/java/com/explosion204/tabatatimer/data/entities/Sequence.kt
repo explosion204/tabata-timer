@@ -8,18 +8,12 @@ import androidx.room.PrimaryKey
 data class Sequence(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "seqId")
-    override val id: Int = 0,
+    val seqId: Int = 0,
 
     @ColumnInfo(name = "title")
-    override val title: String,
+    val title: String,
 
     @ColumnInfo(name = "description")
-    override val description: String
+    val description: String
 
-) : BaseEntity {
-
-    override fun <T : BaseEntity> isSame(anotherObj: T): Boolean {
-        // return copy(id = anotherObj.id).hashCode() == anotherObj.hashCode()
-        return this == anotherObj
-    }
-}
+)

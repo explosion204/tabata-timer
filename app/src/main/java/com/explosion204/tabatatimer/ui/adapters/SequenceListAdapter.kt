@@ -9,30 +9,29 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.explosion204.tabatatimer.R
-import com.explosion204.tabatatimer.data.entities.BaseEntity
+import com.explosion204.tabatatimer.data.entities.SequenceWithTimers
+import com.explosion204.tabatatimer.ui.interfaces.OnItemCheckedChangeListener
+import com.explosion204.tabatatimer.ui.interfaces.OnItemClickListener
+import com.explosion204.tabatatimer.ui.interfaces.OnItemLongClickListener
 
-class ItemListAdapter<T : BaseEntity> :
-    ListAdapter<T, ItemListAdapter.ItemViewHolder>(object : DiffUtil.ItemCallback<T>() {
-        override fun areItemsTheSame(oldItem: T, newItem: T): Boolean {
-            return oldItem.id == newItem.id;
+open class SequenceListAdapter :
+    ListAdapter<SequenceWithTimers, SequenceListAdapter.ItemViewHolder>(object : DiffUtil.ItemCallback<SequenceWithTimers>() {
+        override fun areItemsTheSame(oldItem: SequenceWithTimers, newItem: SequenceWithTimers): Boolean {
+            return oldItem.sequence.seqId == newItem.sequence.seqId
         }
 
-        override fun areContentsTheSame(oldItem: T, newItem: T): Boolean {
-            return oldItem.isSame(oldItem)
+        override fun areContentsTheSame(oldItem: SequenceWithTimers, newItem: SequenceWithTimers): Boolean {
+            return (oldItem.sequence.copy(seqId = newItem.sequence.seqId) == newItem.sequence) &&
+                    (oldItem.timers == newItem.timers)
         }
 
     }) {
 
-    interface OnItemClickListener {
-        fun onItemClick(item: Any)
-    }
+    // indicates whether or not certain item at certain position has to be checked
+    private var itemStatuses = ArrayList<Boolean>()
 
-    interface OnItemLongClickListener {
-        fun onItemLongClick(item: Any)
-    }
-
-    interface OnItemCheckedChangeListener {
-        fun onItemChecked(item: Any, checkBox: CheckBox)
+    fun uncheckAllItems() {
+        itemStatuses.fill(false)
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
@@ -48,34 +47,35 @@ class ItemListAdapter<T : BaseEntity> :
     }
 
     var isContextualMenuEnabled = false
-    set(value) {
-        field = value
-        notifyDataSetChanged()
-    }
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     private var itemClickListener: OnItemClickListener? = null
     private var itemLongClickListener: OnItemLongClickListener? = null
     private var itemCheckedChangeListener: OnItemCheckedChangeListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.sequence_item, parent, false)
         val viewHolder = ItemViewHolder(view)
-
         val checkBox = view.findViewById<CheckBox>(R.id.item_checkbox)
-
 
         viewHolder.itemView.setOnClickListener {
             val position = viewHolder.adapterPosition
-            if (itemClickListener != null && position != RecyclerView.NO_POSITION) {
-                val item = getItem(position)
 
+            if (position != RecyclerView.NO_POSITION) {
                 if (itemCheckedChangeListener != null && isContextualMenuEnabled) {
                     checkBox.isChecked = !checkBox.isChecked
-                }
-                else {
-                    itemClickListener!!.onItemClick(item)
+                    itemStatuses[position] = !itemStatuses[position]
+
+                    itemCheckedChangeListener!!.onItemChecked(getItem(position), itemStatuses[position])
                 }
 
+                if (itemClickListener != null && !isContextualMenuEnabled) {
+                    val item = getItem(position)
+                    itemClickListener!!.onItemClick(item)
+                }
             }
         }
 
@@ -88,13 +88,6 @@ class ItemListAdapter<T : BaseEntity> :
             true
         }
 
-        checkBox.setOnCheckedChangeListener { _, _ ->
-            val position = viewHolder.adapterPosition
-            if (itemCheckedChangeListener != null && position != RecyclerView.NO_POSITION) {
-                itemCheckedChangeListener!!.onItemChecked(getItem(position), checkBox)
-            }
-        }
-
         return viewHolder
     }
 
@@ -102,8 +95,22 @@ class ItemListAdapter<T : BaseEntity> :
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val currentItem = getItem(position)
 
-        holder.title.text = currentItem.title
-        holder.description.text = currentItem.description
+        while (position >= itemStatuses.size) {
+            itemStatuses.add(false)
+        }
+
+        holder.checkbox.isChecked = itemStatuses[position]
+
+        holder.title.text = currentItem.sequence.title
+        holder.description.text = currentItem.sequence.description
+        holder.totalTimersTextView.text = currentItem.timers.size.toString()
+
+        var totalTime = 0
+        for (timer in currentItem.timers) {
+            totalTime += with(timer) { preparations + workout + rest }
+        }
+
+        holder.totalTimeTextView.text = "${totalTime / 60}m ${totalTime % 60}s"
 
         if (isContextualMenuEnabled) {
             holder.checkbox.visibility = View.VISIBLE
@@ -114,12 +121,13 @@ class ItemListAdapter<T : BaseEntity> :
         }
     }
 
-    fun getItemAt(position: Int): T = getItem(position)
-
+    fun getItemAt(position: Int): SequenceWithTimers = getItem(position)
 
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val title: TextView = itemView.findViewById(R.id.item_title)
         val description: TextView = itemView.findViewById(R.id.item_desc)
         val checkbox: CheckBox = itemView.findViewById(R.id.item_checkbox)
+        val totalTimersTextView: TextView = itemView.findViewById(R.id.total_timers_textview)
+        val totalTimeTextView: TextView = itemView.findViewById(R.id.total_time_textview)
     }
 }
