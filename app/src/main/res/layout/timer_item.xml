@@ -53,7 +53,7 @@
                     android:text="Preparation: " />
 
                 <TextView
-                    android:id="@+id/prepTextView"
+                    android:id="@+id/prep_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="sample" />
@@ -72,7 +72,7 @@
                     android:text="Workout: " />
 
                 <TextView
-                    android:id="@+id/workoutTextView"
+                    android:id="@+id/workout_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="sample" />
@@ -91,7 +91,7 @@
                     android:text="Rest: " />
 
                 <TextView
-                    android:id="@+id/restTextView"
+                    android:id="@+id/rest_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="sample" />
@@ -111,7 +111,7 @@
                     android:text="Cycles: " />
 
                 <TextView
-                    android:id="@+id/cyclesTextView"
+                    android:id="@+id/cycles_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="sample" />
@@ -131,14 +131,13 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/totalTextView"
+                    android:id="@+id/total_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="sample"
                     android:textStyle="bold" />
 
             </LinearLayout>
-
 
         </LinearLayout>
 

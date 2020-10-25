@@ -1,5 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/sequence_detail_nav_graph">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sequence_detail_nav_graph"
+    app:startDestination="@id/sequenceDetailFragment">
 
+    <fragment
+        android:id="@+id/sequenceDetailFragment"
+        android:name="com.explosion204.tabatatimer.ui.fragments.SequenceDetailFragment"
+        android:label="SequenceDetailFragment" >
+        <action
+            android:id="@+id/action_select_timers"
+            app:destination="@id/timerListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/timerListFragment"
+        android:name="com.explosion204.tabatatimer.ui.fragments.SequenceTimerListFragment"
+        android:label="fragment_timer_list"
+        tools:layout="@layout/fragment_timer_list" >
+        <action
+            android:id="@+id/action_return_to_sequenceDetailFragment"
+            app:destination="@id/sequenceDetailFragment" />
+        <argument
+            android:name="notAssociatedTimers"
+            app:argType="com.explosion204.tabatatimer.data.entities.Timer[]" />
+    </fragment>
 </navigation>
