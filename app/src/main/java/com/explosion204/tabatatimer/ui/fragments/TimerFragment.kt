@@ -10,11 +10,11 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import com.explosion204.tabatatimer.Constants.CALLBACK_ACTION_NEXT_TIMER
-import com.explosion204.tabatatimer.Constants.CALLBACK_ACTION_PREV_TIMER
-import com.explosion204.tabatatimer.Constants.CALLBACK_ACTION_SELECT_PHASE
-import com.explosion204.tabatatimer.Constants.CALLBACK_ACTION_SET_TIMER_STATE
-import com.explosion204.tabatatimer.Constants.CALLBACK_ACTION_TIMER_STATE_CHANGED
+import com.explosion204.tabatatimer.Constants.ACTION_NEXT_TIMER
+import com.explosion204.tabatatimer.Constants.ACTION_PREV_TIMER
+import com.explosion204.tabatatimer.Constants.ACTION_SELECT_PHASE
+import com.explosion204.tabatatimer.Constants.ACTION_SET_TIMER_STATE
+import com.explosion204.tabatatimer.Constants.ACTION_TIMER_STATE_CHANGED
 import com.explosion204.tabatatimer.Constants.TAG_TIMER_FRAGMENT
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.services.TimerPhase
@@ -79,7 +79,7 @@ class TimerFragment : DaggerFragment() {
         viewModel.setFragmentCallback(TAG_TIMER_FRAGMENT, object : BaseViewModel.ActionCallback {
             override fun callback(action: String, arg: Any?) {
                 when (action) {
-                    CALLBACK_ACTION_TIMER_STATE_CHANGED -> {
+                    ACTION_TIMER_STATE_CHANGED -> {
                         val state = arg as Boolean
 
                         if (state) {
@@ -102,31 +102,31 @@ class TimerFragment : DaggerFragment() {
 
     private fun setOnClickListeners() {
         startButton.setOnClickListener {
-            viewModel.sendActionToActivity(CALLBACK_ACTION_SET_TIMER_STATE, true)
+            viewModel.sendActionToActivity(ACTION_SET_TIMER_STATE, true)
         }
 
         pauseButton.setOnClickListener {
-            viewModel.sendActionToActivity(CALLBACK_ACTION_SET_TIMER_STATE, false)
+            viewModel.sendActionToActivity(ACTION_SET_TIMER_STATE, false)
         }
 
         previousButton.setOnClickListener {
-            viewModel.sendActionToActivity(CALLBACK_ACTION_PREV_TIMER, null)
+            viewModel.sendActionToActivity(ACTION_PREV_TIMER, null)
         }
 
         nextButton.setOnClickListener {
-            viewModel.sendActionToActivity(CALLBACK_ACTION_NEXT_TIMER, null)
+            viewModel.sendActionToActivity(ACTION_NEXT_TIMER, null)
         }
 
         prepLayout.setOnClickListener {
-            viewModel.sendActionToActivity(CALLBACK_ACTION_SELECT_PHASE, TimerPhase.PREPARATION)
+            viewModel.sendActionToActivity(ACTION_SELECT_PHASE, TimerPhase.PREPARATION)
         }
 
         workoutLayout.setOnClickListener {
-            viewModel.sendActionToActivity(CALLBACK_ACTION_SELECT_PHASE, TimerPhase.WORKOUT)
+            viewModel.sendActionToActivity(ACTION_SELECT_PHASE, TimerPhase.WORKOUT)
         }
 
         restLayout.setOnClickListener {
-            viewModel.sendActionToActivity(CALLBACK_ACTION_SELECT_PHASE, TimerPhase.REST)
+            viewModel.sendActionToActivity(ACTION_SELECT_PHASE, TimerPhase.REST)
         }
     }
 

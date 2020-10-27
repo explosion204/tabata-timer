@@ -257,7 +257,7 @@ class SequenceListFragment : DaggerFragment() {
         toolbar.title = "0 ${getString(R.string.items_selected)}"
         toolbar.setDisplayHomeAsUpEnabled(true)
 
-        viewModel.sendActionToActivity(Constants.CALLBACK_ACTION_CONTEXTUAL_MENU, true)
+        viewModel.sendActionToActivity(Constants.ACTION_CONTEXTUAL_MENU, true)
     }
 
     private fun quitContextualActionMode() {
@@ -266,7 +266,7 @@ class SequenceListFragment : DaggerFragment() {
 
         listAdapter.isContextualMenuEnabled = false
         (activity as DaggerAppCompatActivity).invalidateOptionsMenu()
-        viewModel.sendActionToActivity(Constants.CALLBACK_ACTION_CONTEXTUAL_MENU, false)
+        viewModel.sendActionToActivity(Constants.ACTION_CONTEXTUAL_MENU, false)
         toolbar.setDisplayHomeAsUpEnabled(false)
         toolbar.title = getString(R.string.app_name)
     }

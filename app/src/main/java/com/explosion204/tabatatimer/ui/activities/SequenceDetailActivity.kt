@@ -5,8 +5,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.data.entities.Timer
-import com.explosion204.tabatatimer.Constants.CALLBACK_ACTION_ADD_NEW_ASSOCIATED_TIMERS
-import com.explosion204.tabatatimer.Constants.CALLBACK_ACTION_SELECT_TIMERS_MODE
+import com.explosion204.tabatatimer.Constants.ACTION_ADD_NEW_ASSOCIATED_TIMERS
+import com.explosion204.tabatatimer.Constants.ACTION_SELECT_TIMERS_MODE
 import com.explosion204.tabatatimer.Constants.EXTRA_ALL_TIMERS
 import com.explosion204.tabatatimer.Constants.EXTRA_DESCRIPTION
 import com.explosion204.tabatatimer.Constants.EXTRA_ID
@@ -62,13 +62,13 @@ class SequenceDetailActivity : DaggerAppCompatActivity() {
 
     private fun setCallbacks() {
         fab.setOnClickListener {
-            sequenceDetailViewModel.sendActionToFragment(TAG_SEQUENCE_DETAIL_FRAGMENT, CALLBACK_ACTION_ADD_NEW_ASSOCIATED_TIMERS, null)
+            sequenceDetailViewModel.sendActionToFragment(TAG_SEQUENCE_DETAIL_FRAGMENT, ACTION_ADD_NEW_ASSOCIATED_TIMERS, null)
         }
 
         sequenceDetailViewModel.setActivityCallback(object : BaseViewModel.ActionCallback {
             override fun callback(action: String, arg: Any?) {
                 when (action) {
-                    CALLBACK_ACTION_SELECT_TIMERS_MODE -> {
+                    ACTION_SELECT_TIMERS_MODE -> {
                         val flag = arg as Boolean
 
                         if (flag) {

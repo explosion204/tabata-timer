@@ -35,4 +35,6 @@
     <string name="cycles">Cycles</string>
     <string name="cycles_remaining">Cycles remaining</string>
     <string name="color">Color</string>
+    <string name="stop">Stop</string>
+    <string name="start">Start</string>
 </resources>

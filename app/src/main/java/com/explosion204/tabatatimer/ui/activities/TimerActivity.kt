@@ -10,12 +10,12 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
-import com.explosion204.tabatatimer.Constants.CALLBACK_ACTION_NEXT_TIMER
-import com.explosion204.tabatatimer.Constants.CALLBACK_ACTION_PREV_TIMER
-import com.explosion204.tabatatimer.Constants.CALLBACK_ACTION_SELECT_PHASE
-import com.explosion204.tabatatimer.Constants.CALLBACK_ACTION_SELECT_TIMER
-import com.explosion204.tabatatimer.Constants.CALLBACK_ACTION_SET_TIMER_STATE
-import com.explosion204.tabatatimer.Constants.CALLBACK_ACTION_TIMER_STATE_CHANGED
+import com.explosion204.tabatatimer.Constants.ACTION_NEXT_TIMER
+import com.explosion204.tabatatimer.Constants.ACTION_PREV_TIMER
+import com.explosion204.tabatatimer.Constants.ACTION_SELECT_PHASE
+import com.explosion204.tabatatimer.Constants.ACTION_SELECT_TIMER
+import com.explosion204.tabatatimer.Constants.ACTION_SET_TIMER_STATE
+import com.explosion204.tabatatimer.Constants.ACTION_TIMER_STATE_CHANGED
 import com.explosion204.tabatatimer.Constants.EXTRA_SEQUENCE
 import com.explosion204.tabatatimer.Constants.TAG_TIMER_FRAGMENT
 import com.explosion204.tabatatimer.R
@@ -57,12 +57,12 @@ class TimerActivity : DaggerAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_timer)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.setDecorFitsSystemWindows(false)
-        }
-        else {
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+//            window.setDecorFitsSystemWindows(false)
+//        }
+//        else {
+//            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+//        }
 
         rootLayout = findViewById(R.id.root_layout)
         toolbar = findViewById(R.id.app_bar)
@@ -164,10 +164,10 @@ class TimerActivity : DaggerAppCompatActivity() {
             override fun onReceive(context: Context, intent: Intent) {
                 when (intent.getStringExtra(TIMER_STATE)) {
                     TIMER_STARTED -> {
-                        viewModel.sendActionToFragment(TAG_TIMER_FRAGMENT, CALLBACK_ACTION_TIMER_STATE_CHANGED, true)
+                        viewModel.sendActionToFragment(TAG_TIMER_FRAGMENT, ACTION_TIMER_STATE_CHANGED, true)
                     }
                     TIMER_STOPPED -> {
-                        viewModel.sendActionToFragment(TAG_TIMER_FRAGMENT, CALLBACK_ACTION_TIMER_STATE_CHANGED, false)
+                        viewModel.sendActionToFragment(TAG_TIMER_FRAGMENT, ACTION_TIMER_STATE_CHANGED, false)
                     }
                 }
             }
@@ -183,7 +183,7 @@ class TimerActivity : DaggerAppCompatActivity() {
                 if (timerService != null) {
                     when (action)
                     {
-                        CALLBACK_ACTION_SET_TIMER_STATE -> {
+                        ACTION_SET_TIMER_STATE -> {
                             val state = arg as Boolean
 
                             if (state) {
@@ -193,17 +193,17 @@ class TimerActivity : DaggerAppCompatActivity() {
                                 timerService!!.stop()
                             }
                         }
-                        CALLBACK_ACTION_PREV_TIMER -> {
+                        ACTION_PREV_TIMER -> {
                             timerService!!.prevTimer(false)
                         }
-                        CALLBACK_ACTION_NEXT_TIMER -> {
+                        ACTION_NEXT_TIMER -> {
                             timerService!!.nextTimer(false)
                         }
-                        CALLBACK_ACTION_SELECT_PHASE -> {
+                        ACTION_SELECT_PHASE -> {
                             val phase = arg as TimerPhase
                             timerService!!.selectPhase(phase, false)
                         }
-                        CALLBACK_ACTION_SELECT_TIMER -> {
+                        ACTION_SELECT_TIMER -> {
                             val timerPos = arg as Int
                             timerService!!.selectTimer(timerPos)
                         }

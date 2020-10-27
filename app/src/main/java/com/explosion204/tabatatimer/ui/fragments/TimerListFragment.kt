@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.explosion204.tabatatimer.MainActivity
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.data.entities.Timer
-import com.explosion204.tabatatimer.Constants.CALLBACK_ACTION_CONTEXTUAL_MENU
+import com.explosion204.tabatatimer.Constants.ACTION_CONTEXTUAL_MENU
 import com.explosion204.tabatatimer.Constants.EXTRA_ALL_TIMERS
 import com.explosion204.tabatatimer.Constants.EXTRA_DESCRIPTION
 import com.explosion204.tabatatimer.Constants.EXTRA_ID
@@ -302,7 +302,7 @@ class TimerListFragment : DaggerFragment() {
         toolbar.title = "0 ${getString(R.string.items_selected)}"
         toolbar.setDisplayHomeAsUpEnabled(true)
 
-        viewModel.sendActionToActivity(CALLBACK_ACTION_CONTEXTUAL_MENU, true)
+        viewModel.sendActionToActivity(ACTION_CONTEXTUAL_MENU, true)
     }
 
     private fun quitContextualActionMode(notifyActivity: Boolean) {
@@ -311,7 +311,7 @@ class TimerListFragment : DaggerFragment() {
         listAdapter.uncheckAllItems()
 
         if (notifyActivity) {
-            viewModel.sendActionToActivity(CALLBACK_ACTION_CONTEXTUAL_MENU, false)
+            viewModel.sendActionToActivity(ACTION_CONTEXTUAL_MENU, false)
         }
 
         listAdapter.isContextualMenuEnabled = false

@@ -1,18 +1,60 @@
 package com.explosion204.tabatatimer.services
 
+import android.app.Notification
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.media.MediaPlayer
 import android.os.Binder
 import android.os.IBinder
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.MutableLiveData
+import com.explosion204.tabatatimer.Constants.ACTION_TIMER_STATE_CHANGED
+import com.explosion204.tabatatimer.Constants.MAIN_NOTIFICATION_CHANNEL
+import com.explosion204.tabatatimer.Constants.NOTIFICATION_BROADCAST_ACTION
 import com.explosion204.tabatatimer.Constants.TIMER_BROADCAST_ACTION
 import com.explosion204.tabatatimer.Constants.TIMER_STARTED
 import com.explosion204.tabatatimer.Constants.TIMER_STATE
 import com.explosion204.tabatatimer.Constants.TIMER_STOPPED
+import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.data.entities.SequenceWithTimers
 import com.explosion204.tabatatimer.data.entities.Timer
 
 class TimerService : LifecycleService() {
+    private lateinit var notificationReceiver: BroadcastReceiver
+    private lateinit var notificationManager: NotificationManagerCompat
+    private lateinit var ringSound: MediaPlayer
+
+    override fun onCreate() {
+        super.onCreate()
+
+        val filter = IntentFilter(NOTIFICATION_BROADCAST_ACTION)
+        notificationReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                when (intent.getStringExtra(ACTION_TIMER_STATE_CHANGED)) {
+                    TIMER_STARTED -> start()
+                    TIMER_STOPPED -> stop()
+                }
+            }
+        }
+
+        notificationManager = NotificationManagerCompat.from(this)
+        registerReceiver(notificationReceiver, filter)
+        ringSound = MediaPlayer.create(this, R.raw.ring_sound)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stop()
+        unregisterReceiver(notificationReceiver)
+        notificationManager.cancel(1)
+    }
+
     private var currentTimerHandler: TimerHandler? = null
     private lateinit var sequence: SequenceWithTimers
 
@@ -27,6 +69,7 @@ class TimerService : LifecycleService() {
     var cyclesRemaining = MutableLiveData(0)
 
     private var currentPhaseRemaining = 0
+    private var timerIsRunning = false
 
     fun setSequence(sequence: SequenceWithTimers) {
         this.sequence = sequence
@@ -37,19 +80,23 @@ class TimerService : LifecycleService() {
         workoutRemaining.value = currentTimer.value!!.workout
         restRemaining.value = currentTimer.value!!.rest
         cyclesRemaining.value = currentTimer.value!!.cycles
-
         currentPhaseRemaining = currentTimer.value!!.preparations
+
+        showNotification()
     }
 
     fun start() {
         currentTimerHandler = TimerHandler(currentPhaseRemaining.toLong() * 1000 + 1000)
         currentTimerHandler!!.setEventCallback(TimerEventCallback())
         currentTimerHandler!!.start()
+        timerIsRunning = true
         notifyTimerStarted()
     }
 
     fun stop() {
         currentTimerHandler?.cancel()
+        timerIsRunning = false
+        showNotification()
         notifyTimerStopped()
     }
 
@@ -59,6 +106,7 @@ class TimerService : LifecycleService() {
             currentTimer.value = sequence.timers[currentTimerPos.value!!]
             cyclesRemaining.value = currentTimer.value!!.cycles
             selectPhase(TimerPhase.PREPARATION, withoutStopping)
+            showNotification()
         }
     }
 
@@ -68,6 +116,7 @@ class TimerService : LifecycleService() {
             currentTimer.value = sequence.timers[currentTimerPos.value!!]
             cyclesRemaining.value = currentTimer.value!!.cycles
             selectPhase(TimerPhase.PREPARATION, withoutStopping)
+            showNotification()
         }
     }
 
@@ -125,6 +174,7 @@ class TimerService : LifecycleService() {
             currentTimerPos.value = timerPos
             currentTimer.value = sequence.timers[timerPos]
             selectPhase(TimerPhase.PREPARATION, withoutStopping = false)
+            showNotification()
         }
     }
 
@@ -161,11 +211,52 @@ class TimerService : LifecycleService() {
             }
 
             currentPhaseRemaining--
+            showNotification()
         }
 
         override fun onFinish() {
             nextPhase()
+            ringSound.start()
         }
+    }
+
+    private fun showNotification() {
+        val builder = NotificationCompat.Builder(this, MAIN_NOTIFICATION_CHANNEL)
+            .setSmallIcon(R.drawable.ic_timer_24)
+            .setContentTitle("${currentPhaseRemaining / 60}m ${currentPhaseRemaining % 60}s")
+            .setPriority(NotificationManager.IMPORTANCE_MAX)
+
+        if (timerIsRunning) {
+            val intent = Intent(NOTIFICATION_BROADCAST_ACTION)
+            intent.putExtra(ACTION_TIMER_STATE_CHANGED, TIMER_STOPPED)
+            val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+            builder.addAction(R.drawable.ic_check_24, getString(R.string.stop), pendingIntent)
+        }
+        else {
+            val intent = Intent(NOTIFICATION_BROADCAST_ACTION)
+            intent.putExtra(ACTION_TIMER_STATE_CHANGED, TIMER_STARTED)
+            val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+            builder.addAction(R.drawable.ic_check_24, getString(R.string.start), pendingIntent)
+        }
+
+        var maxProgress = 0
+        when (currentPhase.value) {
+            TimerPhase.PREPARATION -> {
+                maxProgress = currentTimer.value!!.preparations
+                builder.setSubText(getString(R.string.preparation))
+            }
+            TimerPhase.WORKOUT -> {
+                maxProgress = currentTimer.value!!.workout
+                builder.setSubText(getString(R.string.workout))
+            }
+            TimerPhase.REST -> {
+                maxProgress = currentTimer.value!!.rest
+                builder.setSubText(getString(R.string.rest))
+            }
+            else -> builder
+        }.setProgress(maxProgress, maxProgress - currentPhaseRemaining, false)
+
+        notificationManager.notify(1, builder.build())
     }
 
     override fun onBind(intent: Intent): IBinder? {

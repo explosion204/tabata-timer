@@ -8,7 +8,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.explosion204.tabatatimer.Constants.CALLBACK_ACTION_SELECT_TIMER
+import com.explosion204.tabatatimer.Constants.ACTION_SELECT_TIMER
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.ui.adapters.UpcomingTimersListAdapter
 import com.explosion204.tabatatimer.ui.interfaces.OnItemClickListener
@@ -51,7 +51,7 @@ class UpcomingTimersListFragment : DaggerFragment() {
         listAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(item: Any) {
                 val timerPos = item as Int
-                viewModel.sendActionToActivity(CALLBACK_ACTION_SELECT_TIMER, timerPos)
+                viewModel.sendActionToActivity(ACTION_SELECT_TIMER, timerPos)
             }
         })
     }

@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.data.entities.Timer
-import com.explosion204.tabatatimer.Constants.CALLBACK_ACTION_SELECT_TIMERS_MODE
+import com.explosion204.tabatatimer.Constants.ACTION_SELECT_TIMERS_MODE
 import com.explosion204.tabatatimer.ui.adapters.TimerListAdapter
 import com.explosion204.tabatatimer.ui.interfaces.OnItemCheckedChangeListener
 import com.explosion204.tabatatimer.viewmodels.SequenceDetailViewModel
@@ -113,7 +113,7 @@ class SequenceTimerListFragment : DaggerFragment() {
     }
 
     private fun navigateBack() {
-        viewModel.sendActionToActivity(CALLBACK_ACTION_SELECT_TIMERS_MODE, false)
+        viewModel.sendActionToActivity(ACTION_SELECT_TIMERS_MODE, false)
         Navigation.findNavController(requireView()).navigate(R.id.action_return_to_sequenceDetailFragment)
     }
 }
