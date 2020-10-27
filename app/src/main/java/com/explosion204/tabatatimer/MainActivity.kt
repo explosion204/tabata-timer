@@ -9,7 +9,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
-import com.explosion204.tabatatimer.ui.Constants.CALLBACK_ACTION_CONTEXTUAL_MENU
+import com.explosion204.tabatatimer.Constants.CALLBACK_ACTION_CONTEXTUAL_MENU
+import com.explosion204.tabatatimer.Constants.TAG_TIMER_LIST_FRAGMENT
 import com.explosion204.tabatatimer.ui.activities.TimerDetailActivity
 import com.explosion204.tabatatimer.viewmodels.BaseViewModel
 import com.explosion204.tabatatimer.viewmodels.TimerListViewModel
@@ -54,7 +55,7 @@ class MainActivity : DaggerAppCompatActivity() {
             }, 100)
         }
         findViewById<FloatingActionButton>(R.id.fab_sequence).setOnClickListener {
-            timerListViewModel.sendActionToFragment(CALLBACK_ACTION_NEW_SEQUENCE, null)
+            timerListViewModel.sendActionToFragment(TAG_TIMER_LIST_FRAGMENT, CALLBACK_ACTION_NEW_SEQUENCE, null)
         }
 
         timerListViewModel.setActivityCallback(object : BaseViewModel.ActionCallback {

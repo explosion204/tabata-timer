@@ -1,4 +1,4 @@
-package com.explosion204.tabatatimer.viewmodels
+package com.explosion204.tabatatimer.services
 
 import android.os.CountDownTimer
 

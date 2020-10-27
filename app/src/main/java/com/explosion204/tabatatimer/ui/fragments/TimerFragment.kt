@@ -10,7 +10,15 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.explosion204.tabatatimer.Constants.CALLBACK_ACTION_NEXT_TIMER
+import com.explosion204.tabatatimer.Constants.CALLBACK_ACTION_PREV_TIMER
+import com.explosion204.tabatatimer.Constants.CALLBACK_ACTION_SELECT_PHASE
+import com.explosion204.tabatatimer.Constants.CALLBACK_ACTION_SET_TIMER_STATE
+import com.explosion204.tabatatimer.Constants.CALLBACK_ACTION_TIMER_STATE_CHANGED
+import com.explosion204.tabatatimer.Constants.TAG_TIMER_FRAGMENT
 import com.explosion204.tabatatimer.R
+import com.explosion204.tabatatimer.services.TimerPhase
+import com.explosion204.tabatatimer.viewmodels.BaseViewModel
 import com.explosion204.tabatatimer.viewmodels.TimerViewModel
 import com.explosion204.tabatatimer.viewmodels.ViewModelFactory
 import dagger.android.support.DaggerFragment
@@ -68,50 +76,57 @@ class TimerFragment : DaggerFragment() {
         setObservables()
         setOnClickListeners()
 
-        viewModel.setTimerCallback(object : TimerViewModel.TimerCallback {
-            override fun onStart() {
-                startButton.isEnabled = false
-                pauseButton.isEnabled = true
-                startButton.alpha = 0.5f
-                pauseButton.alpha = 1.0f
-            }
+        viewModel.setFragmentCallback(TAG_TIMER_FRAGMENT, object : BaseViewModel.ActionCallback {
+            override fun callback(action: String, arg: Any?) {
+                when (action) {
+                    CALLBACK_ACTION_TIMER_STATE_CHANGED -> {
+                        val state = arg as Boolean
 
-            override fun onStop() {
-                startButton.isEnabled = true
-                pauseButton.isEnabled = false
-                startButton.alpha = 1.0f
-                pauseButton.alpha = 0.5f
+                        if (state) {
+                            startButton.isEnabled = false
+                            pauseButton.isEnabled = true
+                            startButton.alpha = 0.5f
+                            pauseButton.alpha = 1.0f
+                        }
+                        else {
+                            startButton.isEnabled = true
+                            pauseButton.isEnabled = false
+                            startButton.alpha = 1.0f
+                            pauseButton.alpha = 0.5f
+                        }
+                    }
+                }
             }
         })
     }
 
     private fun setOnClickListeners() {
         startButton.setOnClickListener {
-            viewModel.start()
+            viewModel.sendActionToActivity(CALLBACK_ACTION_SET_TIMER_STATE, true)
         }
 
         pauseButton.setOnClickListener {
-            viewModel.stop()
+            viewModel.sendActionToActivity(CALLBACK_ACTION_SET_TIMER_STATE, false)
         }
 
         previousButton.setOnClickListener {
-            viewModel.prevTimer(withoutStopping = false)
+            viewModel.sendActionToActivity(CALLBACK_ACTION_PREV_TIMER, null)
         }
 
         nextButton.setOnClickListener {
-            viewModel.nextTimer(withoutStopping = false)
+            viewModel.sendActionToActivity(CALLBACK_ACTION_NEXT_TIMER, null)
         }
 
         prepLayout.setOnClickListener {
-            viewModel.selectPhase(TimerViewModel.TimerPhase.PREPARATION, withoutStopping = false)
+            viewModel.sendActionToActivity(CALLBACK_ACTION_SELECT_PHASE, TimerPhase.PREPARATION)
         }
 
         workoutLayout.setOnClickListener {
-            viewModel.selectPhase(TimerViewModel.TimerPhase.WORKOUT, withoutStopping = false)
+            viewModel.sendActionToActivity(CALLBACK_ACTION_SELECT_PHASE, TimerPhase.WORKOUT)
         }
 
         restLayout.setOnClickListener {
-            viewModel.selectPhase(TimerViewModel.TimerPhase.REST, withoutStopping = false)
+            viewModel.sendActionToActivity(CALLBACK_ACTION_SELECT_PHASE, TimerPhase.REST)
         }
     }
 
@@ -128,16 +143,21 @@ class TimerFragment : DaggerFragment() {
             cyclesTextView.text = "${it.cycles}"
         })
 
-        viewModel.currentPhaseRemaining.observe(viewLifecycleOwner, Observer {
+        viewModel.preparationRemaining.observe(viewLifecycleOwner, Observer {
             if (it >= 0) {
-                when (viewModel.currentPhase.value) {
-                    TimerViewModel.TimerPhase.PREPARATION ->
-                        prepTextView.text = "${it / 60}m ${it % 60}s"
-                    TimerViewModel.TimerPhase.WORKOUT ->
-                        workoutTextView.text = "${it / 60}m ${it % 60}s"
-                    TimerViewModel.TimerPhase.REST ->
-                        restTextView.text = "${it / 60}m ${it % 60}s"
-                }
+                prepTextView.text = "${it / 60}m ${it % 60}s"
+            }
+        })
+
+        viewModel.workoutRemaining.observe(viewLifecycleOwner, Observer {
+            if (it >= 0) {
+                workoutTextView.text = "${it / 60}m ${it % 60}s"
+            }
+        })
+
+        viewModel.restRemaining.observe(viewLifecycleOwner, Observer {
+            if (it >= 0) {
+                restTextView.text = "${it / 60}m ${it % 60}s"
             }
         })
 
@@ -148,18 +168,18 @@ class TimerFragment : DaggerFragment() {
         viewModel.currentPhase.observe(viewLifecycleOwner, Observer {
             if (selectionColor != null && transaparentColor != null) {
                 when (it) {
-                    TimerViewModel.TimerPhase.PREPARATION -> {
+                    TimerPhase.PREPARATION -> {
                         prepLayout.setBackgroundColor(selectionColor!!)
                         workoutLayout.setBackgroundColor(transaparentColor!!)
                         restLayout.setBackgroundColor(transaparentColor!!)
 
                     }
-                    TimerViewModel.TimerPhase.WORKOUT -> {
+                    TimerPhase.WORKOUT -> {
                         prepLayout.setBackgroundColor(transaparentColor!!)
                         workoutLayout.setBackgroundColor(selectionColor!!)
                         restLayout.setBackgroundColor(transaparentColor!!)
                     }
-                    TimerViewModel.TimerPhase.REST -> {
+                    TimerPhase.REST -> {
                         prepLayout.setBackgroundColor(transaparentColor!!)
                         workoutLayout.setBackgroundColor(transaparentColor!!)
                         restLayout.setBackgroundColor(selectionColor!!)

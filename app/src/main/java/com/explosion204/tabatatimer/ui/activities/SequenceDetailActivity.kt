@@ -5,13 +5,14 @@ import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.data.entities.Timer
-import com.explosion204.tabatatimer.ui.Constants.CALLBACK_ACTION_ADD_NEW_ASSOCIATED_TIMERS
-import com.explosion204.tabatatimer.ui.Constants.CALLBACK_ACTION_SELECT_TIMERS_MODE
-import com.explosion204.tabatatimer.ui.Constants.EXTRA_ALL_TIMERS
-import com.explosion204.tabatatimer.ui.Constants.EXTRA_DESCRIPTION
-import com.explosion204.tabatatimer.ui.Constants.EXTRA_ID
-import com.explosion204.tabatatimer.ui.Constants.EXTRA_ASSOCIATED_TIMERS
-import com.explosion204.tabatatimer.ui.Constants.EXTRA_TITLE
+import com.explosion204.tabatatimer.Constants.CALLBACK_ACTION_ADD_NEW_ASSOCIATED_TIMERS
+import com.explosion204.tabatatimer.Constants.CALLBACK_ACTION_SELECT_TIMERS_MODE
+import com.explosion204.tabatatimer.Constants.EXTRA_ALL_TIMERS
+import com.explosion204.tabatatimer.Constants.EXTRA_DESCRIPTION
+import com.explosion204.tabatatimer.Constants.EXTRA_ID
+import com.explosion204.tabatatimer.Constants.EXTRA_ASSOCIATED_TIMERS
+import com.explosion204.tabatatimer.Constants.EXTRA_TITLE
+import com.explosion204.tabatatimer.Constants.TAG_SEQUENCE_DETAIL_FRAGMENT
 import com.explosion204.tabatatimer.viewmodels.BaseViewModel
 import com.explosion204.tabatatimer.viewmodels.SequenceDetailViewModel
 import com.explosion204.tabatatimer.viewmodels.ViewModelFactory
@@ -61,7 +62,7 @@ class SequenceDetailActivity : DaggerAppCompatActivity() {
 
     private fun setCallbacks() {
         fab.setOnClickListener {
-            sequenceDetailViewModel.sendActionToFragment(CALLBACK_ACTION_ADD_NEW_ASSOCIATED_TIMERS, null)
+            sequenceDetailViewModel.sendActionToFragment(TAG_SEQUENCE_DETAIL_FRAGMENT, CALLBACK_ACTION_ADD_NEW_ASSOCIATED_TIMERS, null)
         }
 
         sequenceDetailViewModel.setActivityCallback(object : BaseViewModel.ActionCallback {

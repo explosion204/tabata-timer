@@ -1,9 +1,12 @@
 package com.explosion204.tabatatimer.data.entities
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 @Entity(tableName = "seq_table")
 data class Sequence(
     @PrimaryKey(autoGenerate = true)
@@ -15,5 +18,4 @@ data class Sequence(
 
     @ColumnInfo(name = "description")
     val description: String
-
-)
+) : Parcelable

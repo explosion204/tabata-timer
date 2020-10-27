@@ -8,6 +8,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.explosion204.tabatatimer.Constants.CALLBACK_ACTION_SELECT_TIMER
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.ui.adapters.UpcomingTimersListAdapter
 import com.explosion204.tabatatimer.ui.interfaces.OnItemClickListener
@@ -39,25 +40,23 @@ class UpcomingTimersListFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         recyclerView = view.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        listAdapter = UpcomingTimersListAdapter(requireContext(), viewModel.allTimers)
+        recyclerView.adapter = listAdapter
 
+        setListeners()
         setObservables()
     }
 
-    private fun setObservables() {
-        viewModel.allUpcomingTimers.observe(viewLifecycleOwner, Observer {
-            listAdapter = UpcomingTimersListAdapter(requireContext(), it)
-            recyclerView.adapter = listAdapter
-
-            listAdapter.setOnItemClickListener(object : OnItemClickListener {
-                override fun onItemClick(item: Any) {
-                    val timerPos = item as Int
-                    viewModel.selectTimer(timerPos)
-                }
-
-            })
-
+    private fun setListeners() {
+        listAdapter.setOnItemClickListener(object : OnItemClickListener {
+            override fun onItemClick(item: Any) {
+                val timerPos = item as Int
+                viewModel.sendActionToActivity(CALLBACK_ACTION_SELECT_TIMER, timerPos)
+            }
         })
+    }
 
+    private fun setObservables() {
         viewModel.currentTimer.observe(viewLifecycleOwner, Observer {
             listAdapter.setSelection(viewModel.currentTimerPos.value!!)
         })

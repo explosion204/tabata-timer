@@ -15,13 +15,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.data.entities.SequenceWithTimers
 import com.explosion204.tabatatimer.data.entities.Timer
-import com.explosion204.tabatatimer.ui.Constants
-import com.explosion204.tabatatimer.ui.Constants.EXTRA_ALL_TIMERS
-import com.explosion204.tabatatimer.ui.Constants.EXTRA_ASSOCIATED_TIMERS
-import com.explosion204.tabatatimer.ui.Constants.EXTRA_DESCRIPTION
-import com.explosion204.tabatatimer.ui.Constants.EXTRA_ID
-import com.explosion204.tabatatimer.ui.Constants.EXTRA_SEQUENCE_ID
-import com.explosion204.tabatatimer.ui.Constants.EXTRA_TITLE
+import com.explosion204.tabatatimer.Constants
+import com.explosion204.tabatatimer.Constants.EXTRA_ALL_TIMERS
+import com.explosion204.tabatatimer.Constants.EXTRA_ASSOCIATED_TIMERS
+import com.explosion204.tabatatimer.Constants.EXTRA_DESCRIPTION
+import com.explosion204.tabatatimer.Constants.EXTRA_ID
+import com.explosion204.tabatatimer.Constants.EXTRA_SEQUENCE
+import com.explosion204.tabatatimer.Constants.EXTRA_TITLE
 import com.explosion204.tabatatimer.ui.activities.SequenceDetailActivity
 import com.explosion204.tabatatimer.ui.activities.TimerActivity
 import com.explosion204.tabatatimer.ui.adapters.SequenceListAdapter
@@ -136,7 +136,8 @@ class SequenceListFragment : DaggerFragment() {
                 dialogFragment.setOnDialogButtonClickListener(object : OnDialogButtonClickListener {
                     override fun onStartButtonClick() {
                         val intent = Intent(context, TimerActivity::class.java)
-                        intent.putExtra(EXTRA_SEQUENCE_ID, item.sequence.seqId)
+                        //intent.putExtra(EXTRA_SEQUENCE_ID, item.sequence.seqId)
+                        intent.putExtra(EXTRA_SEQUENCE, item)
                         startActivity(intent)
                         dialogFragment.dismiss()
                     }

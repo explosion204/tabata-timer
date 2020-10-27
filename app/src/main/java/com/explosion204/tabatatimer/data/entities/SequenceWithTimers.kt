@@ -1,9 +1,12 @@
 package com.explosion204.tabatatimer.data.entities
 
+import android.os.Parcelable
 import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class SequenceWithTimers(
     @Embedded val sequence: Sequence,
     @Relation(
@@ -13,4 +16,4 @@ data class SequenceWithTimers(
         associateBy = Junction(SequenceTimerCrossRef::class)
     )
     val timers: List<Timer>
-)
+) : Parcelable

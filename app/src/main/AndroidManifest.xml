@@ -10,10 +10,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activities.TimerActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+        <service
+            android:name=".services.TimerService"
+            android:enabled="true"
+            android:exported="true"></service>
 
-        </activity>
+        <activity
+            android:name=".ui.activities.TimerActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".ui.activities.SequenceDetailActivity"
             android:label="@string/title_activity_sequence_detail"

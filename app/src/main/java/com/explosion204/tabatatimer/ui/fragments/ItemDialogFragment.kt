@@ -7,8 +7,8 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.explosion204.tabatatimer.R
-import com.explosion204.tabatatimer.ui.Constants.EXTRA_DESCRIPTION
-import com.explosion204.tabatatimer.ui.Constants.EXTRA_TITLE
+import com.explosion204.tabatatimer.Constants.EXTRA_DESCRIPTION
+import com.explosion204.tabatatimer.Constants.EXTRA_TITLE
 import com.explosion204.tabatatimer.ui.interfaces.OnDialogButtonClickListener
 
 class ItemDialogFragment : DialogFragment() {

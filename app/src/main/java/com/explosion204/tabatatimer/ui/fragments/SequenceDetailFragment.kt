@@ -14,8 +14,9 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.explosion204.tabatatimer.R
-import com.explosion204.tabatatimer.ui.Constants.CALLBACK_ACTION_ADD_NEW_ASSOCIATED_TIMERS
-import com.explosion204.tabatatimer.ui.Constants.CALLBACK_ACTION_SELECT_TIMERS_MODE
+import com.explosion204.tabatatimer.Constants.CALLBACK_ACTION_ADD_NEW_ASSOCIATED_TIMERS
+import com.explosion204.tabatatimer.Constants.CALLBACK_ACTION_SELECT_TIMERS_MODE
+import com.explosion204.tabatatimer.Constants.TAG_SEQUENCE_DETAIL_FRAGMENT
 import com.explosion204.tabatatimer.ui.adapters.TimerListAdapter
 import com.explosion204.tabatatimer.viewmodels.BaseViewModel
 import com.explosion204.tabatatimer.viewmodels.SequenceDetailViewModel
@@ -75,7 +76,7 @@ class SequenceDetailFragment : DaggerFragment() {
         setAdapterListeners()
         setOnEditTextChangedListeners()
 
-        viewModel.setFragmentCallback(object : BaseViewModel.ActionCallback {
+        viewModel.setFragmentCallback(TAG_SEQUENCE_DETAIL_FRAGMENT, object : BaseViewModel.ActionCallback {
             override fun callback(action: String, arg: Any?) {
                 when (action) {
                     CALLBACK_ACTION_ADD_NEW_ASSOCIATED_TIMERS -> {

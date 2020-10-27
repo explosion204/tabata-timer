@@ -15,17 +15,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.explosion204.tabatatimer.MainActivity
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.data.entities.Timer
-import com.explosion204.tabatatimer.ui.Constants.CALLBACK_ACTION_CONTEXTUAL_MENU
-import com.explosion204.tabatatimer.ui.Constants.EXTRA_ALL_TIMERS
-import com.explosion204.tabatatimer.ui.Constants.EXTRA_DESCRIPTION
-import com.explosion204.tabatatimer.ui.Constants.EXTRA_ID
-import com.explosion204.tabatatimer.ui.Constants.EXTRA_ASSOCIATED_TIMERS
-import com.explosion204.tabatatimer.ui.Constants.EXTRA_COLOR
-import com.explosion204.tabatatimer.ui.Constants.EXTRA_CYCLES
-import com.explosion204.tabatatimer.ui.Constants.EXTRA_PREP
-import com.explosion204.tabatatimer.ui.Constants.EXTRA_REST
-import com.explosion204.tabatatimer.ui.Constants.EXTRA_TITLE
-import com.explosion204.tabatatimer.ui.Constants.EXTRA_WORKOUT
+import com.explosion204.tabatatimer.Constants.CALLBACK_ACTION_CONTEXTUAL_MENU
+import com.explosion204.tabatatimer.Constants.EXTRA_ALL_TIMERS
+import com.explosion204.tabatatimer.Constants.EXTRA_DESCRIPTION
+import com.explosion204.tabatatimer.Constants.EXTRA_ID
+import com.explosion204.tabatatimer.Constants.EXTRA_ASSOCIATED_TIMERS
+import com.explosion204.tabatatimer.Constants.EXTRA_COLOR
+import com.explosion204.tabatatimer.Constants.EXTRA_CYCLES
+import com.explosion204.tabatatimer.Constants.EXTRA_PREP
+import com.explosion204.tabatatimer.Constants.EXTRA_REST
+import com.explosion204.tabatatimer.Constants.EXTRA_TITLE
+import com.explosion204.tabatatimer.Constants.EXTRA_WORKOUT
+import com.explosion204.tabatatimer.Constants.TAG_TIMER_LIST_FRAGMENT
 import com.explosion204.tabatatimer.ui.activities.SequenceDetailActivity
 import com.explosion204.tabatatimer.ui.activities.TimerDetailActivity
 import com.explosion204.tabatatimer.ui.adapters.TimerListAdapter
@@ -82,7 +83,7 @@ class TimerListFragment : DaggerFragment() {
         setObservables()
         setAdapterListeners()
 
-        viewModel.setFragmentCallback(object : BaseViewModel.ActionCallback {
+        viewModel.setFragmentCallback(TAG_TIMER_LIST_FRAGMENT, object : BaseViewModel.ActionCallback {
             override fun callback(action: String, arg: Any?) {
                 when (action) {
                     MainActivity.CALLBACK_ACTION_NEW_SEQUENCE -> {

@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.data.entities.Timer
-import com.explosion204.tabatatimer.ui.Constants.CALLBACK_ACTION_SELECT_TIMERS_MODE
+import com.explosion204.tabatatimer.Constants.CALLBACK_ACTION_SELECT_TIMERS_MODE
 import com.explosion204.tabatatimer.ui.adapters.TimerListAdapter
 import com.explosion204.tabatatimer.ui.interfaces.OnItemCheckedChangeListener
 import com.explosion204.tabatatimer.viewmodels.SequenceDetailViewModel
