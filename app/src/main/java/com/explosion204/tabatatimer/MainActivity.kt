@@ -6,13 +6,12 @@ import android.os.Handler
 import android.os.Looper
 import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.explosion204.tabatatimer.ui.Constants.CALLBACK_ACTION_CONTEXTUAL_MENU
-import com.explosion204.tabatatimer.ui.Constants.CALLBACK_ACTION_PAUSE
 import com.explosion204.tabatatimer.ui.activities.TimerDetailActivity
 import com.explosion204.tabatatimer.viewmodels.BaseViewModel
-import com.explosion204.tabatatimer.viewmodels.SequenceListViewModel
 import com.explosion204.tabatatimer.viewmodels.TimerListViewModel
 import com.explosion204.tabatatimer.viewmodels.ViewModelFactory
 import com.github.clans.fab.FloatingActionButton
@@ -26,6 +25,7 @@ class MainActivity : DaggerAppCompatActivity() {
         const val CALLBACK_ACTION_NEW_SEQUENCE = "com.explosion204.tabatatimer.NEW_SEQUENCE_ACTION"
     }
 
+    private lateinit var navController: NavController
     private lateinit var fabMenu: FloatingActionMenu
 
     @Inject
@@ -35,20 +35,16 @@ class MainActivity : DaggerAppCompatActivity() {
         viewModelFactory
     }
 
-    private val sequenceListViewModel : SequenceListViewModel by viewModels {
-        viewModelFactory
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setUpBottomNavigation()
 
         val toolbar = findViewById<Toolbar>(R.id.app_bar)
         setSupportActionBar(toolbar)
         toolbar.setTitle(R.string.app_name)
 
         fabMenu = findViewById(R.id.fab_menu)
+        setUpBottomNavigation()
         findViewById<FloatingActionButton>(R.id.fab_timer).setOnClickListener {
             val intent = Intent(this, TimerDetailActivity::class.java)
 
@@ -74,17 +70,6 @@ class MainActivity : DaggerAppCompatActivity() {
                             fabMenu.showMenu(true)
                         }
                     }
-
-                    CALLBACK_ACTION_PAUSE -> {
-                        val flag = arg as Boolean
-
-                        if (flag) {
-                            fabMenu.hideMenu(true)
-                        }
-                        else {
-                            fabMenu.showMenu(true)
-                        }
-                    }
                 }
             }
         })
@@ -92,8 +77,18 @@ class MainActivity : DaggerAppCompatActivity() {
 
     private fun setUpBottomNavigation() {
         val bottomNavView = findViewById<BottomNavigationView>(R.id.bottom_nav)
-        val navController = findNavController(R.id.nav_fragment)
+        navController = findNavController(R.id.nav_fragment)
         bottomNavView.setupWithNavController(navController)
+        navController.addOnDestinationChangedListener(NavController.OnDestinationChangedListener { controller, destination, arguments ->
+            when (destination.label) {
+                "fragment_timers_list" -> {
+                    fabMenu.showMenu(true)
+                }
+                "fragment_sequences_list" -> {
+                    fabMenu.hideMenu(true)
+                }
+            }
+        })
     }
 
     override fun onStop() {

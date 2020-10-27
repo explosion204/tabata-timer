@@ -17,8 +17,10 @@ class SequenceRepository(private val sequenceDao: SequenceDao,
         return allSequences
     }
 
-    fun get(id: Int) : SequenceWithTimers {
-        return sequenceDao.get(id)
+    suspend fun get(id: Int) : SequenceWithTimers {
+        return withContext(Dispatchers.IO) {
+            sequenceDao.get(id)
+        }
     }
 
     suspend fun insert(sequenceWithTimers: SequenceWithTimers) {

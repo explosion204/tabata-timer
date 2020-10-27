@@ -18,6 +18,9 @@ data class Timer(
 
     @ColumnInfo(name = "description")
     val description: String,
+    
+    @ColumnInfo(name = "color")
+    val color: Int,
 
     @ColumnInfo(name = "preparations")
     val preparations: Int,

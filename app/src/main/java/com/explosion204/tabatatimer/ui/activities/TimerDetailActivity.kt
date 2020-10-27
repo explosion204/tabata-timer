@@ -1,6 +1,7 @@
 package com.explosion204.tabatatimer.ui.activities
 
 import android.app.AlertDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,9 +10,11 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBar
 import com.explosion204.tabatatimer.R
+import com.explosion204.tabatatimer.ui.Constants.EXTRA_COLOR
 import com.explosion204.tabatatimer.ui.Constants.EXTRA_CYCLES
 import com.explosion204.tabatatimer.ui.Constants.EXTRA_DESCRIPTION
 import com.explosion204.tabatatimer.ui.Constants.EXTRA_ID
@@ -22,6 +25,7 @@ import com.explosion204.tabatatimer.ui.Constants.EXTRA_WORKOUT
 import com.explosion204.tabatatimer.viewmodels.TimerDetailViewModel
 import com.explosion204.tabatatimer.viewmodels.ViewModelFactory
 import dagger.android.support.DaggerAppCompatActivity
+import petrov.kristiyan.colorpicker.ColorPicker
 import javax.inject.Inject
 
 class TimerDetailActivity : DaggerAppCompatActivity(), View.OnClickListener {
@@ -31,6 +35,7 @@ class TimerDetailActivity : DaggerAppCompatActivity(), View.OnClickListener {
     private lateinit var workoutEditText: EditText
     private lateinit var restEditText: EditText
     private lateinit var cyclesEditText: EditText
+    private lateinit var chosenColorTextVew: TextView
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -53,6 +58,7 @@ class TimerDetailActivity : DaggerAppCompatActivity(), View.OnClickListener {
         workoutEditText = findViewById(R.id.workout_display)
         restEditText = findViewById(R.id.rest_display)
         cyclesEditText = findViewById(R.id.cycles_display)
+        chosenColorTextVew = findViewById(R.id.chosen_color)
 
         title = if (intent.hasExtra(EXTRA_ID)) {
             getString(R.string.edit_timer)
@@ -78,14 +84,17 @@ class TimerDetailActivity : DaggerAppCompatActivity(), View.OnClickListener {
         prepEditText.setText(intent.getIntExtra(EXTRA_PREP, 0).toString())
         viewModel.prep = prepEditText.text.toString().toInt()
 
-        workoutEditText.setText(intent.getIntExtra(EXTRA_WORKOUT, 0).toString())
+        workoutEditText.setText(intent.getIntExtra(EXTRA_WORKOUT, 1).toString())
         viewModel.workout = workoutEditText.text.toString().toInt()
 
         restEditText.setText(intent.getIntExtra(EXTRA_REST, 0).toString())
         viewModel.rest = restEditText.text.toString().toInt()
 
-        cyclesEditText.setText(intent.getIntExtra(EXTRA_CYCLES, 0).toString())
+        cyclesEditText.setText(intent.getIntExtra(EXTRA_CYCLES, 1).toString())
         viewModel.cycles = cyclesEditText.text.toString().toInt()
+
+        viewModel.color = intent.getIntExtra(EXTRA_COLOR, -10354450) // default blue color
+        chosenColorTextVew.setBackgroundColor(viewModel.color)
     }
 
     private fun setOnClickListeners() {
@@ -107,12 +116,71 @@ class TimerDetailActivity : DaggerAppCompatActivity(), View.OnClickListener {
     }
 
     private fun setOnEditTextChangedListeners() {
-        titleEditText.addTextChangedListener(EditTextWatcher(titleEditText))
-        descEditText.addTextChangedListener(EditTextWatcher(descEditText))
-        prepEditText.addTextChangedListener(EditTextWatcher(prepEditText))
-        workoutEditText.addTextChangedListener(EditTextWatcher(workoutEditText))
-        restEditText.addTextChangedListener(EditTextWatcher(restEditText))
-        cyclesEditText.addTextChangedListener(EditTextWatcher(cyclesEditText))
+        titleEditText.addTextChangedListener(object : TextValidator(titleEditText) {
+            override fun validate(newText: String): Boolean {
+                viewModel.title = newText
+                return true
+            }
+        })
+
+        descEditText.addTextChangedListener(object : TextValidator(titleEditText) {
+            override fun validate(newText: String): Boolean {
+                viewModel.desc = newText
+                return true
+            }
+        })
+
+        prepEditText.addTextChangedListener(object : TextValidator(prepEditText) {
+            override fun validate(newText: String): Boolean {
+                val newVal = newText.toInt()
+                if (newVal in 0..9999) {
+                    viewModel.prep = newVal
+
+                    return true
+                }
+
+                return false
+            }
+        })
+
+        workoutEditText.addTextChangedListener(object : TextValidator(workoutEditText) {
+            override fun validate(newText: String): Boolean {
+                val newVal = newText.toInt()
+                if (newVal in 1..9999) {
+                    viewModel.workout = newVal
+
+                    return true
+                }
+
+                return false
+            }
+        })
+
+        restEditText.addTextChangedListener(object : TextValidator(restEditText) {
+            override fun validate(newText: String): Boolean {
+                val newVal = newText.toInt()
+                if (newVal in 0..9999) {
+                    viewModel.rest = newVal
+
+                    return true
+                }
+
+                return false
+            }
+        })
+
+        cyclesEditText.addTextChangedListener(object : TextValidator(cyclesEditText) {
+            override fun validate(newText: String): Boolean {
+                val newVal = newText.toInt()
+                if (newVal in 1..99) {
+                    viewModel.cycles = newVal
+
+                    return true
+                }
+
+                return false
+            }
+        })
     }
 
 
@@ -120,6 +188,7 @@ class TimerDetailActivity : DaggerAppCompatActivity(), View.OnClickListener {
         toolbar.setHomeAsUpIndicator(R.drawable.ic_close_24)
         toolbar.setDisplayHomeAsUpEnabled(true)
         menuInflater.inflate(R.menu.detail_menu, menu)
+        menu?.getItem(0)?.isVisible = true
         return true
     }
 
@@ -132,6 +201,30 @@ class TimerDetailActivity : DaggerAppCompatActivity(), View.OnClickListener {
 
                 return true
             }
+            R.id.color -> {
+                val colorPicker = ColorPicker(this)
+                colorPicker.setColors(
+                    Color.parseColor("#c02519"), // red
+                    Color.parseColor("#00af37"), // green
+                    Color.parseColor("#6200EE") // blue
+                )
+                    .setColumns(3)
+                    .setRoundColorButton(true)
+                    .setOnChooseColorListener(object : ColorPicker.OnChooseColorListener {
+                        override fun onChooseColor(position: Int, color: Int) {
+                            chosenColorTextVew.setBackgroundColor(color)
+                            viewModel.color = color
+
+                            colorPicker.dismissDialog()
+                        }
+
+                        override fun onCancel() {
+
+                        }
+
+                    })
+                    .show()
+            }
             android.R.id.home -> {
                 finish()
             }
@@ -142,36 +235,28 @@ class TimerDetailActivity : DaggerAppCompatActivity(), View.OnClickListener {
 
     override fun onClick(view: View) {
         when (view.id) {
-            R.id.prep_decrement -> decrement(prepEditText)
-            R.id.prep_increment -> increment(prepEditText)
-            R.id.workout_decrement -> decrement(workoutEditText)
-            R.id.workout_increment -> increment(workoutEditText)
-            R.id.rest_decrement -> decrement(restEditText)
-            R.id.rest_increment -> increment(restEditText)
-            R.id.cycles_decrement -> decrement(cyclesEditText)
-            R.id.cycles_increment -> increment(cyclesEditText)
+            R.id.prep_decrement ->
+                prepEditText.setText((prepEditText.text.toString().toInt() - 1).toString())
+            R.id.prep_increment ->
+                prepEditText.setText((prepEditText.text.toString().toInt() + 1).toString())
+            R.id.workout_decrement ->
+                workoutEditText.setText((workoutEditText.text.toString().toInt() - 1).toString())
+            R.id.workout_increment ->
+                workoutEditText.setText((workoutEditText.text.toString().toInt() + 1).toString())
+            R.id.rest_decrement ->
+                restEditText.setText((restEditText.text.toString().toInt() - 1).toString())
+            R.id.rest_increment ->
+                restEditText.setText((restEditText.text.toString().toInt() + 1).toString())
+            R.id.cycles_decrement ->
+                cyclesEditText.setText((cyclesEditText.text.toString().toInt() - 1).toString())
+            R.id.cycles_increment ->
+                cyclesEditText.setText((cyclesEditText.text.toString().toInt() + 1).toString())
         }
     }
 
     override fun finish() {
         super.finish()
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
-    }
-
-    private fun increment(editText: EditText) {
-        val newVal = editText.text.toString().toInt() + 1
-
-        if (newVal in 0..9999) {
-            editText.setText(newVal.toString())
-        }
-    }
-
-    private fun decrement(editText: EditText) {
-        val newVal = editText.text.toString().toInt() - 1
-
-        if (newVal in 0..9999) {
-            editText.setText(newVal.toString())
-        }
     }
 
     override fun onBackPressed() {
@@ -201,38 +286,39 @@ class TimerDetailActivity : DaggerAppCompatActivity(), View.OnClickListener {
                         prepEditText.setText("0")
                     }
                     R.id.workout_display -> {
-                        workoutEditText.setText("0")
+                        workoutEditText.setText("1")
                     }
                     R.id.rest_display -> {
                         restEditText.setText("0")
                     }
                     R.id.cycles_display -> {
-                        cyclesEditText.setText("0")
+                        cyclesEditText.setText("1")
                     }
                 }
             }
         }
     }
 
-    inner class EditTextWatcher(private val editText: EditText) : TextWatcher {
-        override fun afterTextChanged(newText: Editable?) {}
+    abstract class TextValidator(private val editText: EditText) : TextWatcher {
+        private var oldText = ""
 
-        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+        abstract fun validate(newText: String) : Boolean
 
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            val newVal = editText.text.toString()
-
-            if (newVal.isNotEmpty()) {
-                when (editText.id) {
-                    R.id.timer_title -> viewModel.title = newVal
-                    R.id.timer_desc -> viewModel.desc = newVal
-                    R.id.prep_display -> viewModel.prep = newVal.toInt()
-                    R.id.workout_display -> viewModel.workout = newVal.toInt()
-                    R.id.rest_display -> viewModel.rest = newVal.toInt()
-                    R.id.cycles_display -> viewModel.cycles = newVal.toInt()
+        override fun afterTextChanged(s: Editable) {
+            if (s.isNotEmpty()) {
+                if (!validate(s.toString())) {
+                    editText.removeTextChangedListener(this)
+                    editText.setText(oldText)
+                    editText.addTextChangedListener(this)
                 }
             }
         }
 
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+            oldText = editText.text.toString()
+        }
+
+
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
     }
 }

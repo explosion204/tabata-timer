@@ -16,11 +16,11 @@ import com.explosion204.tabatatimer.MainActivity
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.data.entities.Timer
 import com.explosion204.tabatatimer.ui.Constants.CALLBACK_ACTION_CONTEXTUAL_MENU
-import com.explosion204.tabatatimer.ui.Constants.CALLBACK_ACTION_PAUSE
 import com.explosion204.tabatatimer.ui.Constants.EXTRA_ALL_TIMERS
 import com.explosion204.tabatatimer.ui.Constants.EXTRA_DESCRIPTION
 import com.explosion204.tabatatimer.ui.Constants.EXTRA_ID
 import com.explosion204.tabatatimer.ui.Constants.EXTRA_ASSOCIATED_TIMERS
+import com.explosion204.tabatatimer.ui.Constants.EXTRA_COLOR
 import com.explosion204.tabatatimer.ui.Constants.EXTRA_CYCLES
 import com.explosion204.tabatatimer.ui.Constants.EXTRA_PREP
 import com.explosion204.tabatatimer.ui.Constants.EXTRA_REST
@@ -68,7 +68,6 @@ class TimerListFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.sendActionToActivity(CALLBACK_ACTION_PAUSE, false)
 
         toolbar = (activity as DaggerAppCompatActivity).supportActionBar!!
         toolbar.setHomeAsUpIndicator(R.drawable.ic_close_24)
@@ -160,6 +159,7 @@ class TimerListFragment : DaggerFragment() {
                         intent.putExtra(EXTRA_ID, item.timerId)
                         intent.putExtra(EXTRA_TITLE, item.title)
                         intent.putExtra(EXTRA_DESCRIPTION, item.description)
+                        intent.putExtra(EXTRA_COLOR, item.color)
                         intent.putExtra(EXTRA_PREP, item.preparations)
                         intent.putExtra(EXTRA_WORKOUT, item.workout)
                         intent.putExtra(EXTRA_REST, item.rest)
@@ -254,17 +254,17 @@ class TimerListFragment : DaggerFragment() {
                     builder.setMessage(getString(R.string.delete_selected_items))
                         .setPositiveButton(getString(R.string.delete)) { _, _ ->
                             viewModel.delete()
-                            quitContextualActionMode()
+                            quitContextualActionMode(notifyActivity = true)
                         }
                         .setNegativeButton(getString(R.string.cancel)) { _, _ ->
-                            quitContextualActionMode()
+                            quitContextualActionMode(notifyActivity = true)
                         }
                         .setCancelable(true)
                         .create()
                         .show()
                 }
                 else {
-                    quitContextualActionMode()
+                    quitContextualActionMode(notifyActivity = true)
                 }
             }
             R.id.create_sequence -> {
@@ -286,7 +286,7 @@ class TimerListFragment : DaggerFragment() {
                 }
             }
             android.R.id.home -> {
-                quitContextualActionMode()
+                quitContextualActionMode(notifyActivity = true)
             }
         }
 
@@ -304,27 +304,23 @@ class TimerListFragment : DaggerFragment() {
         viewModel.sendActionToActivity(CALLBACK_ACTION_CONTEXTUAL_MENU, true)
     }
 
-    private fun quitContextualActionMode() {
+    private fun quitContextualActionMode(notifyActivity: Boolean) {
         contextualActionMode = ContextualActionMode.NONE
         viewModel.selectedItems.clear()
         listAdapter.uncheckAllItems()
 
+        if (notifyActivity) {
+            viewModel.sendActionToActivity(CALLBACK_ACTION_CONTEXTUAL_MENU, false)
+        }
+
         listAdapter.isContextualMenuEnabled = false
         (activity as DaggerAppCompatActivity).invalidateOptionsMenu()
-        viewModel.sendActionToActivity(CALLBACK_ACTION_CONTEXTUAL_MENU, false)
         toolbar.setDisplayHomeAsUpEnabled(false)
         toolbar.title = getString(R.string.app_name)
     }
 
     override fun onPause() {
         super.onPause()
-        quitContextualActionMode()
-        viewModel.sendActionToActivity(CALLBACK_ACTION_PAUSE, true)
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        viewModel.sendActionToActivity(CALLBACK_ACTION_PAUSE, false)
+        quitContextualActionMode(notifyActivity = false)
     }
 }

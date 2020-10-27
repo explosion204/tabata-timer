@@ -20,8 +20,10 @@ import com.explosion204.tabatatimer.ui.Constants.EXTRA_ALL_TIMERS
 import com.explosion204.tabatatimer.ui.Constants.EXTRA_ASSOCIATED_TIMERS
 import com.explosion204.tabatatimer.ui.Constants.EXTRA_DESCRIPTION
 import com.explosion204.tabatatimer.ui.Constants.EXTRA_ID
+import com.explosion204.tabatatimer.ui.Constants.EXTRA_SEQUENCE_ID
 import com.explosion204.tabatatimer.ui.Constants.EXTRA_TITLE
 import com.explosion204.tabatatimer.ui.activities.SequenceDetailActivity
+import com.explosion204.tabatatimer.ui.activities.TimerActivity
 import com.explosion204.tabatatimer.ui.adapters.SequenceListAdapter
 import com.explosion204.tabatatimer.ui.interfaces.OnDialogButtonClickListener
 import com.explosion204.tabatatimer.ui.interfaces.OnItemCheckedChangeListener
@@ -133,6 +135,9 @@ class SequenceListFragment : DaggerFragment() {
                 dialogFragment.arguments = args
                 dialogFragment.setOnDialogButtonClickListener(object : OnDialogButtonClickListener {
                     override fun onStartButtonClick() {
+                        val intent = Intent(context, TimerActivity::class.java)
+                        intent.putExtra(EXTRA_SEQUENCE_ID, item.sequence.seqId)
+                        startActivity(intent)
                         dialogFragment.dismiss()
                     }
 

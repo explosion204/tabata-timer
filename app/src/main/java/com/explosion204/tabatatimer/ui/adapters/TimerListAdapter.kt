@@ -104,12 +104,12 @@ open class TimerListAdapter :
         holder.title.text = currentItem.title
         holder.description.text = currentItem.description
 
-        holder.prepTextView.text = "${currentItem.preparations / 60}m ${currentItem.preparations % 60}s"
-        holder.workoutTextView.text = "${currentItem.workout / 60}m ${currentItem.workout % 60}s"
-        holder.restTextView.text = "${currentItem.rest / 60}m ${currentItem.rest % 60}s"
+        holder.prepTextView.text = "${currentItem.preparations * currentItem.cycles / 60}m ${currentItem.preparations * currentItem.cycles % 60}s"
+        holder.workoutTextView.text = "${currentItem.workout * currentItem.cycles / 60}m ${currentItem.workout * currentItem.cycles % 60}s"
+        holder.restTextView.text = "${currentItem.rest * currentItem.cycles / 60}m ${currentItem.rest * currentItem.cycles % 60}s"
         holder.cyclesTextView.text = currentItem.cycles.toString()
 
-        val total = with(currentItem) { preparations + workout + rest }
+        val total = with(currentItem) { (preparations + workout + rest) * cycles }
         holder.totalTextView.text = "${total / 60}m ${total % 60}s"
 
 

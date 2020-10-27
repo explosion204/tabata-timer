@@ -12,6 +12,7 @@ class TimerDetailViewModel @Inject constructor(private val timerRepository: Time
     var id = 0
     var title = ""
     var desc = ""
+    var color = 0
     var prep = 0
     var workout = 0
     var rest = 0
@@ -27,7 +28,8 @@ class TimerDetailViewModel @Inject constructor(private val timerRepository: Time
                 preparations = prep,
                 workout = workout,
                 rest = rest,
-                cycles = cycles)
+                cycles = cycles,
+                color = color)
 
             viewModelScope.launch {
                 timerRepository.insert(timer)

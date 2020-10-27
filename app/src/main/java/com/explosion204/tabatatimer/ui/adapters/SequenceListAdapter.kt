@@ -107,7 +107,7 @@ open class SequenceListAdapter :
 
         var totalTime = 0
         for (timer in currentItem.timers) {
-            totalTime += with(timer) { preparations + workout + rest }
+            totalTime += with(timer) { (preparations + workout + rest) * cycles }
         }
 
         holder.totalTimeTextView.text = "${totalTime / 60}m ${totalTime % 60}s"

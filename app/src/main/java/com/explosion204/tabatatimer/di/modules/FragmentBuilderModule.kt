@@ -1,9 +1,6 @@
 package com.explosion204.tabatatimer.di.modules
 
-import com.explosion204.tabatatimer.ui.fragments.SequenceDetailFragment
-import com.explosion204.tabatatimer.ui.fragments.SequenceListFragment
-import com.explosion204.tabatatimer.ui.fragments.SequenceTimerListFragment
-import com.explosion204.tabatatimer.ui.fragments.TimerListFragment
+import com.explosion204.tabatatimer.ui.fragments.*
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -20,4 +17,10 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector(modules = [ViewModelModule::class])
     abstract fun contributesInjectSequenceTimerListFragment(): SequenceTimerListFragment
+
+    @ContributesAndroidInjector(modules = [ViewModelModule::class])
+    abstract fun contributesInjectTimerFragment(): TimerFragment
+
+    @ContributesAndroidInjector(modules = [ViewModelModule::class])
+    abstract fun contributesInjectUpcomingTimersListFragment(): UpcomingTimersListFragment
 }
