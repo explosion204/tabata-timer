@@ -14,7 +14,6 @@ import androidx.lifecycle.Observer
 import com.explosion204.tabatatimer.Constants.ACTION_NEXT_TIMER
 import com.explosion204.tabatatimer.Constants.ACTION_PREV_TIMER
 import com.explosion204.tabatatimer.Constants.ACTION_SELECT_PHASE
-import com.explosion204.tabatatimer.Constants.ACTION_SEQUENCE_FINISHED
 import com.explosion204.tabatatimer.Constants.ACTION_SET_TIMER_STATE
 import com.explosion204.tabatatimer.Constants.ACTION_TIMER_STATE_CHANGED
 import com.explosion204.tabatatimer.Constants.TAG_TIMER_FRAGMENT
@@ -22,9 +21,6 @@ import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.services.TimerPhase
 import com.explosion204.tabatatimer.viewmodels.BaseViewModel
 import com.explosion204.tabatatimer.viewmodels.TimerViewModel
-import com.explosion204.tabatatimer.viewmodels.ViewModelFactory
-import dagger.android.support.DaggerFragment
-import javax.inject.Inject
 
 class TimerFragment : Fragment() {
     private val viewModel: TimerViewModel by activityViewModels()

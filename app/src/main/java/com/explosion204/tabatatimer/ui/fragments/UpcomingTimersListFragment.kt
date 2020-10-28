@@ -14,9 +14,6 @@ import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.ui.adapters.UpcomingTimersListAdapter
 import com.explosion204.tabatatimer.ui.interfaces.OnItemClickListener
 import com.explosion204.tabatatimer.viewmodels.TimerViewModel
-import com.explosion204.tabatatimer.viewmodels.ViewModelFactory
-import dagger.android.support.DaggerFragment
-import javax.inject.Inject
 
 class UpcomingTimersListFragment : Fragment() {
     private val viewModel: TimerViewModel by activityViewModels()

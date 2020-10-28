@@ -17,7 +17,4 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [ViewModelModule::class])
     abstract fun contributesInjectSequenceDetailActivity(): SequenceDetailActivity
-
-    @ContributesAndroidInjector(modules = [ViewModelModule::class])
-    abstract fun contributesInjectTimerActivity(): TimerActivity
 }

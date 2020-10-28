@@ -17,10 +17,4 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector(modules = [ViewModelModule::class])
     abstract fun contributesInjectSequenceTimerListFragment(): SequenceTimerListFragment
-
-    @ContributesAndroidInjector(modules = [ViewModelModule::class])
-    abstract fun contributesInjectTimerFragment(): TimerFragment
-
-    @ContributesAndroidInjector(modules = [ViewModelModule::class])
-    abstract fun contributesInjectUpcomingTimersListFragment(): UpcomingTimersListFragment
 }

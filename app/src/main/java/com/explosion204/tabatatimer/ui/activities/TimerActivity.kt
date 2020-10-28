@@ -14,12 +14,10 @@ import com.explosion204.tabatatimer.Constants.ACTION_NEXT_TIMER
 import com.explosion204.tabatatimer.Constants.ACTION_PREV_TIMER
 import com.explosion204.tabatatimer.Constants.ACTION_SELECT_PHASE
 import com.explosion204.tabatatimer.Constants.ACTION_SELECT_TIMER
-import com.explosion204.tabatatimer.Constants.ACTION_SEQUENCE_FINISHED
 import com.explosion204.tabatatimer.Constants.ACTION_SET_TIMER_STATE
 import com.explosion204.tabatatimer.Constants.ACTION_TIMER_STATE_CHANGED
 import com.explosion204.tabatatimer.Constants.EXTRA_SEQUENCE
 import com.explosion204.tabatatimer.Constants.EXTRA_TIMER
-import com.explosion204.tabatatimer.Constants.SEQUENCE_FINISHED
 import com.explosion204.tabatatimer.Constants.TAG_TIMER_FRAGMENT
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.Constants.TIMER_BROADCAST_ACTION
@@ -33,10 +31,7 @@ import com.explosion204.tabatatimer.services.TimerService
 import com.explosion204.tabatatimer.ui.adapters.TimerPagerAdapter
 import com.explosion204.tabatatimer.viewmodels.BaseViewModel
 import com.explosion204.tabatatimer.viewmodels.TimerViewModel
-import com.explosion204.tabatatimer.viewmodels.ViewModelFactory
-import dagger.android.support.DaggerAppCompatActivity
 import me.relex.circleindicator.CircleIndicator3
-import javax.inject.Inject
 
 class TimerActivity : AppCompatActivity() {
 
@@ -192,9 +187,6 @@ class TimerActivity : AppCompatActivity() {
                     }
                     TIMER_STOPPED -> {
                         viewModel.sendActionToFragment(TAG_TIMER_FRAGMENT, ACTION_TIMER_STATE_CHANGED, false)
-                    }
-                    SEQUENCE_FINISHED -> {
-                        phaseTitleTextView.text = getString(R.string.finished)
                     }
                 }
             }

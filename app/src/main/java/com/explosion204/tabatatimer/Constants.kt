@@ -22,8 +22,6 @@ object Constants {
 
     const val ACTION_TIMER_STATE_CHANGED =
         "com.explosion204.tabatatimer.TIMER_STATE_CHANGED_ACTION"
-    const val ACTION_SEQUENCE_FINISHED =
-        "com.explosion204.tabatatimer.SEQUENCE_FINISHED_ACTION"
     const val ACTION_SET_TIMER_STATE =
         "com.explosion204.tabatatimer.SET_TIMER_STATE_ACTION"
     const val ACTION_PREV_TIMER =
@@ -46,7 +44,6 @@ object Constants {
     const val TIMER_ACTION_TYPE = "com.explosion204.tabatatimer.TIMER_STATE"
     const val TIMER_STARTED = "com.explosion204.tabatimer.TIMER_STARTED"
     const val TIMER_STOPPED = "com.explosion204.tabatimer.TIMER_STOPPED"
-    const val SEQUENCE_FINISHED = "com.explosion204.tabatatimer.SEQUENCE_FINISHED"
 
     const val NOTIFICATION_BROADCAST_ACTION = "com.explosion204.tabatatimer.NOTIFICATION_BROADCAST_ACTION"
     const val NOTIFICATION_ID = 100

@@ -17,7 +17,6 @@ import com.explosion204.tabatatimer.Constants.ACTION_TIMER_STATE_CHANGED
 import com.explosion204.tabatatimer.Constants.MAIN_NOTIFICATION_CHANNEL
 import com.explosion204.tabatatimer.Constants.NOTIFICATION_BROADCAST_ACTION
 import com.explosion204.tabatatimer.Constants.NOTIFICATION_ID
-import com.explosion204.tabatatimer.Constants.SEQUENCE_FINISHED
 import com.explosion204.tabatatimer.Constants.TIMER_BROADCAST_ACTION
 import com.explosion204.tabatatimer.Constants.TIMER_STARTED
 import com.explosion204.tabatatimer.Constants.TIMER_ACTION_TYPE
@@ -230,12 +229,6 @@ class TimerService : LifecycleService() {
     private fun notifyTimerStopped() {
         val intent = Intent(TIMER_BROADCAST_ACTION)
         intent.putExtra(TIMER_ACTION_TYPE, TIMER_STOPPED)
-        sendBroadcast(intent)
-    }
-
-    private fun notifySequenceFinished() {
-        val intent = Intent(TIMER_BROADCAST_ACTION)
-        intent.putExtra(TIMER_ACTION_TYPE, SEQUENCE_FINISHED)
         sendBroadcast(intent)
     }
 
