@@ -57,7 +57,7 @@ class TimerService : LifecycleService() {
     }
 
     private var currentTimerHandler: TimerHandler? = null
-    private lateinit var sequence: SequenceWithTimers
+    private lateinit var allTimers: ArrayList<Timer>
 
     var timersCount = MutableLiveData(0)
     var currentTimerPos = MutableLiveData(0)
@@ -73,17 +73,24 @@ class TimerService : LifecycleService() {
     private var timerIsRunning = false
 
     fun setSequence(sequence: SequenceWithTimers) {
-        this.sequence = sequence
-        timersCount.value = sequence.timers.size
+        allTimers = sequence.timers as ArrayList<Timer>
+        initService()
+    }
+
+    fun setTimer(timer: Timer) {
+        allTimers = arrayListOf(timer)
+        initService()
+    }
+
+    private fun initService() {
+        timersCount.value = allTimers.size
         currentTimerPos.value = 0
-        currentTimer.value = sequence.timers[0]
+        currentTimer.value = allTimers[0]
         preparationRemaining.value = currentTimer.value!!.preparations
         workoutRemaining.value = currentTimer.value!!.workout
         restRemaining.value = currentTimer.value!!.rest
         cyclesRemaining.value = currentTimer.value!!.cycles
         currentPhaseRemaining = currentTimer.value!!.preparations
-
-        //showNotification()
     }
 
     fun start() {
@@ -104,20 +111,21 @@ class TimerService : LifecycleService() {
     fun nextTimer(withoutStopping: Boolean) {
         if (currentTimerPos.value!! + 1 < timersCount.value!!) {
             currentTimerPos.value = currentTimerPos.value!! + 1
-            currentTimer.value = sequence.timers[currentTimerPos.value!!]
+            currentTimer.value = allTimers[currentTimerPos.value!!]
             cyclesRemaining.value = currentTimer.value!!.cycles
             selectPhase(TimerPhase.PREPARATION, withoutStopping)
             showNotification()
         }
 
         notifySequenceFinished()
+        stop()
         notificationManager.cancel(NOTIFICATION_ID)
     }
 
     fun prevTimer(withoutStopping: Boolean) {
         if (currentTimerPos.value!! - 1 >= 0) {
             currentTimerPos.value = currentTimerPos.value!! - 1
-            currentTimer.value = sequence.timers[currentTimerPos.value!!]
+            currentTimer.value = allTimers[currentTimerPos.value!!]
             cyclesRemaining.value = currentTimer.value!!.cycles
             selectPhase(TimerPhase.PREPARATION, withoutStopping)
             showNotification()
@@ -176,7 +184,7 @@ class TimerService : LifecycleService() {
         if (timerPos in 0 until timersCount.value!!) {
             stop()
             currentTimerPos.value = timerPos
-            currentTimer.value = sequence.timers[timerPos]
+            currentTimer.value = allTimers[timerPos]
             selectPhase(TimerPhase.PREPARATION, withoutStopping = false)
             showNotification()
         }

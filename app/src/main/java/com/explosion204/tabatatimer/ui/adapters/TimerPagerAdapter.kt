@@ -7,16 +7,21 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.explosion204.tabatatimer.ui.fragments.TimerFragment
 import com.explosion204.tabatatimer.ui.fragments.UpcomingTimersListFragment
 
-class TimerPagerAdapter(fragmentManager: FragmentManager, lifeCycle: Lifecycle) :
+class TimerPagerAdapter(fragmentManager: FragmentManager, lifeCycle: Lifecycle, private val isSingle: Boolean) :
     FragmentStateAdapter(fragmentManager, lifeCycle)  {
 
     override fun createFragment(position: Int): Fragment {
-        return when (position) {
-            0 -> UpcomingTimersListFragment()
-            1 -> TimerFragment()
-            else -> TimerFragment()
+        return if (!isSingle) {
+            when (position) {
+                0 -> UpcomingTimersListFragment()
+                1 -> TimerFragment()
+                else -> TimerFragment()
+            }
+        }
+        else {
+            TimerFragment()
         }
     }
 
-    override fun getItemCount() = 2
+    override fun getItemCount() = if (!isSingle) 2 else 1
 }

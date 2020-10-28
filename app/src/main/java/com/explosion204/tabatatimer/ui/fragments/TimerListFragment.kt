@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.explosion204.tabatatimer.Constants
 import com.explosion204.tabatatimer.MainActivity
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.data.entities.Timer
@@ -22,7 +23,9 @@ import com.explosion204.tabatatimer.Constants.EXTRA_ASSOCIATED_TIMERS
 import com.explosion204.tabatatimer.Constants.EXTRA_TIMER
 import com.explosion204.tabatatimer.Constants.EXTRA_TITLE
 import com.explosion204.tabatatimer.Constants.TAG_TIMER_LIST_FRAGMENT
+import com.explosion204.tabatatimer.data.entities.SequenceWithTimers
 import com.explosion204.tabatatimer.ui.activities.SequenceDetailActivity
+import com.explosion204.tabatatimer.ui.activities.TimerActivity
 import com.explosion204.tabatatimer.ui.activities.TimerDetailActivity
 import com.explosion204.tabatatimer.ui.adapters.TimerListAdapter
 import com.explosion204.tabatatimer.ui.interfaces.OnDialogButtonClickListener
@@ -147,6 +150,9 @@ class TimerListFragment : DaggerFragment() {
                 dialogFragment.arguments = args
                 dialogFragment.setOnDialogButtonClickListener(object : OnDialogButtonClickListener {
                     override fun onStartButtonClick() {
+                        val intent = Intent(context, TimerActivity::class.java)
+                        intent.putExtra(EXTRA_TIMER, item)
+                        startActivity(intent)
                         dialogFragment.dismiss()
                     }
 

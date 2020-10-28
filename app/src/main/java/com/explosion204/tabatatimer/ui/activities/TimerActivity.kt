@@ -6,6 +6,7 @@ import android.os.IBinder
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
 import com.explosion204.tabatatimer.Constants.ACTION_NEXT_TIMER
@@ -15,6 +16,7 @@ import com.explosion204.tabatatimer.Constants.ACTION_SELECT_TIMER
 import com.explosion204.tabatatimer.Constants.ACTION_SET_TIMER_STATE
 import com.explosion204.tabatatimer.Constants.ACTION_TIMER_STATE_CHANGED
 import com.explosion204.tabatatimer.Constants.EXTRA_SEQUENCE
+import com.explosion204.tabatatimer.Constants.EXTRA_TIMER
 import com.explosion204.tabatatimer.Constants.SEQUENCE_FINISHED
 import com.explosion204.tabatatimer.Constants.TAG_TIMER_FRAGMENT
 import com.explosion204.tabatatimer.R
@@ -23,6 +25,7 @@ import com.explosion204.tabatatimer.Constants.TIMER_STARTED
 import com.explosion204.tabatatimer.Constants.TIMER_ACTION_TYPE
 import com.explosion204.tabatatimer.Constants.TIMER_STOPPED
 import com.explosion204.tabatatimer.data.entities.SequenceWithTimers
+import com.explosion204.tabatatimer.data.entities.Timer
 import com.explosion204.tabatatimer.services.TimerPhase
 import com.explosion204.tabatatimer.services.TimerService
 import com.explosion204.tabatatimer.ui.adapters.TimerPagerAdapter
@@ -69,18 +72,33 @@ class TimerActivity : DaggerAppCompatActivity() {
         timerTitleTextView = findViewById(R.id.current_timer_name)
         phaseTitleTextView = findViewById(R.id.current_phase)
 
-        val sequence = intent.getParcelableExtra<SequenceWithTimers>(EXTRA_SEQUENCE)
-        viewModel.allTimers = ArrayList(sequence!!.timers)
+        if (intent.hasExtra(EXTRA_SEQUENCE)) {
+            val sequence = intent.getParcelableExtra<SequenceWithTimers>(EXTRA_SEQUENCE)!!
+            viewModel.allTimers = ArrayList(sequence.timers)
 
-        val pagerAdapter = TimerPagerAdapter(supportFragmentManager, lifecycle)
-        viewPager = findViewById(R.id.view_pager)
-        viewPager.adapter = pagerAdapter
-        viewPager.currentItem = 1
+            val pagerAdapter = TimerPagerAdapter(supportFragmentManager, lifecycle, isSingle = false)
+            viewPager = findViewById(R.id.view_pager)
+            viewPager.adapter = pagerAdapter
+            viewPager.currentItem = 1
 
-        val viewPagerIndicator = findViewById<CircleIndicator3>(R.id.view_pager_indicator)
-        viewPagerIndicator.setViewPager(viewPager)
+            val viewPagerIndicator = findViewById<CircleIndicator3>(R.id.view_pager_indicator)
+            viewPagerIndicator.setViewPager(viewPager)
 
-        startTimerService(sequence)
+            startTimerService(sequence)
+        }
+        else {
+            val timer = intent.getParcelableExtra<Timer>(EXTRA_TIMER)!!
+
+            val pagerAdapter = TimerPagerAdapter(supportFragmentManager, lifecycle, isSingle = true)
+            viewPager = findViewById(R.id.view_pager)
+            viewPager.adapter = pagerAdapter
+
+            val viewPagerIndicator = findViewById<CircleIndicator3>(R.id.view_pager_indicator)
+            viewPagerIndicator.isVisible = false
+
+            startTimerService(timer)
+        }
+
         setObservables()
         setActivityCallback()
     }
@@ -105,7 +123,7 @@ class TimerActivity : DaggerAppCompatActivity() {
         })
     }
 
-    private fun startTimerService(sequence: SequenceWithTimers) {
+    private fun startTimerService(item: Any) { // in fact timer or sequence
         setBroadcastReceiver()
 
         val intent = Intent(this, TimerService::class.java)
@@ -116,7 +134,15 @@ class TimerActivity : DaggerAppCompatActivity() {
 
             override fun onServiceConnected(name: ComponentName, binder: IBinder) {
                 timerService = (binder as TimerService.TimerServiceBinder).getService()
-                timerService!!.setSequence(sequence)
+
+                if (item is Timer) {
+                    timerService!!.setTimer(item)
+                }
+                else {
+                    timerService!!.setSequence(item as SequenceWithTimers)
+                }
+
+
                 bindServiceToViewModel(timerService!!)
             }
         }
