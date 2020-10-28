@@ -12,11 +12,11 @@ class TimerDetailViewModel @Inject constructor(private val timerRepository: Time
     var id = 0
     var title = ""
     var desc = ""
-    var color = 0
+    var color = -10354450
     var prep = 0
-    var workout = 0
+    var workout = 1
     var rest = 0
-    var cycles = 0
+    var cycles = 1
 
 
     fun saveTimer() : Boolean {

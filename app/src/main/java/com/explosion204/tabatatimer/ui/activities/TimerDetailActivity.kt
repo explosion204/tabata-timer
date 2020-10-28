@@ -14,14 +14,8 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBar
 import com.explosion204.tabatatimer.R
-import com.explosion204.tabatatimer.Constants.EXTRA_COLOR
-import com.explosion204.tabatatimer.Constants.EXTRA_CYCLES
-import com.explosion204.tabatatimer.Constants.EXTRA_DESCRIPTION
-import com.explosion204.tabatatimer.Constants.EXTRA_ID
-import com.explosion204.tabatatimer.Constants.EXTRA_PREP
-import com.explosion204.tabatatimer.Constants.EXTRA_REST
-import com.explosion204.tabatatimer.Constants.EXTRA_TITLE
-import com.explosion204.tabatatimer.Constants.EXTRA_WORKOUT
+import com.explosion204.tabatatimer.Constants.EXTRA_TIMER
+import com.explosion204.tabatatimer.data.entities.Timer
 import com.explosion204.tabatatimer.viewmodels.TimerDetailViewModel
 import com.explosion204.tabatatimer.viewmodels.ViewModelFactory
 import dagger.android.support.DaggerAppCompatActivity
@@ -60,11 +54,7 @@ class TimerDetailActivity : DaggerAppCompatActivity(), View.OnClickListener {
         cyclesEditText = findViewById(R.id.cycles_display)
         chosenColorTextVew = findViewById(R.id.chosen_color)
 
-        title = if (intent.hasExtra(EXTRA_ID)) {
-            getString(R.string.edit_timer)
-        } else {
-            getString(R.string.new_timer)
-        }
+
 
         initViewModel()
         setOnFocusChangedListeners()
@@ -73,27 +63,28 @@ class TimerDetailActivity : DaggerAppCompatActivity(), View.OnClickListener {
     }
 
     private fun initViewModel() {
-        viewModel.id = intent.getIntExtra(EXTRA_ID, 0)
+        title = if (intent.hasExtra(EXTRA_TIMER)) {
+            val timer = intent.getParcelableExtra<Timer>(EXTRA_TIMER)!!
+            viewModel.id = timer.timerId
+            viewModel.title = timer.title
+            viewModel.desc = timer.description
+            viewModel.prep = timer.preparations
+            viewModel.workout = timer.workout
+            viewModel.rest = timer.rest
+            viewModel.cycles = timer.cycles
+            viewModel.color = timer.color
 
-        titleEditText.setText(intent.getStringExtra(EXTRA_TITLE))
-        viewModel.title = titleEditText.text.toString()
+            getString(R.string.edit_timer)
+        } else {
+            getString(R.string.new_timer)
+        }
 
-        descEditText.setText(intent.getStringExtra(EXTRA_DESCRIPTION))
-        viewModel.desc = descEditText.text.toString()
-
-        prepEditText.setText(intent.getIntExtra(EXTRA_PREP, 0).toString())
-        viewModel.prep = prepEditText.text.toString().toInt()
-
-        workoutEditText.setText(intent.getIntExtra(EXTRA_WORKOUT, 1).toString())
-        viewModel.workout = workoutEditText.text.toString().toInt()
-
-        restEditText.setText(intent.getIntExtra(EXTRA_REST, 0).toString())
-        viewModel.rest = restEditText.text.toString().toInt()
-
-        cyclesEditText.setText(intent.getIntExtra(EXTRA_CYCLES, 1).toString())
-        viewModel.cycles = cyclesEditText.text.toString().toInt()
-
-        viewModel.color = intent.getIntExtra(EXTRA_COLOR, -10354450) // default blue color
+        titleEditText.setText(viewModel.title)
+        descEditText.setText(viewModel.desc)
+        prepEditText.setText(viewModel.prep.toString())
+        workoutEditText.setText(viewModel.workout.toString())
+        restEditText.setText(viewModel.rest.toString())
+        cyclesEditText.setText(viewModel.cycles.toString())
         chosenColorTextVew.setBackgroundColor(viewModel.color)
     }
 

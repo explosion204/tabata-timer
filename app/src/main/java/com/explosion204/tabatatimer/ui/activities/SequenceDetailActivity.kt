@@ -8,11 +8,10 @@ import com.explosion204.tabatatimer.data.entities.Timer
 import com.explosion204.tabatatimer.Constants.ACTION_ADD_NEW_ASSOCIATED_TIMERS
 import com.explosion204.tabatatimer.Constants.ACTION_SELECT_TIMERS_MODE
 import com.explosion204.tabatatimer.Constants.EXTRA_ALL_TIMERS
-import com.explosion204.tabatatimer.Constants.EXTRA_DESCRIPTION
-import com.explosion204.tabatatimer.Constants.EXTRA_ID
 import com.explosion204.tabatatimer.Constants.EXTRA_ASSOCIATED_TIMERS
-import com.explosion204.tabatatimer.Constants.EXTRA_TITLE
+import com.explosion204.tabatatimer.Constants.EXTRA_SEQUENCE
 import com.explosion204.tabatatimer.Constants.TAG_SEQUENCE_DETAIL_FRAGMENT
+import com.explosion204.tabatatimer.data.entities.SequenceWithTimers
 import com.explosion204.tabatatimer.viewmodels.BaseViewModel
 import com.explosion204.tabatatimer.viewmodels.SequenceDetailViewModel
 import com.explosion204.tabatatimer.viewmodels.ViewModelFactory
@@ -44,10 +43,12 @@ class SequenceDetailActivity : DaggerAppCompatActivity() {
     }
 
     private fun initViewModel() {
-        title = if (intent.hasExtra(EXTRA_ID)) {
-            sequenceDetailViewModel.id = intent.getIntExtra(EXTRA_ID, 0)
-            sequenceDetailViewModel.title = intent.getStringExtra(EXTRA_TITLE)!!
-            sequenceDetailViewModel.desc = intent.getStringExtra(EXTRA_DESCRIPTION)!!
+        title = if (intent.hasExtra(EXTRA_SEQUENCE)) {
+            val sequence = intent.getParcelableExtra<SequenceWithTimers>(EXTRA_SEQUENCE)!!
+
+            sequenceDetailViewModel.id = sequence.sequence.seqId
+            sequenceDetailViewModel.title = sequence.sequence.title
+            sequenceDetailViewModel.desc = sequence.sequence.description
 
             getString(R.string.edit_sequence)
         }

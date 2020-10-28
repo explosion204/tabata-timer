@@ -19,7 +19,6 @@ import com.explosion204.tabatatimer.Constants
 import com.explosion204.tabatatimer.Constants.EXTRA_ALL_TIMERS
 import com.explosion204.tabatatimer.Constants.EXTRA_ASSOCIATED_TIMERS
 import com.explosion204.tabatatimer.Constants.EXTRA_DESCRIPTION
-import com.explosion204.tabatatimer.Constants.EXTRA_ID
 import com.explosion204.tabatatimer.Constants.EXTRA_SEQUENCE
 import com.explosion204.tabatatimer.Constants.EXTRA_TITLE
 import com.explosion204.tabatatimer.ui.activities.SequenceDetailActivity
@@ -136,7 +135,6 @@ class SequenceListFragment : DaggerFragment() {
                 dialogFragment.setOnDialogButtonClickListener(object : OnDialogButtonClickListener {
                     override fun onStartButtonClick() {
                         val intent = Intent(context, TimerActivity::class.java)
-                        //intent.putExtra(EXTRA_SEQUENCE_ID, item.sequence.seqId)
                         intent.putExtra(EXTRA_SEQUENCE, item)
                         startActivity(intent)
                         dialogFragment.dismiss()
@@ -144,11 +142,7 @@ class SequenceListFragment : DaggerFragment() {
 
                     override fun onEditButtonClick() {
                         val intent = Intent(context, SequenceDetailActivity::class.java)
-
-                        intent.putExtra(EXTRA_ID, item.sequence.seqId)
-                        intent.putExtra(EXTRA_TITLE, item.sequence.title)
-                        intent.putExtra(EXTRA_DESCRIPTION, item.sequence.description)
-
+                        intent.putExtra(EXTRA_SEQUENCE, item)
                         intent.putParcelableArrayListExtra(EXTRA_ALL_TIMERS, viewModel.allTimers)
                         intent.putParcelableArrayListExtra(EXTRA_ASSOCIATED_TIMERS, item.timers as ArrayList<Timer>)
 

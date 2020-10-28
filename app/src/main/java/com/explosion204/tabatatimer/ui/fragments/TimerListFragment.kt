@@ -18,14 +18,9 @@ import com.explosion204.tabatatimer.data.entities.Timer
 import com.explosion204.tabatatimer.Constants.ACTION_CONTEXTUAL_MENU
 import com.explosion204.tabatatimer.Constants.EXTRA_ALL_TIMERS
 import com.explosion204.tabatatimer.Constants.EXTRA_DESCRIPTION
-import com.explosion204.tabatatimer.Constants.EXTRA_ID
 import com.explosion204.tabatatimer.Constants.EXTRA_ASSOCIATED_TIMERS
-import com.explosion204.tabatatimer.Constants.EXTRA_COLOR
-import com.explosion204.tabatatimer.Constants.EXTRA_CYCLES
-import com.explosion204.tabatatimer.Constants.EXTRA_PREP
-import com.explosion204.tabatatimer.Constants.EXTRA_REST
+import com.explosion204.tabatatimer.Constants.EXTRA_TIMER
 import com.explosion204.tabatatimer.Constants.EXTRA_TITLE
-import com.explosion204.tabatatimer.Constants.EXTRA_WORKOUT
 import com.explosion204.tabatatimer.Constants.TAG_TIMER_LIST_FRAGMENT
 import com.explosion204.tabatatimer.ui.activities.SequenceDetailActivity
 import com.explosion204.tabatatimer.ui.activities.TimerDetailActivity
@@ -157,14 +152,7 @@ class TimerListFragment : DaggerFragment() {
 
                     override fun onEditButtonClick() {
                         val intent = Intent(context, TimerDetailActivity::class.java)
-                        intent.putExtra(EXTRA_ID, item.timerId)
-                        intent.putExtra(EXTRA_TITLE, item.title)
-                        intent.putExtra(EXTRA_DESCRIPTION, item.description)
-                        intent.putExtra(EXTRA_COLOR, item.color)
-                        intent.putExtra(EXTRA_PREP, item.preparations)
-                        intent.putExtra(EXTRA_WORKOUT, item.workout)
-                        intent.putExtra(EXTRA_REST, item.rest)
-                        intent.putExtra(EXTRA_CYCLES, item.cycles)
+                        intent.putExtra(EXTRA_TIMER, item)
 
                         Handler(Looper.getMainLooper()).postDelayed({
                             startActivity(intent)
