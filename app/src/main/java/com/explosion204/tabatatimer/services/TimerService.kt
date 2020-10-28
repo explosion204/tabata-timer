@@ -1,6 +1,5 @@
 package com.explosion204.tabatatimer.services
 
-import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
@@ -17,9 +16,11 @@ import androidx.lifecycle.MutableLiveData
 import com.explosion204.tabatatimer.Constants.ACTION_TIMER_STATE_CHANGED
 import com.explosion204.tabatatimer.Constants.MAIN_NOTIFICATION_CHANNEL
 import com.explosion204.tabatatimer.Constants.NOTIFICATION_BROADCAST_ACTION
+import com.explosion204.tabatatimer.Constants.NOTIFICATION_ID
+import com.explosion204.tabatatimer.Constants.SEQUENCE_FINISHED
 import com.explosion204.tabatatimer.Constants.TIMER_BROADCAST_ACTION
 import com.explosion204.tabatatimer.Constants.TIMER_STARTED
-import com.explosion204.tabatatimer.Constants.TIMER_STATE
+import com.explosion204.tabatatimer.Constants.TIMER_ACTION_TYPE
 import com.explosion204.tabatatimer.Constants.TIMER_STOPPED
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.data.entities.SequenceWithTimers
@@ -52,7 +53,7 @@ class TimerService : LifecycleService() {
         super.onDestroy()
         stop()
         unregisterReceiver(notificationReceiver)
-        notificationManager.cancel(1)
+        notificationManager.cancel(NOTIFICATION_ID)
     }
 
     private var currentTimerHandler: TimerHandler? = null
@@ -82,7 +83,7 @@ class TimerService : LifecycleService() {
         cyclesRemaining.value = currentTimer.value!!.cycles
         currentPhaseRemaining = currentTimer.value!!.preparations
 
-        showNotification()
+        //showNotification()
     }
 
     fun start() {
@@ -108,6 +109,9 @@ class TimerService : LifecycleService() {
             selectPhase(TimerPhase.PREPARATION, withoutStopping)
             showNotification()
         }
+
+        notifySequenceFinished()
+        notificationManager.cancel(NOTIFICATION_ID)
     }
 
     fun prevTimer(withoutStopping: Boolean) {
@@ -180,13 +184,19 @@ class TimerService : LifecycleService() {
 
     private fun notifyTimerStarted() {
         val intent = Intent(TIMER_BROADCAST_ACTION)
-        intent.putExtra(TIMER_STATE, TIMER_STARTED)
+        intent.putExtra(TIMER_ACTION_TYPE, TIMER_STARTED)
         sendBroadcast(intent)
     }
 
     private fun notifyTimerStopped() {
         val intent = Intent(TIMER_BROADCAST_ACTION)
-        intent.putExtra(TIMER_STATE, TIMER_STOPPED)
+        intent.putExtra(TIMER_ACTION_TYPE, TIMER_STOPPED)
+        sendBroadcast(intent)
+    }
+
+    private fun notifySequenceFinished() {
+        val intent = Intent(TIMER_BROADCAST_ACTION)
+        intent.putExtra(TIMER_ACTION_TYPE, SEQUENCE_FINISHED)
         sendBroadcast(intent)
     }
 
@@ -256,7 +266,7 @@ class TimerService : LifecycleService() {
             else -> builder
         }.setProgress(maxProgress, maxProgress - currentPhaseRemaining, false)
 
-        notificationManager.notify(1, builder.build())
+        notificationManager.notify(NOTIFICATION_ID, builder.build())
     }
 
     override fun onBind(intent: Intent): IBinder? {

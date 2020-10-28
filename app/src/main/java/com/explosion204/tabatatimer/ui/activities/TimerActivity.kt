@@ -1,10 +1,8 @@
 package com.explosion204.tabatatimer.ui.activities
 
 import android.content.*
-import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
-import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -17,11 +15,12 @@ import com.explosion204.tabatatimer.Constants.ACTION_SELECT_TIMER
 import com.explosion204.tabatatimer.Constants.ACTION_SET_TIMER_STATE
 import com.explosion204.tabatatimer.Constants.ACTION_TIMER_STATE_CHANGED
 import com.explosion204.tabatatimer.Constants.EXTRA_SEQUENCE
+import com.explosion204.tabatatimer.Constants.SEQUENCE_FINISHED
 import com.explosion204.tabatatimer.Constants.TAG_TIMER_FRAGMENT
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.Constants.TIMER_BROADCAST_ACTION
 import com.explosion204.tabatatimer.Constants.TIMER_STARTED
-import com.explosion204.tabatatimer.Constants.TIMER_STATE
+import com.explosion204.tabatatimer.Constants.TIMER_ACTION_TYPE
 import com.explosion204.tabatatimer.Constants.TIMER_STOPPED
 import com.explosion204.tabatatimer.data.entities.SequenceWithTimers
 import com.explosion204.tabatatimer.services.TimerPhase
@@ -162,12 +161,15 @@ class TimerActivity : DaggerAppCompatActivity() {
     private fun setBroadcastReceiver() {
         broadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
-                when (intent.getStringExtra(TIMER_STATE)) {
+                when (intent.getStringExtra(TIMER_ACTION_TYPE)) {
                     TIMER_STARTED -> {
                         viewModel.sendActionToFragment(TAG_TIMER_FRAGMENT, ACTION_TIMER_STATE_CHANGED, true)
                     }
                     TIMER_STOPPED -> {
                         viewModel.sendActionToFragment(TAG_TIMER_FRAGMENT, ACTION_TIMER_STATE_CHANGED, false)
+                    }
+                    SEQUENCE_FINISHED -> {
+                        phaseTitleTextView.text = getString(R.string.finished)
                     }
                 }
             }
