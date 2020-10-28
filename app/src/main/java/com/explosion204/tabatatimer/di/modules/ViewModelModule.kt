@@ -28,9 +28,4 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SequenceDetailViewModel::class)
     abstract fun bindSequenceViewModel(sequenceDetailViewModel: SequenceDetailViewModel) : ViewModel
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(TimerViewModel::class)
-    abstract fun bindTimerViewModel(timerViewModel: TimerViewModel) : ViewModel
 }

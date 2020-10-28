@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,14 +18,8 @@ import com.explosion204.tabatatimer.viewmodels.ViewModelFactory
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-class UpcomingTimersListFragment : DaggerFragment() {
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory
-
-    private val viewModel: TimerViewModel by activityViewModels {
-        viewModelFactory
-    }
+class UpcomingTimersListFragment : Fragment() {
+    private val viewModel: TimerViewModel by activityViewModels()
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var listAdapter: UpcomingTimersListAdapter

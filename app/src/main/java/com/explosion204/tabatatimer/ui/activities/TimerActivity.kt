@@ -6,6 +6,7 @@ import android.os.IBinder
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
@@ -13,6 +14,7 @@ import com.explosion204.tabatatimer.Constants.ACTION_NEXT_TIMER
 import com.explosion204.tabatatimer.Constants.ACTION_PREV_TIMER
 import com.explosion204.tabatatimer.Constants.ACTION_SELECT_PHASE
 import com.explosion204.tabatatimer.Constants.ACTION_SELECT_TIMER
+import com.explosion204.tabatatimer.Constants.ACTION_SEQUENCE_FINISHED
 import com.explosion204.tabatatimer.Constants.ACTION_SET_TIMER_STATE
 import com.explosion204.tabatatimer.Constants.ACTION_TIMER_STATE_CHANGED
 import com.explosion204.tabatatimer.Constants.EXTRA_SEQUENCE
@@ -36,14 +38,9 @@ import dagger.android.support.DaggerAppCompatActivity
 import me.relex.circleindicator.CircleIndicator3
 import javax.inject.Inject
 
-class TimerActivity : DaggerAppCompatActivity() {
+class TimerActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory
-
-    private val viewModel : TimerViewModel by viewModels {
-        viewModelFactory
-    }
+    private val viewModel : TimerViewModel by viewModels()
 
     private lateinit var rootLayout: LinearLayout
     private lateinit var viewPager: ViewPager2
@@ -119,6 +116,8 @@ class TimerActivity : DaggerAppCompatActivity() {
                         getString(R.string.workout)
                     TimerPhase.REST ->
                         getString(R.string.rest)
+                    TimerPhase.FINISHED ->
+                        getString(R.string.finished)
             }
         })
     }

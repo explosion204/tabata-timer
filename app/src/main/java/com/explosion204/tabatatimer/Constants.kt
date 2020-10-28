@@ -22,6 +22,8 @@ object Constants {
 
     const val ACTION_TIMER_STATE_CHANGED =
         "com.explosion204.tabatatimer.TIMER_STATE_CHANGED_ACTION"
+    const val ACTION_SEQUENCE_FINISHED =
+        "com.explosion204.tabatatimer.SEQUENCE_FINISHED_ACTION"
     const val ACTION_SET_TIMER_STATE =
         "com.explosion204.tabatatimer.SET_TIMER_STATE_ACTION"
     const val ACTION_PREV_TIMER =

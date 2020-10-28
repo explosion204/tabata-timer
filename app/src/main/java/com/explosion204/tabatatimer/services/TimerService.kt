@@ -94,11 +94,18 @@ class TimerService : LifecycleService() {
     }
 
     fun start() {
-        currentTimerHandler = TimerHandler(currentPhaseRemaining.toLong() * 1000 + 1000)
-        currentTimerHandler!!.setEventCallback(TimerEventCallback())
-        currentTimerHandler!!.start()
-        timerIsRunning = true
-        notifyTimerStarted()
+        if (currentPhase.value == TimerPhase.FINISHED) {
+            if (!selectPhase(TimerPhase.PREPARATION, withoutStopping = true)) {
+                selectPhase(TimerPhase.WORKOUT, withoutStopping = true)
+            }
+        }
+        else {
+            currentTimerHandler = TimerHandler(currentPhaseRemaining.toLong() * 1000 + 1000)
+            currentTimerHandler!!.setEventCallback(TimerEventCallback())
+            currentTimerHandler!!.start()
+            timerIsRunning = true
+            notifyTimerStarted()
+        }
     }
 
     fun stop() {
@@ -113,13 +120,19 @@ class TimerService : LifecycleService() {
             currentTimerPos.value = currentTimerPos.value!! + 1
             currentTimer.value = allTimers[currentTimerPos.value!!]
             cyclesRemaining.value = currentTimer.value!!.cycles
-            selectPhase(TimerPhase.PREPARATION, withoutStopping)
+
+            if (!selectPhase(TimerPhase.PREPARATION, withoutStopping = true)) {
+                selectPhase(TimerPhase.WORKOUT, withoutStopping = true)
+            }
+
             showNotification()
         }
-
-        notifySequenceFinished()
-        stop()
-        notificationManager.cancel(NOTIFICATION_ID)
+        else {
+            //notifySequenceFinished()
+            selectPhase(TimerPhase.FINISHED, withoutStopping = false)
+            stop()
+            notificationManager.cancel(NOTIFICATION_ID)
+        }
     }
 
     fun prevTimer(withoutStopping: Boolean) {
@@ -127,7 +140,11 @@ class TimerService : LifecycleService() {
             currentTimerPos.value = currentTimerPos.value!! - 1
             currentTimer.value = allTimers[currentTimerPos.value!!]
             cyclesRemaining.value = currentTimer.value!!.cycles
-            selectPhase(TimerPhase.PREPARATION, withoutStopping)
+
+            if (!selectPhase(TimerPhase.PREPARATION, withoutStopping = true)) {
+                selectPhase(TimerPhase.WORKOUT, withoutStopping = true)
+            }
+
             showNotification()
         }
     }
@@ -138,7 +155,9 @@ class TimerService : LifecycleService() {
                 selectPhase(TimerPhase.WORKOUT, withoutStopping = true)
             }
             TimerPhase.WORKOUT -> {
-                selectPhase(TimerPhase.REST, withoutStopping = true)
+                if (!selectPhase(TimerPhase.REST, withoutStopping = true)) {
+                    nextTimer(withoutStopping = true)
+                }
             }
             TimerPhase.REST -> {
                 if (cyclesRemaining.value!! > 1) {
@@ -153,12 +172,17 @@ class TimerService : LifecycleService() {
         }
     }
 
-    fun selectPhase(phase: TimerPhase, withoutStopping: Boolean) {
+    fun selectPhase(phase: TimerPhase, withoutStopping: Boolean) : Boolean {
         currentPhase.value = phase
 
         when (phase) {
             TimerPhase.PREPARATION -> {
                 preparationRemaining.value = currentTimer.value!!.preparations
+
+                if (preparationRemaining.value!! == 0) {
+                    return false
+                }
+
                 currentPhaseRemaining = currentTimer.value!!.preparations
             }
             TimerPhase.WORKOUT -> {
@@ -167,6 +191,11 @@ class TimerService : LifecycleService() {
             }
             TimerPhase.REST -> {
                 restRemaining.value = currentTimer.value!!.rest
+
+                if (restRemaining.value!! == 0) {
+                    return false
+                }
+
                 currentPhaseRemaining = currentTimer.value!!.rest
             }
         }
@@ -178,6 +207,8 @@ class TimerService : LifecycleService() {
         else {
             start()
         }
+
+        return true
     }
 
     fun selectTimer(timerPos: Int) {

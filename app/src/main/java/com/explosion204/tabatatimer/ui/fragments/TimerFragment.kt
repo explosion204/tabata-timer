@@ -8,11 +8,13 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.explosion204.tabatatimer.Constants.ACTION_NEXT_TIMER
 import com.explosion204.tabatatimer.Constants.ACTION_PREV_TIMER
 import com.explosion204.tabatatimer.Constants.ACTION_SELECT_PHASE
+import com.explosion204.tabatatimer.Constants.ACTION_SEQUENCE_FINISHED
 import com.explosion204.tabatatimer.Constants.ACTION_SET_TIMER_STATE
 import com.explosion204.tabatatimer.Constants.ACTION_TIMER_STATE_CHANGED
 import com.explosion204.tabatatimer.Constants.TAG_TIMER_FRAGMENT
@@ -24,13 +26,8 @@ import com.explosion204.tabatatimer.viewmodels.ViewModelFactory
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-class TimerFragment : DaggerFragment() {
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory
-
-    private val viewModel: TimerViewModel by activityViewModels {
-        viewModelFactory
-    }
+class TimerFragment : Fragment() {
+    private val viewModel: TimerViewModel by activityViewModels()
 
     private lateinit var startButton: ImageButton
     private lateinit var pauseButton: ImageButton
@@ -141,6 +138,9 @@ class TimerFragment : DaggerFragment() {
             workoutTextView.text = "${it.workout / 60}m ${it.workout % 60}s"
             restTextView.text = "${it.rest / 60}m ${it.rest % 60}s"
             cyclesTextView.text = "${it.cycles}"
+
+            prepLayout.isClickable = it.preparations != 0
+            restLayout.isClickable = it.rest != 0
         })
 
         viewModel.preparationRemaining.observe(viewLifecycleOwner, Observer {
@@ -183,6 +183,13 @@ class TimerFragment : DaggerFragment() {
                         prepLayout.setBackgroundColor(transaparentColor!!)
                         workoutLayout.setBackgroundColor(transaparentColor!!)
                         restLayout.setBackgroundColor(selectionColor!!)
+                    }
+                    TimerPhase.FINISHED -> {
+                        prepLayout.setBackgroundColor(transaparentColor!!)
+                        workoutLayout.setBackgroundColor(transaparentColor!!)
+                        restLayout.setBackgroundColor(transaparentColor!!)
+                        startButton.isEnabled = false
+                        startButton.alpha = 0.5f
                     }
                 }
             }

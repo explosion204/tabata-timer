@@ -10,8 +10,7 @@ import com.explosion204.tabatatimer.services.TimerService
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class TimerViewModel @Inject constructor(private val sequenceRepository: SequenceRepository)
-    : BaseViewModel() {
+class TimerViewModel : BaseViewModel() {
     var timersCount = 0
     var allTimers = ArrayList<Timer>()
     var currentTimerPos = MutableLiveData(0)
