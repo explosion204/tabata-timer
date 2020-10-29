@@ -44,4 +44,7 @@
     <string name="cycles_colon_space">Повторения:&#160;</string>
     <string name="total_colon_space">Всего:&#160;</string>
     <string name="language">Язык</string>
+    <string name="clear_app_data">Стереть данные приложения</string>
+    <string name="clear_data_dialog_message">ВНИМАНИЕ: Все пользовательские данные будут стёрты, а приложение закрыто</string>
+    <string name="clear">Стереть</string>
 </resources>

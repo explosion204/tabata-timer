@@ -42,6 +42,9 @@
     <string name="cycles_colon_space">Cycles:&#160;</string>
     <string name="total_colon_space">Total:&#160;</string>
     <string name="language">Language</string>
+    <string name="clear_app_data">Clear application data</string>
+    <string name="clear_data_dialog_message">WARNING: All user data is going to be cleared. Application will be stopped</string>
+    <string name="clear">Clear</string>
 
     <string-array name="locale_entries">
         <item>English</item>

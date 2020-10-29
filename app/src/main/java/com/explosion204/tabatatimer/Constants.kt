@@ -50,5 +50,6 @@ object Constants {
 
     const val NIGHT_MODE_PREFERENCE = "com.explosion204.tabatatimer.NIGHT_MODE_PREFERENCE"
     const val LOCALE_PREFERENCE = "com.explosion204.tabatatimer.LOCALE_PREFERENCE"
+    const val CLEAR_DATA_PREFERENCE = "com.explosion204.tabatatimer.CLEAR_DATA_PREFERENCE"
     const val SETTINGS_ACTIVITY_RESULT_CODE = 0
 }
