@@ -13,6 +13,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:colorEdgeEffect">@color/colorPrimary</item>
+        <item name="alertDialogTheme">@style/AlertDialogLightTheme</item>
         <item name="layout_background_color">@android:color/white</item>
         <item name="card_view_background_color">@android:color/white</item>
         <item name="toolbar_color">@color/colorPrimary</item>
@@ -37,6 +38,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:colorEdgeEffect">@android:color/white</item>
+        <item name="alertDialogTheme">@style/AlertDialogDarkTheme</item>
         <item name="layout_background_color">@color/darkColor</item>
         <item name="card_view_background_color">@color/deepDarkColor</item>
         <item name="toolbar_color">@color/deepDarkColor</item>
@@ -49,7 +51,7 @@
     </style>
 
     <style name="AlertDialogLightTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColor">@android:color/black</item>
         <item name="android:colorAccent">@android:color/black</item>
         <item name="android:textColorPrimary">@android:color/black</item>
         <item name="android:background">@android:color/white</item>
@@ -59,7 +61,9 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:colorAccent">@android:color/white</item>
         <item name="android:textColorPrimary">@android:color/white</item>
-        <item name="android:background">@color/deepDarkColor</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
+         <item name="android:background">@color/deepDarkColor</item>
+        <item name="textColorAlertDialogListItem">@android:color/white</item>
     </style>
 
     <style name="EditTextLightTheme" parent="@android:style/Widget.EditText">

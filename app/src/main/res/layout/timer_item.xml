@@ -52,7 +52,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Preparation: " />
+                    android:text="@string/preparation_colon_space" />
 
                 <TextView
                     android:id="@+id/prep_textview"
@@ -70,7 +70,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Workout: " />
+                    android:text="@string/workout_colon_space" />
 
                 <TextView
                     android:id="@+id/workout_textview"
@@ -89,7 +89,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Rest: " />
+                    android:text="@string/rest_colon_space" />
 
                 <TextView
                     android:id="@+id/rest_textview"
@@ -109,7 +109,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Cycles: " />
+                    android:text="@string/cycles_colon_space" />
 
                 <TextView
                     android:id="@+id/cycles_textview"
@@ -128,7 +128,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Total: "
+                    android:text="@string/total_colon_space"
                     android:textStyle="bold" />
 
                 <TextView

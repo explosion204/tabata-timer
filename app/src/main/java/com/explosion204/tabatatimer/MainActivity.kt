@@ -1,6 +1,8 @@
 package com.explosion204.tabatatimer
 
 import android.content.Intent
+import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -15,7 +17,6 @@ import androidx.preference.PreferenceManager
 import com.explosion204.tabatatimer.Constants.ACTION_CONTEXTUAL_MENU
 import com.explosion204.tabatatimer.Constants.NIGHT_MODE_PREFERENCE
 import com.explosion204.tabatatimer.Constants.SETTINGS_ACTIVITY_RESULT_CODE
-import com.explosion204.tabatatimer.Constants.SETTINGS_THEME_CHANGED
 import com.explosion204.tabatatimer.Constants.TAG_TIMER_LIST_FRAGMENT
 import com.explosion204.tabatatimer.ui.activities.SettingsActivity
 import com.explosion204.tabatatimer.ui.activities.TimerDetailActivity
@@ -26,6 +27,7 @@ import com.github.clans.fab.FloatingActionButton
 import com.github.clans.fab.FloatingActionMenu
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.android.support.DaggerAppCompatActivity
+import java.util.*
 import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity() {
@@ -35,6 +37,7 @@ class MainActivity : DaggerAppCompatActivity() {
 
     private lateinit var navController: NavController
     private lateinit var fabMenu: FloatingActionMenu
+    private lateinit var preferences: SharedPreferences
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -46,7 +49,7 @@ class MainActivity : DaggerAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+        preferences = PreferenceManager.getDefaultSharedPreferences(this)
         val nightModeEnabled = preferences.getBoolean(NIGHT_MODE_PREFERENCE, false)
 
         if (nightModeEnabled) {

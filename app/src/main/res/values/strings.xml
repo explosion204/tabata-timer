@@ -13,20 +13,11 @@
     <string name="cancel">Cancel</string>
     <string name="discard_changes">Discard changes?</string>
     <string name="discard">Discard</string>
-    <string name="title_activity_sequence_detail">SequenceDetailActivity</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="create_sequence">Create sequence</string>
     <string name="new_sequence">New sequence</string>
     <string name="edit_sequence">Edit sequence</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="select_items">Select items</string>
     <string name="delete_this_item">Delete this item?</string>
     <string name="preparation">Preparation</string>
@@ -40,4 +31,25 @@
     <string name="finished">Finished</string>
     <string name="settings">Settings</string>
     <string name="night_mode">Night mode</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="timer_color">Timer color</string>
+    <string name="total_timers">Total timers:&#160;</string>
+    <string name="total_length">Total length:&#160;</string>
+    <string name="preparation_colon_space">Preparation:&#160;</string>
+    <string name="workout_colon_space">Workout:&#160;</string>
+    <string name="rest_colon_space">Rest:&#160;</string>
+    <string name="cycles_colon_space">Cycles:&#160;</string>
+    <string name="total_colon_space">Total:&#160;</string>
+    <string name="language">Language</string>
+
+    <string-array name="locale_entries">
+        <item>English</item>
+        <item>Русский</item>
+    </string-array>
+    <string-array name="locale_values">
+        <item>en</item>
+        <item>ru</item>
+    </string-array>
+
 </resources>

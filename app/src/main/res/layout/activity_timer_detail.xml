@@ -39,7 +39,7 @@
                             android:id="@+id/timer_title"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Title"
+                            android:hint="@string/title"
                             android:backgroundTint="?attr/edit_text_background_tint" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -53,7 +53,7 @@
                             android:id="@+id/timer_desc"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Description"
+                            android:hint="@string/description"
                             android:backgroundTint="?attr/edit_text_background_tint" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -68,7 +68,7 @@
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="wrap_content"
-                            android:text="Timer color"
+                            android:text="@string/timer_color"
                             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                         <TextView

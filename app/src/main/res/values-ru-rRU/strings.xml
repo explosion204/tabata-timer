@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Tabata Timer</string>
+
+    <string name="bottom_nav_timers">Таймеры</string>
+    <string name="bottom_nav_sequences">Поседовательности</string>
+    <string name="new_timer">Новый таймер</string>
+    <string name="item_removed">Элемент удалён</string>
+    <string name="undo_action">Отмена</string>
+    <string name="edit_timer">Редактировать таймер</string>
+    <string name="delete_item">Удалить элемент</string>
+    <string name="items_selected">Элементов выбрано</string>
+    <string name="delete_selected_items">Удалить выбранные элементы?</string>
+    <string name="delete">Удалить</string>
+    <string name="cancel">Отмена</string>
+    <string name="discard_changes">Не сохранять изменения?</string>
+    <string name="discard">Отмена</string>
+    <string name="next">Далее</string>
+    <string name="previous">Назад</string>
+    <string name="create_sequence">Создать последовательность</string>
+    <string name="new_sequence">Новая последовательность</string>
+    <string name="edit_sequence">Редактировать последовательность</string>
+    <string name="select_items">Выберите элементы</string>
+    <string name="delete_this_item">Удалить этот элемент?</string>
+    <string name="preparation">Разогрев</string>
+    <string name="workout">Тренировка</string>
+    <string name="rest">Отдых</string>
+    <string name="cycles">Повторения</string>
+    <string name="cycles_remaining">Осталось повторений</string>
+    <string name="color">Цвет</string>
+    <string name="stop">Остановить</string>
+    <string name="start">Запустить</string>
+    <string name="finished">Завершено</string>
+    <string name="settings">Настройки</string>
+    <string name="night_mode">Ночной режим</string>
+    <string name="title">Название</string>
+    <string name="description">Описание</string>
+    <string name="timer_color">Цвет таймера</string>
+    <string name="total_timers">Всего таймеров:&#160;</string>
+    <string name="total_length">Длительность:&#160;</string>
+    <string name="preparation_colon_space">Разогрев:&#160;</string>
+    <string name="workout_colon_space">Тренировка:&#160;</string>
+    <string name="rest_colon_space">Отдых:&#160;</string>
+    <string name="cycles_colon_space">Повторения:&#160;</string>
+    <string name="total_colon_space">Всего:&#160;</string>
+    <string name="language">Язык</string>
+</resources>

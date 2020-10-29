@@ -4,10 +4,18 @@
 
     <SwitchPreferenceCompat
         android:key="com.explosion204.tabatatimer.NIGHT_MODE_PREFERENCE"
-        android:title="Night mode"
+        android:title="@string/night_mode"
         android:defaultValue="false"
         app:iconSpaceReserved="false"
-        app:allowDividerBelow="true"
-        />
+        app:allowDividerBelow="true" />
+
+    <ListPreference
+        android:key="com.explosion204.tabatatimer.LOCALE_PREFERENCE"
+        android:title="@string/language"
+        android:entries="@array/locale_entries"
+        android:entryValues="@array/locale_values"
+        app:iconSpaceReserved="false"
+        app:allowDividerAbove="true"
+        android:defaultValue="en" />
 
 </PreferenceScreen>

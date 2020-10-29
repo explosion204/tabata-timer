@@ -22,8 +22,7 @@
             android:theme="@style/LightTheme" />
         <activity
             android:name=".ui.activities.SequenceDetailActivity"
-            android:theme="@style/LightTheme"
-            android:label="@string/title_activity_sequence_detail" />
+            android:theme="@style/LightTheme" />
         <activity android:name=".ui.activities.TimerDetailActivity" />
         <activity
             android:name=".MainActivity"
