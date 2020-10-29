@@ -2,7 +2,9 @@ package com.explosion204.tabatatimer.ui.activities
 
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
+import androidx.preference.PreferenceManager
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.data.entities.Timer
 import com.explosion204.tabatatimer.Constants.ACTION_ADD_NEW_ASSOCIATED_TIMERS
@@ -31,6 +33,14 @@ class SequenceDetailActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+            setTheme(R.style.DarkTheme)
+        }
+        else {
+            setTheme(R.style.LightTheme)
+        }
+
         setContentView(R.layout.activity_sequence_detail)
 
         val toolbar = findViewById<Toolbar>(R.id.app_bar)

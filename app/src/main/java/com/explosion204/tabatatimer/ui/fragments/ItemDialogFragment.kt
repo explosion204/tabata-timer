@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.DialogFragment
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.Constants.EXTRA_DESCRIPTION
@@ -23,7 +24,15 @@ class ItemDialogFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_sequence_dialog, null)
+        val contextThemeWrapper = if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+            ContextThemeWrapper(requireActivity(), R.style.DarkTheme)
+        }
+        else {
+            ContextThemeWrapper(requireActivity(), R.style.LightTheme)
+        }
+
+        val localInflater = inflater.cloneInContext(contextThemeWrapper)
+        return localInflater.inflate(R.layout.fragment_sequence_dialog, null)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

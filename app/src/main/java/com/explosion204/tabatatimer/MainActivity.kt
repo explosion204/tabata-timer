@@ -10,6 +10,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.preference.PreferenceManager
 import com.explosion204.tabatatimer.Constants.ACTION_CONTEXTUAL_MENU
 import com.explosion204.tabatatimer.Constants.TAG_TIMER_LIST_FRAGMENT
 import com.explosion204.tabatatimer.ui.activities.SettingsActivity
@@ -40,6 +41,17 @@ class MainActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val preferenceManager = PreferenceManager.getDefaultSharedPreferences(this)
+        val nightModeEnabled = preferenceManager.getBoolean("night_mode", false)
+
+        if (nightModeEnabled) {
+            setTheme(R.style.DarkTheme)
+        }
+        else {
+            setTheme(R.style.LightTheme)
+        }
+
         setContentView(R.layout.activity_main)
 
         val toolbar = findViewById<Toolbar>(R.id.app_bar)
@@ -103,6 +115,8 @@ class MainActivity : DaggerAppCompatActivity() {
         when (item.itemId) {
             R.id.settings -> {
                 val intent = Intent(this, SettingsActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
             }
         }

@@ -40,7 +40,7 @@ class TimerFragment : Fragment() {
     private lateinit var restLayout: LinearLayout
 
     private var selectionColor: Int? = null
-    private var transaparentColor: Int? = null
+    private var transparentColor: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,7 +64,7 @@ class TimerFragment : Fragment() {
         restLayout = view.findViewById(R.id.rest_layout)
 
         selectionColor = ContextCompat.getColor(requireContext(), R.color.selectionColor)
-        transaparentColor  = ContextCompat.getColor(requireContext(), android.R.color.transparent)
+        transparentColor  = ContextCompat.getColor(requireContext(), android.R.color.transparent)
 
         setObservables()
         setOnClickListeners()
@@ -162,28 +162,28 @@ class TimerFragment : Fragment() {
         })
 
         viewModel.currentPhase.observe(viewLifecycleOwner, Observer {
-            if (selectionColor != null && transaparentColor != null) {
+            if (selectionColor != null && transparentColor != null) {
                 when (it) {
                     TimerPhase.PREPARATION -> {
                         prepLayout.setBackgroundColor(selectionColor!!)
-                        workoutLayout.setBackgroundColor(transaparentColor!!)
-                        restLayout.setBackgroundColor(transaparentColor!!)
+                        workoutLayout.setBackgroundColor(transparentColor!!)
+                        restLayout.setBackgroundColor(transparentColor!!)
 
                     }
                     TimerPhase.WORKOUT -> {
-                        prepLayout.setBackgroundColor(transaparentColor!!)
+                        prepLayout.setBackgroundColor(transparentColor!!)
                         workoutLayout.setBackgroundColor(selectionColor!!)
-                        restLayout.setBackgroundColor(transaparentColor!!)
+                        restLayout.setBackgroundColor(transparentColor!!)
                     }
                     TimerPhase.REST -> {
-                        prepLayout.setBackgroundColor(transaparentColor!!)
-                        workoutLayout.setBackgroundColor(transaparentColor!!)
+                        prepLayout.setBackgroundColor(transparentColor!!)
+                        workoutLayout.setBackgroundColor(transparentColor!!)
                         restLayout.setBackgroundColor(selectionColor!!)
                     }
                     TimerPhase.FINISHED -> {
-                        prepLayout.setBackgroundColor(transaparentColor!!)
-                        workoutLayout.setBackgroundColor(transaparentColor!!)
-                        restLayout.setBackgroundColor(transaparentColor!!)
+                        prepLayout.setBackgroundColor(transparentColor!!)
+                        workoutLayout.setBackgroundColor(transparentColor!!)
+                        restLayout.setBackgroundColor(transparentColor!!)
                         startButton.isEnabled = false
                         startButton.alpha = 0.5f
                     }

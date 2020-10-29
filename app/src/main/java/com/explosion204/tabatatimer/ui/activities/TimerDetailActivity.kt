@@ -12,7 +12,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.viewModels
-import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.Toolbar
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.Constants.EXTRA_TIMER
 import com.explosion204.tabatatimer.data.entities.Timer
@@ -38,13 +39,22 @@ class TimerDetailActivity : DaggerAppCompatActivity(), View.OnClickListener {
         viewModelFactory
     }
 
-    private lateinit var toolbar: ActionBar
+    private lateinit var toolbar: Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+            setTheme(R.style.DarkTheme)
+        }
+        else {
+            setTheme(R.style.LightTheme)
+        }
+
         setContentView(R.layout.activity_timer_detail)
 
-        toolbar = supportActionBar!!
+        toolbar = findViewById(R.id.app_bar)
+        setSupportActionBar(toolbar)
 
         titleEditText = findViewById(R.id.timer_title)
         descEditText = findViewById(R.id.timer_desc)
@@ -176,8 +186,8 @@ class TimerDetailActivity : DaggerAppCompatActivity(), View.OnClickListener {
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        toolbar.setHomeAsUpIndicator(R.drawable.ic_close_24)
-        toolbar.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_close_24)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         menuInflater.inflate(R.menu.detail_menu, menu)
         menu?.getItem(0)?.isVisible = true
         return true

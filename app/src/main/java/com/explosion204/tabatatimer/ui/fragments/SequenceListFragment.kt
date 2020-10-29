@@ -7,11 +7,14 @@ import android.os.Looper
 import android.view.*
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.data.entities.SequenceWithTimers
 import com.explosion204.tabatatimer.data.entities.Timer
@@ -51,8 +54,18 @@ class SequenceListFragment : DaggerFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val preferenceManager = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val nightModeEnabled = preferenceManager.getBoolean("night_mode", false)
 
-        return inflater.inflate(R.layout.fragment_sequence_list, container, false)
+        val contextThemeWrapper = if (nightModeEnabled) {
+            ContextThemeWrapper(requireActivity(), R.style.DarkTheme)
+        }
+        else {
+            ContextThemeWrapper(requireActivity(), R.style.LightTheme)
+        }
+
+        val localInflater = inflater.cloneInContext(contextThemeWrapper)
+        return localInflater.inflate(R.layout.fragment_sequence_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

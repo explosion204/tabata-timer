@@ -9,21 +9,21 @@ import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.explosion204.tabatatimer.Constants
-import com.explosion204.tabatatimer.MainActivity
-import com.explosion204.tabatatimer.R
-import com.explosion204.tabatatimer.data.entities.Timer
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.explosion204.tabatatimer.Constants.ACTION_CONTEXTUAL_MENU
 import com.explosion204.tabatatimer.Constants.EXTRA_ALL_TIMERS
-import com.explosion204.tabatatimer.Constants.EXTRA_DESCRIPTION
 import com.explosion204.tabatatimer.Constants.EXTRA_ASSOCIATED_TIMERS
+import com.explosion204.tabatatimer.Constants.EXTRA_DESCRIPTION
 import com.explosion204.tabatatimer.Constants.EXTRA_TIMER
 import com.explosion204.tabatatimer.Constants.EXTRA_TITLE
 import com.explosion204.tabatatimer.Constants.TAG_TIMER_LIST_FRAGMENT
-import com.explosion204.tabatatimer.data.entities.SequenceWithTimers
+import com.explosion204.tabatatimer.MainActivity
+import com.explosion204.tabatatimer.R
+import com.explosion204.tabatatimer.data.entities.Timer
 import com.explosion204.tabatatimer.ui.activities.SequenceDetailActivity
 import com.explosion204.tabatatimer.ui.activities.TimerActivity
 import com.explosion204.tabatatimer.ui.activities.TimerDetailActivity
@@ -39,6 +39,7 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerAppCompatActivity
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
+
 
 class TimerListFragment : DaggerFragment() {
     @Inject
@@ -62,7 +63,19 @@ class TimerListFragment : DaggerFragment() {
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        return inflater.inflate(R.layout.fragment_timer_list, container, false)
+
+        val preferenceManager = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val nightModeEnabled = preferenceManager.getBoolean("night_mode", false)
+
+        val contextThemeWrapper = if (nightModeEnabled) {
+            ContextThemeWrapper(requireActivity(), R.style.DarkTheme)
+        }
+        else {
+            ContextThemeWrapper(requireActivity(), R.style.LightTheme)
+        }
+
+        val localInflater = inflater.cloneInContext(contextThemeWrapper)
+        return localInflater.inflate(R.layout.fragment_timer_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

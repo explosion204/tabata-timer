@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
@@ -38,8 +39,15 @@ class SequenceTimerListFragment : DaggerFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_timer_list, container, false)
+        val contextThemeWrapper = if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+            ContextThemeWrapper(requireActivity(), R.style.DarkTheme)
+        }
+        else {
+            ContextThemeWrapper(requireActivity(), R.style.LightTheme)
+        }
+
+        val localInflater = inflater.cloneInContext(contextThemeWrapper)
+        return localInflater.inflate(R.layout.fragment_timer_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
