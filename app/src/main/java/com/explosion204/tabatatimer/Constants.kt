@@ -47,4 +47,8 @@ object Constants {
 
     const val NOTIFICATION_BROADCAST_ACTION = "com.explosion204.tabatatimer.NOTIFICATION_BROADCAST_ACTION"
     const val NOTIFICATION_ID = 100
+
+    const val NIGHT_MODE_PREFERENCE = "com.explosion204.tabatatimer.NIGHT_MODE_PREFERENCE"
+    const val SETTINGS_ACTIVITY_RESULT_CODE = 0
+    const val SETTINGS_THEME_CHANGED = "com.explosion204.tabatatimer.THEME_CHANGED"
 }

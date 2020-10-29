@@ -12,7 +12,8 @@
         android:id="@+id/bottom_nav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#fff"
+        android:background="?attr/bottom_nav_color"
+        app:itemIconTint="?attr/bottom_nav_item_icon_tint"
         app:menu="@menu/bottom_navigation_menu"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,9 +37,11 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/bottom_nav"
         app:layout_constraintRight_toRightOf="parent"
-        app:menu_colorNormal="@color/colorPrimary"
-        app:menu_colorPressed="@color/colorPrimary"
+        app:menu_colorNormal="?attr/fab_color"
+        app:menu_colorPressed="?attr/fab_color"
         app:menu_labels_colorRipple="@android:color/transparent"
+        app:menu_labels_colorNormal="?attr/fab_color"
+        app:menu_labels_colorPressed="?attr/fab_color"
         android:layout_margin="8dp">
 
         <com.github.clans.fab.FloatingActionButton
@@ -49,7 +52,9 @@
             app:fab_size="mini"
             android:layout_margin="8dp"
             app:fab_label="@string/new_timer"
-            app:fab_colorRipple="@android:color/transparent"/>
+            app:fab_colorRipple="@android:color/transparent"
+            app:fab_colorNormal="?attr/fab_color"
+            app:fab_colorPressed="?attr/fab_color" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fab_sequence"
@@ -59,7 +64,9 @@
             app:fab_size="mini"
             android:layout_margin="8dp"
             app:fab_label="@string/new_sequence"
-            app:fab_colorRipple="@android:color/transparent" />
+            app:fab_colorRipple="@android:color/transparent"
+            app:fab_colorNormal="?attr/fab_color"
+            app:fab_colorPressed="?attr/fab_color" />
 
     </com.github.clans.fab.FloatingActionMenu>
 

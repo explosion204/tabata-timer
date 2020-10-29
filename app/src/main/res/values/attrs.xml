@@ -1,2 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <declare-styleable name="ds">
+        <attr name="layout_background_color" format="color" />
+        <attr name="card_view_background_color" format="color" />
+        <attr name="toolbar_color" format="color" />
+        <attr name="bottom_nav_color" format="color" />
+        <attr name="bottom_nav_item_icon_tint" format="color" />
+        <attr name="fab_color" format="color" />
+        <attr name="dialog_color" format="color" />
+        <attr name="edit_text_background_tint" format="color" />
+        <attr name="border_gray_solid_color" format="color" />
+    </declare-styleable>
+</resources>

@@ -7,8 +7,10 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import androidx.preference.PreferenceManager
 import androidx.viewpager2.widget.ViewPager2
 import com.explosion204.tabatatimer.Constants.ACTION_NEXT_TIMER
 import com.explosion204.tabatatimer.Constants.ACTION_PREV_TIMER
@@ -18,6 +20,7 @@ import com.explosion204.tabatatimer.Constants.ACTION_SET_TIMER_STATE
 import com.explosion204.tabatatimer.Constants.ACTION_TIMER_STATE_CHANGED
 import com.explosion204.tabatatimer.Constants.EXTRA_SEQUENCE
 import com.explosion204.tabatatimer.Constants.EXTRA_TIMER
+import com.explosion204.tabatatimer.Constants.NIGHT_MODE_PREFERENCE
 import com.explosion204.tabatatimer.Constants.TAG_TIMER_FRAGMENT
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.Constants.TIMER_BROADCAST_ACTION
@@ -46,17 +49,22 @@ class TimerActivity : AppCompatActivity() {
     private var broadcastReceiver: BroadcastReceiver? = null
     private var timerServiceConnection: ServiceConnection? = null
     private var timerService: TimerService? = null
+    private var nightMode = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_timer)
 
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-//            window.setDecorFitsSystemWindows(false)
-//        }
-//        else {
-//            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
-//        }
+        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+        nightMode = preferences.getBoolean(NIGHT_MODE_PREFERENCE, false)
+
+        if (nightMode) {
+            setTheme(R.style.DarkTheme)
+        }
+        else {
+            setTheme(R.style.LightTheme)
+        }
+
+        setContentView(R.layout.activity_timer)
 
         rootLayout = findViewById(R.id.root_layout)
         toolbar = findViewById(R.id.app_bar)
@@ -91,14 +99,22 @@ class TimerActivity : AppCompatActivity() {
             startTimerService(timer)
         }
 
+        if (nightMode) {
+            rootLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.darkColor))
+            toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.deepDarkColor))
+        }
+
         setObservables()
         setActivityCallback()
     }
 
     private fun setObservables() {
         viewModel.currentTimer.observe(this, Observer {
-            rootLayout.setBackgroundColor(it.color)
-            toolbar.setBackgroundColor(it.color)
+            if (!nightMode) {
+                rootLayout.setBackgroundColor(it.color)
+                toolbar.setBackgroundColor(it.color)
+            }
+
             timerTitleTextView.text = it.title
         })
 

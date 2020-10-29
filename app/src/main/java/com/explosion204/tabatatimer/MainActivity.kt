@@ -9,9 +9,13 @@ import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
 import com.explosion204.tabatatimer.Constants.ACTION_CONTEXTUAL_MENU
+import com.explosion204.tabatatimer.Constants.NIGHT_MODE_PREFERENCE
+import com.explosion204.tabatatimer.Constants.SETTINGS_ACTIVITY_RESULT_CODE
+import com.explosion204.tabatatimer.Constants.SETTINGS_THEME_CHANGED
 import com.explosion204.tabatatimer.Constants.TAG_TIMER_LIST_FRAGMENT
 import com.explosion204.tabatatimer.ui.activities.SettingsActivity
 import com.explosion204.tabatatimer.ui.activities.TimerDetailActivity
@@ -42,8 +46,8 @@ class MainActivity : DaggerAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val preferenceManager = PreferenceManager.getDefaultSharedPreferences(this)
-        val nightModeEnabled = preferenceManager.getBoolean("night_mode", false)
+        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val nightModeEnabled = preferences.getBoolean(NIGHT_MODE_PREFERENCE, false)
 
         if (nightModeEnabled) {
             setTheme(R.style.DarkTheme)
@@ -65,7 +69,6 @@ class MainActivity : DaggerAppCompatActivity() {
 
             Handler(Looper.getMainLooper()).postDelayed({
                 startActivity(intent)
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             }, 100)
         }
         findViewById<FloatingActionButton>(R.id.fab_sequence).setOnClickListener {
@@ -104,6 +107,13 @@ class MainActivity : DaggerAppCompatActivity() {
                 }
             }
         })
+        bottomNavView.setOnNavigationItemSelectedListener {
+            if (it.itemId != bottomNavView.selectedItemId) {
+                NavigationUI.onNavDestinationSelected(it, navController)
+            }
+
+            true
+        }
     }
 
     override fun onStop() {
@@ -115,12 +125,20 @@ class MainActivity : DaggerAppCompatActivity() {
         when (item.itemId) {
             R.id.settings -> {
                 val intent = Intent(this, SettingsActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(intent)
+                startActivityForResult(intent, SETTINGS_ACTIVITY_RESULT_CODE)
             }
         }
 
         return false
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+            SETTINGS_ACTIVITY_RESULT_CODE -> {
+                recreate()
+            }
+        }
     }
 }

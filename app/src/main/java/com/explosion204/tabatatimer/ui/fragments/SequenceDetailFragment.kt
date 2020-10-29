@@ -1,5 +1,6 @@
 package com.explosion204.tabatatimer.ui.fragments
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,9 +12,11 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.explosion204.tabatatimer.Constants
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.Constants.ACTION_ADD_NEW_ASSOCIATED_TIMERS
 import com.explosion204.tabatatimer.Constants.ACTION_SELECT_TIMERS_MODE
@@ -41,11 +44,16 @@ class SequenceDetailFragment : DaggerFragment() {
     private lateinit var titleEditText: EditText
     private lateinit var descEditText: EditText
 
+    private lateinit var preferences: SharedPreferences
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val contextThemeWrapper = if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+        preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val nightModeEnabled = preferences.getBoolean(Constants.NIGHT_MODE_PREFERENCE, false)
+
+        val contextThemeWrapper = if (nightModeEnabled) {
             ContextThemeWrapper(requireActivity(), R.style.DarkTheme)
         }
         else {
@@ -53,7 +61,6 @@ class SequenceDetailFragment : DaggerFragment() {
         }
 
         val localInflater = inflater.cloneInContext(contextThemeWrapper)
-
         return localInflater.inflate(R.layout.fragment_sequence_detail, container, false)
     }
 

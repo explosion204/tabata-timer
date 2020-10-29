@@ -5,18 +5,19 @@ import android.os.Bundle
 import android.view.*
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.DialogFragment
+import androidx.preference.PreferenceManager
+import com.explosion204.tabatatimer.Constants
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.Constants.EXTRA_DESCRIPTION
 import com.explosion204.tabatatimer.Constants.EXTRA_TITLE
-import com.explosion204.tabatatimer.ui.interfaces.OnDialogButtonClickListener
+import com.explosion204.tabatatimer.ui.interfaces.OnItemDialogButtonClickListener
 
 class ItemDialogFragment : DialogFragment() {
-    private var dialogButtonClickListener: OnDialogButtonClickListener? = null
+    private var itemDialogButtonClickListener: OnItemDialogButtonClickListener? = null
 
-    fun setOnDialogButtonClickListener(listener: OnDialogButtonClickListener) {
-        dialogButtonClickListener = listener
+    fun setOnItemDialogButtonClickListener(listenerItem: OnItemDialogButtonClickListener) {
+        itemDialogButtonClickListener = listenerItem
     }
 
     override fun onCreateView(
@@ -24,7 +25,10 @@ class ItemDialogFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val contextThemeWrapper = if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+        val preferenceManager = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val nightModeEnabled = preferenceManager.getBoolean(Constants.NIGHT_MODE_PREFERENCE, false)
+
+        val contextThemeWrapper = if (nightModeEnabled) {
             ContextThemeWrapper(requireActivity(), R.style.DarkTheme)
         }
         else {
@@ -32,18 +36,18 @@ class ItemDialogFragment : DialogFragment() {
         }
 
         val localInflater = inflater.cloneInContext(contextThemeWrapper)
-        return localInflater.inflate(R.layout.fragment_sequence_dialog, null)
+        return localInflater.inflate(R.layout.fragment_item_dialog, null)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         view.findViewById<ImageButton>(R.id.start_button).setOnClickListener {
-                dialogButtonClickListener?.onStartButtonClick()
+            itemDialogButtonClickListener?.onStartButtonClick()
         }
         view.findViewById<ImageButton>(R.id.edit_button).setOnClickListener {
-            dialogButtonClickListener?.onEditButtonClick()
+            itemDialogButtonClickListener?.onEditButtonClick()
         }
         view.findViewById<ImageButton>(R.id.delete_button).setOnClickListener {
-            dialogButtonClickListener?.onDeleteButtonClick()
+            itemDialogButtonClickListener?.onDeleteButtonClick()
         }
 
         view.findViewById<TextView>(R.id.item_title).text = arguments?.getString(EXTRA_TITLE)

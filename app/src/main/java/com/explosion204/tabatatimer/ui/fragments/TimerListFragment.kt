@@ -1,6 +1,7 @@
 package com.explosion204.tabatatimer.ui.fragments
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -13,13 +14,13 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.SimpleItemAnimator
 import com.explosion204.tabatatimer.Constants.ACTION_CONTEXTUAL_MENU
 import com.explosion204.tabatatimer.Constants.EXTRA_ALL_TIMERS
 import com.explosion204.tabatatimer.Constants.EXTRA_ASSOCIATED_TIMERS
 import com.explosion204.tabatatimer.Constants.EXTRA_DESCRIPTION
 import com.explosion204.tabatatimer.Constants.EXTRA_TIMER
 import com.explosion204.tabatatimer.Constants.EXTRA_TITLE
+import com.explosion204.tabatatimer.Constants.NIGHT_MODE_PREFERENCE
 import com.explosion204.tabatatimer.Constants.TAG_TIMER_LIST_FRAGMENT
 import com.explosion204.tabatatimer.MainActivity
 import com.explosion204.tabatatimer.R
@@ -28,7 +29,7 @@ import com.explosion204.tabatatimer.ui.activities.SequenceDetailActivity
 import com.explosion204.tabatatimer.ui.activities.TimerActivity
 import com.explosion204.tabatatimer.ui.activities.TimerDetailActivity
 import com.explosion204.tabatatimer.ui.adapters.TimerListAdapter
-import com.explosion204.tabatatimer.ui.interfaces.OnDialogButtonClickListener
+import com.explosion204.tabatatimer.ui.interfaces.OnItemDialogButtonClickListener
 import com.explosion204.tabatatimer.ui.interfaces.OnItemCheckedChangeListener
 import com.explosion204.tabatatimer.ui.interfaces.OnItemClickListener
 import com.explosion204.tabatatimer.ui.interfaces.OnItemLongClickListener
@@ -53,6 +54,8 @@ class TimerListFragment : DaggerFragment() {
     private lateinit var listAdapter: TimerListAdapter
     private lateinit var recyclerView: RecyclerView
 
+    private lateinit var preferences: SharedPreferences
+
     private var contextualActionMode = ContextualActionMode.NONE
     enum class ContextualActionMode {
         SELECTION, NEW_SEQUENCE, NONE
@@ -64,8 +67,8 @@ class TimerListFragment : DaggerFragment() {
     ): View? {
         setHasOptionsMenu(true)
 
-        val preferenceManager = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        val nightModeEnabled = preferenceManager.getBoolean("night_mode", false)
+        preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val nightModeEnabled = preferences.getBoolean(NIGHT_MODE_PREFERENCE, false)
 
         val contextThemeWrapper = if (nightModeEnabled) {
             ContextThemeWrapper(requireActivity(), R.style.DarkTheme)
@@ -87,6 +90,7 @@ class TimerListFragment : DaggerFragment() {
         recyclerView = view.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.setHasFixedSize(true)
+        recyclerView.itemAnimator = null
 
         listAdapter = TimerListAdapter()
         recyclerView.adapter = listAdapter
@@ -161,7 +165,7 @@ class TimerListFragment : DaggerFragment() {
 
                 val dialogFragment = ItemDialogFragment()
                 dialogFragment.arguments = args
-                dialogFragment.setOnDialogButtonClickListener(object : OnDialogButtonClickListener {
+                dialogFragment.setOnItemDialogButtonClickListener(object : OnItemDialogButtonClickListener {
                     override fun onStartButtonClick() {
                         val intent = Intent(context, TimerActivity::class.java)
                         intent.putExtra(EXTRA_TIMER, item)
@@ -175,17 +179,20 @@ class TimerListFragment : DaggerFragment() {
 
                         Handler(Looper.getMainLooper()).postDelayed({
                             startActivity(intent)
-                            if (activity != null) {
-                                activity!!.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-                            }
                         }, 100)
 
                         dialogFragment.dismiss()
                     }
 
                     override fun onDeleteButtonClick() {
-                        val builder = AlertDialog.Builder(requireContext())
-                        builder.setMessage(getString(R.string.delete_this_item))
+                        val builder = if (preferences.getBoolean(NIGHT_MODE_PREFERENCE, false)) {
+                            AlertDialog.Builder(requireContext(), R.style.AlertDialogDarkTheme)
+                        }
+                        else {
+                            AlertDialog.Builder(requireContext(), R.style.AlertDialogLightTheme)
+                        }
+
+                        val dialog = builder.setMessage(getString(R.string.delete_this_item))
                             .setPositiveButton(getString(R.string.delete)) { _, _ ->
                                 viewModel.delete(item)
                                 dialogFragment.dismiss()
@@ -195,7 +202,7 @@ class TimerListFragment : DaggerFragment() {
                             }
                             .setCancelable(true)
                             .create()
-                            .show()
+                        dialog.show()
                     }
 
                 })
@@ -263,7 +270,13 @@ class TimerListFragment : DaggerFragment() {
         when (item.itemId) {
             R.id.delete_item -> {
                 if (viewModel.selectedItems.size != 0) {
-                    val builder = AlertDialog.Builder(requireContext())
+                    val builder = if (preferences.getBoolean(NIGHT_MODE_PREFERENCE, false)) {
+                        AlertDialog.Builder(requireContext(), R.style.AlertDialogDarkTheme)
+                    }
+                    else {
+                        AlertDialog.Builder(requireContext(), R.style.AlertDialogLightTheme)
+                    }
+
                     builder.setMessage(getString(R.string.delete_selected_items))
                         .setPositiveButton(getString(R.string.delete)) { _, _ ->
                             viewModel.delete()
@@ -294,7 +307,6 @@ class TimerListFragment : DaggerFragment() {
 
                     Handler(Looper.getMainLooper()).postDelayed({
                         startActivity(intent)
-                        (context as DaggerAppCompatActivity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                     }, 100)
                 }
             }

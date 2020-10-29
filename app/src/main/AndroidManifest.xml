@@ -9,26 +9,26 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".ui.activities.SettingsActivity"></activity>
-
+        android:theme="@style/LightTheme">
+        <activity
+            android:name=".ui.activities.SettingsActivity"
+            android:theme="@style/LightTheme" />
         <service
             android:name=".services.TimerService"
             android:enabled="true"
             android:exported="true" />
-
         <activity
             android:name=".ui.activities.TimerActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/LightTheme" />
         <activity
             android:name=".ui.activities.SequenceDetailActivity"
-            android:label="@string/title_activity_sequence_detail"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/LightTheme"
+            android:label="@string/title_activity_sequence_detail" />
         <activity android:name=".ui.activities.TimerDetailActivity" />
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/LightTheme"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

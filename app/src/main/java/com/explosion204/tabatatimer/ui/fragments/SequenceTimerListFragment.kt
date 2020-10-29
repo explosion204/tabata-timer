@@ -39,15 +39,7 @@ class SequenceTimerListFragment : DaggerFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val contextThemeWrapper = if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
-            ContextThemeWrapper(requireActivity(), R.style.DarkTheme)
-        }
-        else {
-            ContextThemeWrapper(requireActivity(), R.style.LightTheme)
-        }
-
-        val localInflater = inflater.cloneInContext(contextThemeWrapper)
-        return localInflater.inflate(R.layout.fragment_timer_list, container, false)
+        return inflater.inflate(R.layout.fragment_timer_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

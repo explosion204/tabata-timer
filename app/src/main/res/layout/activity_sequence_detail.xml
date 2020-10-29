@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="?attr/layout_background_color"
     tools:context=".ui.activities.SequenceDetailActivity">
 
     <include layout="@layout/toolbar" />
@@ -28,8 +29,8 @@
         android:src="@drawable/ic_plus_24"
         android:layout_margin="8dp"
         app:fab_label="@string/new_timer"
-        app:fab_colorNormal="@color/colorPrimary"
-        app:fab_colorPressed="@color/colorPrimary"
+        app:fab_colorNormal="?attr/fab_color"
+        app:fab_colorPressed="?attr/fab_color"
         app:fab_colorRipple="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />

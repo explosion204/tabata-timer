@@ -9,12 +9,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?attr/layout_background_color"
         android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp">
+            android:layout_margin="8dp"
+            app:cardBackgroundColor="?attr/card_view_background_color">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -31,7 +33,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Title"
-                        android:backgroundTint="@color/colorPrimary" />
+                        android:backgroundTint="?attr/edit_text_background_tint" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -46,7 +48,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Description"
-                        android:backgroundTint="@color/colorPrimary" />
+                        android:backgroundTint="?attr/edit_text_background_tint" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 

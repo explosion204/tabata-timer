@@ -1,14 +1,17 @@
 package com.explosion204.tabatatimer.ui.fragments
 
 import android.os.Bundle
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.explosion204.tabatatimer.Constants
 import com.explosion204.tabatatimer.Constants.ACTION_SELECT_TIMER
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.ui.adapters.UpcomingTimersListAdapter
@@ -25,8 +28,18 @@ class UpcomingTimersListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_upcoming_timers_list, container, false)
+        val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val nightModeEnabled = preferences.getBoolean(Constants.NIGHT_MODE_PREFERENCE, false)
+
+        val contextThemeWrapper = if (nightModeEnabled) {
+            ContextThemeWrapper(requireActivity(), R.style.DarkTheme)
+        }
+        else {
+            ContextThemeWrapper(requireActivity(), R.style.LightTheme)
+        }
+
+        val localInflater = inflater.cloneInContext(contextThemeWrapper)
+        return localInflater.inflate(R.layout.fragment_upcoming_timers_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

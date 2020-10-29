@@ -1,6 +1,8 @@
 package com.explosion204.tabatatimer.ui.fragments
 
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,11 +13,13 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.preference.PreferenceManager
 import com.explosion204.tabatatimer.Constants.ACTION_NEXT_TIMER
 import com.explosion204.tabatatimer.Constants.ACTION_PREV_TIMER
 import com.explosion204.tabatatimer.Constants.ACTION_SELECT_PHASE
 import com.explosion204.tabatatimer.Constants.ACTION_SET_TIMER_STATE
 import com.explosion204.tabatatimer.Constants.ACTION_TIMER_STATE_CHANGED
+import com.explosion204.tabatatimer.Constants.NIGHT_MODE_PREFERENCE
 import com.explosion204.tabatatimer.Constants.TAG_TIMER_FRAGMENT
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.services.TimerPhase
@@ -41,13 +45,25 @@ class TimerFragment : Fragment() {
 
     private var selectionColor: Int? = null
     private var transparentColor: Int? = null
+    private var nightMode = false
+    private lateinit var preferences: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_timer, container, false)
+        preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val nightModeEnabled = preferences.getBoolean(NIGHT_MODE_PREFERENCE, false)
+
+        val contextThemeWrapper = if (nightModeEnabled) {
+            ContextThemeWrapper(requireActivity(), R.style.DarkTheme)
+        }
+        else {
+            ContextThemeWrapper(requireActivity(), R.style.LightTheme)
+        }
+
+        val localInflater = inflater.cloneInContext(contextThemeWrapper)
+        return localInflater.inflate(R.layout.fragment_timer, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -91,6 +107,15 @@ class TimerFragment : Fragment() {
                 }
             }
         })
+
+        nightMode = preferences.getBoolean(NIGHT_MODE_PREFERENCE, false)
+        if (nightMode) {
+            val darkColor = ContextCompat.getColor(requireContext(), R.color.darkColor)
+            startButton.setBackgroundColor(darkColor)
+            pauseButton.setBackgroundColor(darkColor)
+            previousButton.setBackgroundColor(darkColor)
+            nextButton.setBackgroundColor(darkColor)
+        }
     }
 
     private fun setOnClickListeners() {
@@ -125,10 +150,12 @@ class TimerFragment : Fragment() {
 
     private fun setObservables() {
         viewModel.currentTimer.observe(viewLifecycleOwner, Observer {
-            startButton.setBackgroundColor(it.color)
-            pauseButton.setBackgroundColor(it.color)
-            previousButton.setBackgroundColor(it.color)
-            nextButton.setBackgroundColor(it.color)
+            if (!nightMode) {
+                startButton.setBackgroundColor(it.color)
+                pauseButton.setBackgroundColor(it.color)
+                previousButton.setBackgroundColor(it.color)
+                nextButton.setBackgroundColor(it.color)
+            }
 
             prepTextView.text = "${it.preparations / 60}m ${it.preparations % 60}s"
             workoutTextView.text = "${it.workout / 60}m ${it.workout % 60}s"

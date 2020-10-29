@@ -1,6 +1,6 @@
 package com.explosion204.tabatatimer.ui.activities
 
-import android.app.AlertDialog
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
@@ -12,10 +12,14 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
+import com.explosion204.tabatatimer.Constants
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.Constants.EXTRA_TIMER
+import com.explosion204.tabatatimer.Constants.NIGHT_MODE_PREFERENCE
 import com.explosion204.tabatatimer.data.entities.Timer
 import com.explosion204.tabatatimer.viewmodels.TimerDetailViewModel
 import com.explosion204.tabatatimer.viewmodels.ViewModelFactory
@@ -40,11 +44,15 @@ class TimerDetailActivity : DaggerAppCompatActivity(), View.OnClickListener {
     }
 
     private lateinit var toolbar: Toolbar
+    private lateinit var preferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+        preferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val nightModeEnabled = preferences.getBoolean(Constants.NIGHT_MODE_PREFERENCE, false)
+
+        if (nightModeEnabled) {
             setTheme(R.style.DarkTheme)
         }
         else {
@@ -63,8 +71,6 @@ class TimerDetailActivity : DaggerAppCompatActivity(), View.OnClickListener {
         restEditText = findViewById(R.id.rest_display)
         cyclesEditText = findViewById(R.id.cycles_display)
         chosenColorTextVew = findViewById(R.id.chosen_color)
-
-
 
         initViewModel()
         setOnFocusChangedListeners()
@@ -211,20 +217,23 @@ class TimerDetailActivity : DaggerAppCompatActivity(), View.OnClickListener {
                 )
                     .setColumns(3)
                     .setRoundColorButton(true)
-                    .setOnChooseColorListener(object : ColorPicker.OnChooseColorListener {
-                        override fun onChooseColor(position: Int, color: Int) {
+                    .setOnFastChooseColorListener(object : ColorPicker.OnFastChooseColorListener {
+                        override fun setOnFastChooseColorListener(position: Int, color: Int) {
                             chosenColorTextVew.setBackgroundColor(color)
                             viewModel.color = color
-
-                            colorPicker.dismissDialog()
                         }
 
-                        override fun onCancel() {
-
-                        }
+                        override fun onCancel() {}
 
                     })
-                    .show()
+                if (preferences.getBoolean(NIGHT_MODE_PREFERENCE, false)) {
+                    colorPicker.dialogViewLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.darkColor))
+                }
+                else {
+                    colorPicker.dialogViewLayout.setBackgroundColor(ContextCompat.getColor(this, android.R.color.white))
+                }
+
+                colorPicker.show()
             }
             android.R.id.home -> {
                 finish()
@@ -254,29 +263,6 @@ class TimerDetailActivity : DaggerAppCompatActivity(), View.OnClickListener {
                 cyclesEditText.setText((cyclesEditText.text.toString().toInt() + 1).toString())
         }
     }
-
-    override fun finish() {
-        super.finish()
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
-    }
-
-    override fun onBackPressed() {
-        if (viewModel.title.isNotEmpty() || viewModel.desc.isNotEmpty()) {
-            val builder = AlertDialog.Builder(this)
-            builder.setMessage(getString(R.string.discard_changes))
-                .setPositiveButton(getString(R.string.discard)) { _, _ ->
-                    super.onBackPressed()
-                }
-                .setNegativeButton(getString(R.string.cancel)) { _, _ -> }
-                .setCancelable(true)
-                .create()
-                .show()
-        }
-        else {
-            super.onBackPressed()
-        }
-    }
-
 
     inner class OnEditTextFocusChangeListener : View.OnFocusChangeListener {
         override fun onFocusChange(view: View, hasFocus: Boolean) {

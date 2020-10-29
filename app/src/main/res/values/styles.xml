@@ -1,19 +1,83 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="LightTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
-    <style name="AppTheme.NoActionBar">
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="buttonTint">@color/colorPrimary</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColorHint">@android:color/black</item>
+        <item name="titleTextColor">@android:color/white</item>
+        <item name="buttonStyle">@style/ButtonLightTheme</item>
+        <item name="editTextStyle">@style/EditTextLightTheme</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:colorEdgeEffect">@color/colorPrimary</item>
+        <item name="layout_background_color">@android:color/white</item>
+        <item name="card_view_background_color">@android:color/white</item>
+        <item name="toolbar_color">@color/colorPrimary</item>
+        <item name="bottom_nav_color">@color/white</item>
+        <item name="bottom_nav_item_icon_tint">@color/colorPrimary</item>
+        <item name="fab_color">@color/colorPrimary</item>
+        <item name="dialog_color">@color/colorPrimary</item>
+        <item name="edit_text_background_tint">@color/colorPrimary</item>
+        <item name="border_gray_solid_color">@android:color/white</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="DarkTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/deepDarkColor</item>
+        <item name="colorAccent">@android:color/white</item>
+        <item name="buttonTint">@android:color/white</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColorHint">@android:color/white</item>
+        <item name="titleTextColor">@android:color/white</item>
+        <item name="buttonStyle">@style/ButtonDarkTheme</item>
+        <item name="editTextStyle">@style/EditTextDarkTheme</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:colorEdgeEffect">@android:color/white</item>
+        <item name="layout_background_color">@color/darkColor</item>
+        <item name="card_view_background_color">@color/deepDarkColor</item>
+        <item name="toolbar_color">@color/deepDarkColor</item>
+        <item name="bottom_nav_color">@color/deepDarkColor</item>
+        <item name="bottom_nav_item_icon_tint">@android:color/white</item>
+        <item name="fab_color">@color/darkColor</item>
+        <item name="dialog_color">@color/darkColor</item>
+        <item name="edit_text_background_tint">@android:color/white</item>
+        <item name="border_gray_solid_color">@color/deepDarkColor</item>
+    </style>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AlertDialogLightTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:colorAccent">@android:color/black</item>
+        <item name="android:textColorPrimary">@android:color/black</item>
+        <item name="android:background">@android:color/white</item>
+    </style>
+
+    <style name="AlertDialogDarkTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:colorAccent">@android:color/white</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:background">@color/deepDarkColor</item>
+    </style>
+
+    <style name="EditTextLightTheme" parent="@android:style/Widget.EditText">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="EditTextDarkTheme" parent="Widget.AppCompat.EditText">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="ButtonLightTheme" parent="Widget.AppCompat.Button">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="ButtonDarkTheme" parent="Widget.AppCompat.Button">
+        <item name="android:background">@color/deepDarkColor</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
 
 </resources>
