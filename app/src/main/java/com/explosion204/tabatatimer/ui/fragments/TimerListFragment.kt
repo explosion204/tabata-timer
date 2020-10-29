@@ -220,23 +220,28 @@ class TimerListFragment : DaggerFragment() {
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
         menu.clear()
+        (context as DaggerAppCompatActivity).menuInflater.inflate(R.menu.list_contextual_menu, menu)
 
         if (listAdapter.isContextualMenuEnabled) {
-            (context as DaggerAppCompatActivity).menuInflater.inflate(R.menu.list_contextual_menu, menu)
-
             when (contextualActionMode) {
                 ContextualActionMode.SELECTION -> {
                     menu.getItem(0).isVisible = true
                     menu.getItem(1).isVisible = false
+                    menu.getItem(2).isVisible = false
                 }
 
                 ContextualActionMode.NEW_SEQUENCE -> {
                     menu.getItem(0).isVisible = false
                     menu.getItem(1).isVisible = true
+                    menu.getItem(2).isVisible = false
                 }
             }
         }
         else {
+            menu.getItem(0).isVisible = false
+            menu.getItem(1).isVisible = false
+            menu.getItem(2).isVisible = true
+
             toolbar.title = getString(R.string.app_name)
         }
     }
