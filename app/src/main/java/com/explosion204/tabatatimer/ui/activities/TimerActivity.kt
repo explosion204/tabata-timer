@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import androidx.preference.PreferenceManager
 import androidx.viewpager2.widget.ViewPager2
 import com.explosion204.tabatatimer.Constants.ACTION_NEXT_TIMER
 import com.explosion204.tabatatimer.Constants.ACTION_PREV_TIMER
@@ -19,6 +20,7 @@ import com.explosion204.tabatatimer.Constants.ACTION_SET_TIMER_STATE
 import com.explosion204.tabatatimer.Constants.ACTION_TIMER_STATE_CHANGED
 import com.explosion204.tabatatimer.Constants.EXTRA_SEQUENCE
 import com.explosion204.tabatatimer.Constants.EXTRA_TIMER
+import com.explosion204.tabatatimer.Constants.NIGHT_MODE_PREFERENCE
 import com.explosion204.tabatatimer.Constants.TAG_TIMER_FRAGMENT
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.Constants.TIMER_BROADCAST_ACTION
@@ -89,6 +91,10 @@ class TimerActivity : AppCompatActivity() {
 
             startTimerService(timer)
         }
+
+        nightMode = PreferenceManager
+            .getDefaultSharedPreferences(this)
+            .getBoolean(NIGHT_MODE_PREFERENCE, false)
 
         if (nightMode) {
             rootLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.darkColor))
