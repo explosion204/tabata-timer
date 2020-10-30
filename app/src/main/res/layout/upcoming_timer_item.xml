@@ -19,7 +19,7 @@
             android:text="dddd"
             android:fontFamily="@font/comfortaa"
             android:textColor="@android:color/white"
-            android:textSize="20sp"/>
+            android:textSize="?attr/title_text_size"/>
 
         <TextView
             android:id="@+id/item_desc"
@@ -28,8 +28,7 @@
             android:layout_marginLeft="20dp"
             android:text="dd"
             android:fontFamily="@font/comfortaa"
-            android:textColor="@android:color/white"
-            android:textSize="12sp" />
+            android:textColor="@android:color/white" />
 
     </LinearLayout>
 

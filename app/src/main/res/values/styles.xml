@@ -8,6 +8,7 @@
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textColorHint">@android:color/black</item>
         <item name="titleTextColor">@android:color/white</item>
+        <item name="itemTextColor">@android:color/black</item>
         <item name="buttonStyle">@style/ButtonLightTheme</item>
         <item name="editTextStyle">@style/EditTextLightTheme</item>
         <item name="windowActionBar">false</item>
@@ -18,7 +19,8 @@
         <item name="card_view_background_color">@android:color/white</item>
         <item name="toolbar_color">@color/colorPrimary</item>
         <item name="bottom_nav_color">@color/white</item>
-        <item name="bottom_nav_item_icon_tint">@color/colorPrimary</item>
+        <item name="bottom_nav_item_icon_tint_active">@color/colorPrimary</item>
+        <item name="bottom_nav_item_icon_tint_inactive">@android:color/darker_gray</item>
         <item name="fab_color">@color/colorPrimary</item>
         <item name="dialog_color">@color/colorPrimary</item>
         <item name="edit_text_background_tint">@color/colorPrimary</item>
@@ -33,6 +35,7 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textColorHint">@android:color/white</item>
         <item name="titleTextColor">@android:color/white</item>
+        <item name="itemTextColor">@android:color/white</item>
         <item name="buttonStyle">@style/ButtonDarkTheme</item>
         <item name="editTextStyle">@style/EditTextDarkTheme</item>
         <item name="windowActionBar">false</item>
@@ -43,11 +46,54 @@
         <item name="card_view_background_color">@color/deepDarkColor</item>
         <item name="toolbar_color">@color/deepDarkColor</item>
         <item name="bottom_nav_color">@color/deepDarkColor</item>
-        <item name="bottom_nav_item_icon_tint">@android:color/white</item>
+        <item name="bottom_nav_item_icon_tint_active">@android:color/holo_blue_dark</item>
+        <item name="bottom_nav_item_icon_tint_inactive">@android:color/darker_gray</item>
         <item name="fab_color">@color/darkColor</item>
         <item name="dialog_color">@color/darkColor</item>
         <item name="edit_text_background_tint">@android:color/white</item>
         <item name="border_gray_solid_color">@color/deepDarkColor</item>
+    </style>
+
+    <style name="LightTheme.SmallFont" parent="LightTheme">
+        <item name="android:textSize">12sp</item>
+        <item name="title_text_size">14sp</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance12sp</item>
+        <item name="itemTextAppearanceActive">@style/TextAppearance13sp</item>
+    </style>
+
+    <style name="LightTheme.MediumFont" parent="LightTheme">
+        <item name="android:textSize">14sp</item>
+        <item name="title_text_size">16sp</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance14sp</item>
+        <item name="itemTextAppearanceActive">@style/TextAppearance15sp</item>
+    </style>
+
+    <style name="LightTheme.LargeFont" parent="LightTheme">
+        <item name="android:textSize">16sp</item>
+        <item name="title_text_size">20sp</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance16sp</item>
+        <item name="itemTextAppearanceActive">@style/TextAppearance17sp</item>
+    </style>
+
+    <style name="DarkTheme.SmallFont" parent="DarkTheme">
+        <item name="android:textSize">12sp</item>
+        <item name="title_text_size">16sp</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance12sp</item>
+        <item name="itemTextAppearanceActive">@style/TextAppearance13sp</item>
+    </style>
+
+    <style name="DarkTheme.MediumFont" parent="DarkTheme">
+        <item name="android:textSize">14sp</item>
+        <item name="title_text_size">16sp</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance14sp</item>
+        <item name="itemTextAppearanceActive">@style/TextAppearance15sp</item>
+    </style>
+
+    <style name="DarkTheme.LargeFont" parent="DarkTheme">
+        <item name="android:textSize">16sp</item>
+        <item name="title_text_size">20sp</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance16sp</item>
+        <item name="itemTextAppearanceActive">@style/TextAppearance17sp</item>
     </style>
 
     <style name="AlertDialogLightTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
@@ -82,6 +128,48 @@
     <style name="ButtonDarkTheme" parent="Widget.AppCompat.Button">
         <item name="android:background">@color/deepDarkColor</item>
         <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="TitleTextAppearanceSmall" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TitleTextAppearanceMedium" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TitleTextAppearanceLarge" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="TextAppearance12sp" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance13sp" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance14sp" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance15sp" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance16sp" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance17sp" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
 </resources>

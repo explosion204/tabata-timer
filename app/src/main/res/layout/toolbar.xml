@@ -6,6 +6,6 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:background="?attr/toolbar_color"
-    app:titleTextAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+    app:titleTextAppearance="@style/TextAppearance.AppCompat.Title">
 
 </androidx.appcompat.widget.Toolbar>

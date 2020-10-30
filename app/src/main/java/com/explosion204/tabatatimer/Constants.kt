@@ -15,6 +15,8 @@ object Constants {
 
     const val ACTION_CONTEXTUAL_MENU =
         "com.explosion204.tabatatimer.CONTEXTUAL_MENU_ACTION"
+    const val ACTION_NEW_SEQUENCE =
+        "com.explosion204.tabatatimer.NEW_SEQUENCE_ACTION"
     const val ACTION_ADD_NEW_ASSOCIATED_TIMERS =
         "com.explosion204.tabatimer.ADD_NEW_ASSOCIATED_TIMERS_ACTION"
     const val ACTION_SELECT_TIMERS_MODE =
@@ -50,6 +52,7 @@ object Constants {
 
     const val NIGHT_MODE_PREFERENCE = "com.explosion204.tabatatimer.NIGHT_MODE_PREFERENCE"
     const val LOCALE_PREFERENCE = "com.explosion204.tabatatimer.LOCALE_PREFERENCE"
+    const val FONT_SIZE_PREFERENCE = "com.explosion204.tabatatimer.FONT_SIZE_PREFERENCE"
     const val CLEAR_DATA_PREFERENCE = "com.explosion204.tabatatimer.CLEAR_DATA_PREFERENCE"
     const val SETTINGS_ACTIVITY_RESULT_CODE = 0
 }

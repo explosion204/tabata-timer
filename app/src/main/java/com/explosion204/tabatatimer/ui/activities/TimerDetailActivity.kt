@@ -12,7 +12,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.viewModels
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
@@ -21,6 +20,7 @@ import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.Constants.EXTRA_TIMER
 import com.explosion204.tabatatimer.Constants.NIGHT_MODE_PREFERENCE
 import com.explosion204.tabatatimer.data.entities.Timer
+import com.explosion204.tabatatimer.ui.helpers.ToolbarFontSizeHelper
 import com.explosion204.tabatatimer.viewmodels.TimerDetailViewModel
 import com.explosion204.tabatatimer.viewmodels.ViewModelFactory
 import dagger.android.support.DaggerAppCompatActivity
@@ -50,18 +50,28 @@ class TimerDetailActivity : DaggerAppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this)
-        val nightModeEnabled = preferences.getBoolean(Constants.NIGHT_MODE_PREFERENCE, false)
+        val nightModeEnabled = preferences.getBoolean(NIGHT_MODE_PREFERENCE, false)
+        val fontSize = preferences.getString(Constants.FONT_SIZE_PREFERENCE, "1")
 
         if (nightModeEnabled) {
-            setTheme(R.style.DarkTheme)
+            when (fontSize) {
+                "0" -> setTheme(R.style.DarkTheme_SmallFont)
+                "1" -> setTheme(R.style.DarkTheme_MediumFont)
+                else -> setTheme(R.style.DarkTheme_LargeFont)
+            }
         }
         else {
-            setTheme(R.style.LightTheme)
+            when (fontSize) {
+                "0" -> setTheme(R.style.LightTheme_SmallFont)
+                "1" -> setTheme(R.style.LightTheme_MediumFont)
+                else -> setTheme(R.style.LightTheme_LargeFont)
+            }
         }
 
         setContentView(R.layout.activity_timer_detail)
 
         toolbar = findViewById(R.id.app_bar)
+        ToolbarFontSizeHelper.setToolbarFontSize(toolbar)
         setSupportActionBar(toolbar)
 
         titleEditText = findViewById(R.id.timer_title)

@@ -58,12 +58,21 @@ class SequenceListFragment : DaggerFragment() {
     ): View? {
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         val nightModeEnabled = preferences.getBoolean(NIGHT_MODE_PREFERENCE, false)
+        val fontSize = preferences.getString(Constants.FONT_SIZE_PREFERENCE, "1")
 
         val contextThemeWrapper = if (nightModeEnabled) {
-            ContextThemeWrapper(requireActivity(), R.style.DarkTheme)
+            when (fontSize) {
+                "0" -> ContextThemeWrapper(requireContext(), R.style.DarkTheme_SmallFont)
+                "1" -> ContextThemeWrapper(requireContext(), R.style.DarkTheme_MediumFont)
+                else -> ContextThemeWrapper(requireContext(), R.style.DarkTheme_LargeFont)
+            }
         }
         else {
-            ContextThemeWrapper(requireActivity(), R.style.LightTheme)
+            when (fontSize) {
+                "0" -> ContextThemeWrapper(requireContext(), R.style.LightTheme_SmallFont)
+                "1" -> ContextThemeWrapper(requireContext(), R.style.LightTheme_MediumFont)
+                else -> ContextThemeWrapper(requireContext(), R.style.LightTheme_LargeFont)
+            }
         }
 
         val localInflater = inflater.cloneInContext(contextThemeWrapper)
@@ -74,7 +83,7 @@ class SequenceListFragment : DaggerFragment() {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
 
-        toolbar = (activity as DaggerAppCompatActivity).supportActionBar!!
+        toolbar = (requireActivity() as DaggerAppCompatActivity).supportActionBar!!
 
         recyclerView = view.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(context)
@@ -149,14 +158,14 @@ class SequenceListFragment : DaggerFragment() {
                 dialogFragment.arguments = args
                 dialogFragment.setOnItemDialogButtonClickListener(object : OnItemDialogButtonClickListener {
                     override fun onStartButtonClick() {
-                        val intent = Intent(context, TimerActivity::class.java)
+                        val intent = Intent(requireContext(), TimerActivity::class.java)
                         intent.putExtra(EXTRA_SEQUENCE, item)
                         startActivity(intent)
                         dialogFragment.dismiss()
                     }
 
                     override fun onEditButtonClick() {
-                        val intent = Intent(context, SequenceDetailActivity::class.java)
+                        val intent = Intent(requireContext(), SequenceDetailActivity::class.java)
                         intent.putExtra(EXTRA_SEQUENCE, item)
                         intent.putParcelableArrayListExtra(EXTRA_ALL_TIMERS, viewModel.allTimers)
                         intent.putParcelableArrayListExtra(EXTRA_ASSOCIATED_TIMERS, item.timers as ArrayList<Timer>)
@@ -224,7 +233,7 @@ class SequenceListFragment : DaggerFragment() {
         super.onPrepareOptionsMenu(menu)
         menu.clear()
 
-        (context as DaggerAppCompatActivity).menuInflater.inflate(R.menu.list_contextual_menu, menu)
+        requireActivity().menuInflater.inflate(R.menu.list_contextual_menu, menu)
 
         if (listAdapter.isContextualMenuEnabled) {
             menu.getItem(0).isVisible = true
@@ -278,7 +287,7 @@ class SequenceListFragment : DaggerFragment() {
 
     private fun enterContextualActionMode() {
         listAdapter.isContextualMenuEnabled = true
-        (activity as DaggerAppCompatActivity).invalidateOptionsMenu()
+        requireActivity().invalidateOptionsMenu()
         toolbar.title = "0 ${getString(R.string.items_selected)}"
         toolbar.setDisplayHomeAsUpEnabled(true)
 
@@ -290,7 +299,7 @@ class SequenceListFragment : DaggerFragment() {
         listAdapter.uncheckAllItems()
 
         listAdapter.isContextualMenuEnabled = false
-        (activity as DaggerAppCompatActivity).invalidateOptionsMenu()
+        requireActivity().invalidateOptionsMenu()
         viewModel.sendActionToActivity(Constants.ACTION_CONTEXTUAL_MENU, false)
         toolbar.setDisplayHomeAsUpEnabled(false)
         toolbar.title = getString(R.string.app_name)

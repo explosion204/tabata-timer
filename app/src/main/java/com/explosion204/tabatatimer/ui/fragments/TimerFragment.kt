@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.preference.PreferenceManager
+import com.explosion204.tabatatimer.Constants
 import com.explosion204.tabatatimer.Constants.ACTION_NEXT_TIMER
 import com.explosion204.tabatatimer.Constants.ACTION_PREV_TIMER
 import com.explosion204.tabatatimer.Constants.ACTION_SELECT_PHASE
@@ -54,12 +55,21 @@ class TimerFragment : Fragment() {
     ): View? {
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         val nightModeEnabled = preferences.getBoolean(NIGHT_MODE_PREFERENCE, false)
+        val fontSize = preferences.getString(Constants.FONT_SIZE_PREFERENCE, "1")
 
         val contextThemeWrapper = if (nightModeEnabled) {
-            ContextThemeWrapper(requireActivity(), R.style.DarkTheme)
+            when (fontSize) {
+                "0" -> ContextThemeWrapper(requireContext(), R.style.DarkTheme_SmallFont)
+                "1" -> ContextThemeWrapper(requireContext(), R.style.DarkTheme_MediumFont)
+                else -> ContextThemeWrapper(requireContext(), R.style.DarkTheme_LargeFont)
+            }
         }
         else {
-            ContextThemeWrapper(requireActivity(), R.style.LightTheme)
+            when (fontSize) {
+                "0" -> ContextThemeWrapper(requireContext(), R.style.LightTheme_SmallFont)
+                "1" -> ContextThemeWrapper(requireContext(), R.style.LightTheme_MediumFont)
+                else -> ContextThemeWrapper(requireContext(), R.style.LightTheme_LargeFont)
+            }
         }
 
         val localInflater = inflater.cloneInContext(contextThemeWrapper)

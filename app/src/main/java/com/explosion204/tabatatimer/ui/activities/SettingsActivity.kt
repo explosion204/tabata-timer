@@ -7,10 +7,12 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
 import androidx.preference.PreferenceManager
+import com.explosion204.tabatatimer.Constants
 import com.explosion204.tabatatimer.Constants.LOCALE_PREFERENCE
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.ui.fragments.SettingsFragment
 import com.explosion204.tabatatimer.Constants.NIGHT_MODE_PREFERENCE
+import com.explosion204.tabatatimer.ui.helpers.ToolbarFontSizeHelper
 import java.util.*
 
 class SettingsActivity : AppCompatActivity() {
@@ -22,12 +24,21 @@ class SettingsActivity : AppCompatActivity() {
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this)
         val nightModeEnabled = preferences.getBoolean(NIGHT_MODE_PREFERENCE, false)
+        val fontSize = preferences.getString(Constants.FONT_SIZE_PREFERENCE, "1")
 
         if (nightModeEnabled) {
-            setTheme(R.style.DarkTheme)
+            when (fontSize) {
+                "0" -> setTheme(R.style.DarkTheme_SmallFont)
+                "1" -> setTheme(R.style.DarkTheme_MediumFont)
+                else -> setTheme(R.style.DarkTheme_LargeFont)
+            }
         }
         else {
-            setTheme(R.style.LightTheme)
+            when (fontSize) {
+                "0" -> setTheme(R.style.LightTheme_SmallFont)
+                "1" -> setTheme(R.style.LightTheme_MediumFont)
+                else -> setTheme(R.style.LightTheme_LargeFont)
+            }
         }
 
         updateLocale()
@@ -41,6 +52,7 @@ class SettingsActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction().replace(R.id.settings, SettingsFragment()).commit()
 
         val toolbar = findViewById<Toolbar>(R.id.app_bar)
+        ToolbarFontSizeHelper.setToolbarFontSize(toolbar)
         toolbar.title = getString(R.string.settings)
         setSupportActionBar(toolbar)
         supportActionBar!!.setHomeAsUpIndicator(getDrawable(R.drawable.ic_close_24))

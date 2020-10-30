@@ -19,6 +19,16 @@
         app:allowDividerBelow="true"
         android:defaultValue="en" />
 
+    <ListPreference
+        android:key="com.explosion204.tabatatimer.FONT_SIZE_PREFERENCE"
+        android:title="@string/font_size"
+        android:entries="@array/font_size_entries"
+        android:entryValues="@array/font_size_values"
+        app:iconSpaceReserved="false"
+        app:allowDividerAbove="true"
+        app:allowDividerBelow="true"
+        android:defaultValue="1" />
+
     <Preference
         android:key="com.explosion204.tabatatimer.CLEAR_DATA_PREFERENCE"
         android:title="@string/clear_app_data"

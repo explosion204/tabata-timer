@@ -9,6 +9,7 @@ import android.widget.EditText
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
@@ -22,6 +23,7 @@ import com.explosion204.tabatatimer.Constants.ACTION_ADD_NEW_ASSOCIATED_TIMERS
 import com.explosion204.tabatatimer.Constants.ACTION_SELECT_TIMERS_MODE
 import com.explosion204.tabatatimer.Constants.TAG_SEQUENCE_DETAIL_FRAGMENT
 import com.explosion204.tabatatimer.ui.adapters.TimerListAdapter
+import com.explosion204.tabatatimer.ui.helpers.ToolbarFontSizeHelper
 import com.explosion204.tabatatimer.viewmodels.BaseViewModel
 import com.explosion204.tabatatimer.viewmodels.SequenceDetailViewModel
 import com.explosion204.tabatatimer.viewmodels.ViewModelFactory
@@ -52,12 +54,21 @@ class SequenceDetailFragment : DaggerFragment() {
     ): View? {
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         val nightModeEnabled = preferences.getBoolean(Constants.NIGHT_MODE_PREFERENCE, false)
+        val fontSize = preferences.getString(Constants.FONT_SIZE_PREFERENCE, "1")
 
         val contextThemeWrapper = if (nightModeEnabled) {
-            ContextThemeWrapper(requireActivity(), R.style.DarkTheme)
+            when (fontSize) {
+                "0" -> ContextThemeWrapper(requireContext(), R.style.DarkTheme_SmallFont)
+                "1" -> ContextThemeWrapper(requireContext(), R.style.DarkTheme_MediumFont)
+                else -> ContextThemeWrapper(requireContext(), R.style.DarkTheme_LargeFont)
+            }
         }
         else {
-            ContextThemeWrapper(requireActivity(), R.style.LightTheme)
+            when (fontSize) {
+                "0" -> ContextThemeWrapper(requireContext(), R.style.LightTheme_SmallFont)
+                "1" -> ContextThemeWrapper(requireContext(), R.style.LightTheme_MediumFont)
+                else -> ContextThemeWrapper(requireContext(), R.style.LightTheme_LargeFont)
+            }
         }
 
         val localInflater = inflater.cloneInContext(contextThemeWrapper)
@@ -67,7 +78,7 @@ class SequenceDetailFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        toolbar = (activity as DaggerAppCompatActivity).supportActionBar!!
+        toolbar = (requireActivity() as DaggerAppCompatActivity).supportActionBar!!
         setHasOptionsMenu(true)
         toolbar.title = if (view != null && id == 0) {
             getString(R.string.new_sequence)
@@ -82,7 +93,7 @@ class SequenceDetailFragment : DaggerFragment() {
         descEditText.setText(viewModel.desc)
 
         recyclerView = view.findViewById(R.id.recycler_view)
-        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
 
         listAdapter = TimerListAdapter()

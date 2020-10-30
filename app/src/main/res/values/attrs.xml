@@ -5,10 +5,12 @@
         <attr name="card_view_background_color" format="color" />
         <attr name="toolbar_color" format="color" />
         <attr name="bottom_nav_color" format="color" />
-        <attr name="bottom_nav_item_icon_tint" format="color" />
+        <attr name="bottom_nav_item_icon_tint_active" format="color" />
+        <attr name="bottom_nav_item_icon_tint_inactive" format="color" />
         <attr name="fab_color" format="color" />
         <attr name="dialog_color" format="color" />
         <attr name="edit_text_background_tint" format="color" />
         <attr name="border_gray_solid_color" format="color" />
+        <attr name="title_text_size" format="dimension" />
     </declare-styleable>
 </resources>

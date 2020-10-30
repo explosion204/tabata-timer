@@ -15,14 +15,15 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.explosion204.tabatatimer.Constants.ACTION_CONTEXTUAL_MENU
+import com.explosion204.tabatatimer.Constants.ACTION_NEW_SEQUENCE
 import com.explosion204.tabatatimer.Constants.EXTRA_ALL_TIMERS
 import com.explosion204.tabatatimer.Constants.EXTRA_ASSOCIATED_TIMERS
 import com.explosion204.tabatatimer.Constants.EXTRA_DESCRIPTION
 import com.explosion204.tabatatimer.Constants.EXTRA_TIMER
 import com.explosion204.tabatatimer.Constants.EXTRA_TITLE
+import com.explosion204.tabatatimer.Constants.FONT_SIZE_PREFERENCE
 import com.explosion204.tabatatimer.Constants.NIGHT_MODE_PREFERENCE
 import com.explosion204.tabatatimer.Constants.TAG_TIMER_LIST_FRAGMENT
-import com.explosion204.tabatatimer.MainActivity
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.data.entities.Timer
 import com.explosion204.tabatatimer.ui.activities.SequenceDetailActivity
@@ -69,12 +70,21 @@ class TimerListFragment : DaggerFragment() {
 
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         val nightModeEnabled = preferences.getBoolean(NIGHT_MODE_PREFERENCE, false)
+        val fontSize = preferences.getString(FONT_SIZE_PREFERENCE, "1")
 
         val contextThemeWrapper = if (nightModeEnabled) {
-            ContextThemeWrapper(requireActivity(), R.style.DarkTheme)
+            when (fontSize) {
+                "0" -> ContextThemeWrapper(requireContext(), R.style.DarkTheme_SmallFont)
+                "1" -> ContextThemeWrapper(requireContext(), R.style.DarkTheme_MediumFont)
+                else -> ContextThemeWrapper(requireContext(), R.style.DarkTheme_LargeFont)
+            }
         }
         else {
-            ContextThemeWrapper(requireActivity(), R.style.LightTheme)
+            when (fontSize) {
+                "0" -> ContextThemeWrapper(requireContext(), R.style.LightTheme_SmallFont)
+                "1" -> ContextThemeWrapper(requireContext(), R.style.LightTheme_MediumFont)
+                else -> ContextThemeWrapper(requireContext(), R.style.LightTheme_LargeFont)
+            }
         }
 
         val localInflater = inflater.cloneInContext(contextThemeWrapper)
@@ -84,7 +94,7 @@ class TimerListFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        toolbar = (activity as DaggerAppCompatActivity).supportActionBar!!
+        toolbar = (requireActivity() as DaggerAppCompatActivity).supportActionBar!!
         toolbar.setHomeAsUpIndicator(R.drawable.ic_close_24)
 
         recyclerView = view.findViewById(R.id.recycler_view)
@@ -101,7 +111,7 @@ class TimerListFragment : DaggerFragment() {
         viewModel.setFragmentCallback(TAG_TIMER_LIST_FRAGMENT, object : BaseViewModel.ActionCallback {
             override fun callback(action: String, arg: Any?) {
                 when (action) {
-                    MainActivity.CALLBACK_ACTION_NEW_SEQUENCE -> {
+                    ACTION_NEW_SEQUENCE -> {
                         enterContextualActionMode(ContextualActionMode.NEW_SEQUENCE)
                     }
                 }
@@ -167,14 +177,14 @@ class TimerListFragment : DaggerFragment() {
                 dialogFragment.arguments = args
                 dialogFragment.setOnItemDialogButtonClickListener(object : OnItemDialogButtonClickListener {
                     override fun onStartButtonClick() {
-                        val intent = Intent(context, TimerActivity::class.java)
+                        val intent = Intent(requireContext(), TimerActivity::class.java)
                         intent.putExtra(EXTRA_TIMER, item)
                         startActivity(intent)
                         dialogFragment.dismiss()
                     }
 
                     override fun onEditButtonClick() {
-                        val intent = Intent(context, TimerDetailActivity::class.java)
+                        val intent = Intent(requireContext(), TimerDetailActivity::class.java)
                         intent.putExtra(EXTRA_TIMER, item)
 
                         Handler(Looper.getMainLooper()).postDelayed({
@@ -240,7 +250,7 @@ class TimerListFragment : DaggerFragment() {
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
         menu.clear()
-        (context as DaggerAppCompatActivity).menuInflater.inflate(R.menu.list_contextual_menu, menu)
+        requireActivity().menuInflater.inflate(R.menu.list_contextual_menu, menu)
 
         if (listAdapter.isContextualMenuEnabled) {
             when (contextualActionMode) {
@@ -295,7 +305,7 @@ class TimerListFragment : DaggerFragment() {
             }
             R.id.create_sequence -> {
                 if (viewModel.selectedItems.size > 0) {
-                    val intent = Intent(context, SequenceDetailActivity::class.java)
+                    val intent = Intent(requireContext(), SequenceDetailActivity::class.java)
 
                     val allTimers = arrayListOf<Timer>()
                     for (timer in listAdapter.currentList) {
@@ -322,7 +332,7 @@ class TimerListFragment : DaggerFragment() {
         contextualActionMode = mode
 
         listAdapter.isContextualMenuEnabled = true
-        (activity as DaggerAppCompatActivity).invalidateOptionsMenu()
+        requireActivity().invalidateOptionsMenu()
         toolbar.title = "0 ${getString(R.string.items_selected)}"
         toolbar.setDisplayHomeAsUpEnabled(true)
 
@@ -339,7 +349,7 @@ class TimerListFragment : DaggerFragment() {
         }
 
         listAdapter.isContextualMenuEnabled = false
-        (activity as DaggerAppCompatActivity).invalidateOptionsMenu()
+        requireActivity().invalidateOptionsMenu()
         toolbar.setDisplayHomeAsUpEnabled(false)
         toolbar.title = getString(R.string.app_name)
     }

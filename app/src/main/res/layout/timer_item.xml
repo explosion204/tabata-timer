@@ -23,25 +23,24 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/item_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/comfortaa"
                 android:text="sample"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textSize="20sp" />
+                android:textSize="?attr/title_text_size"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/item_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:paddingBottom="10dp"
                 android:fontFamily="@font/comfortaa"
-                android:text="sample"
-                android:textSize="12sp" />
+                android:text="sample" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -49,12 +48,12 @@
                 android:orientation="horizontal"
                 android:layout_marginStart="4dp">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/preparation_colon_space" />
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/prep_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -67,12 +66,12 @@
                 android:orientation="horizontal"
                 android:layout_marginStart="4dp">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/workout_colon_space" />
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/workout_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -86,12 +85,12 @@
                 android:orientation="horizontal"
                 android:layout_marginStart="4dp">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/rest_colon_space" />
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/rest_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -106,12 +105,12 @@
                 android:layout_marginStart="4dp"
                 android:paddingBottom="6dp">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/cycles_colon_space" />
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/cycles_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -125,13 +124,13 @@
                 android:orientation="horizontal"
                 android:layout_marginStart="4dp">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/total_colon_space"
                     android:textStyle="bold" />
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/total_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

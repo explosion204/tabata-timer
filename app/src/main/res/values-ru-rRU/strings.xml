@@ -47,4 +47,8 @@
     <string name="clear_app_data">Стереть данные приложения</string>
     <string name="clear_data_dialog_message">ВНИМАНИЕ: Все пользовательские данные будут стёрты, а приложение закрыто</string>
     <string name="clear">Стереть</string>
+    <string name="font_size">Размер шрифта</string>
+    <string name="small">Маленький</string>
+    <string name="medium">Средний</string>
+    <string name="large">Большой</string>
 </resources>

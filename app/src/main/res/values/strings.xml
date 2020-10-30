@@ -45,14 +45,31 @@
     <string name="clear_app_data">Clear application data</string>
     <string name="clear_data_dialog_message">WARNING: All user data is going to be cleared. Application will be stopped</string>
     <string name="clear">Clear</string>
+    <string name="font_size">Font size</string>
+    <string name="small">Small</string>
+    <string name="medium">Medium</string>
+    <string name="large">Large</string>
 
     <string-array name="locale_entries">
         <item>English</item>
         <item>Русский</item>
     </string-array>
+
     <string-array name="locale_values">
         <item>en</item>
         <item>ru</item>
+    </string-array>
+
+    <string-array name="font_size_entries">
+        <item>@string/small</item>
+        <item>@string/medium</item>
+        <item>@string/large</item>
+    </string-array>
+
+    <string-array name="font_size_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
     </string-array>
 
 </resources>
