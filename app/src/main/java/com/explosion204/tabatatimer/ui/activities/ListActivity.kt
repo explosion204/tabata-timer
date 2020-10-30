@@ -1,4 +1,4 @@
-package com.explosion204.tabatatimer
+package com.explosion204.tabatatimer.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,8 +15,7 @@ import com.explosion204.tabatatimer.Constants.ACTION_CONTEXTUAL_MENU
 import com.explosion204.tabatatimer.Constants.ACTION_NEW_SEQUENCE
 import com.explosion204.tabatatimer.Constants.SETTINGS_ACTIVITY_RESULT_CODE
 import com.explosion204.tabatatimer.Constants.TAG_TIMER_LIST_FRAGMENT
-import com.explosion204.tabatatimer.ui.activities.SettingsActivity
-import com.explosion204.tabatatimer.ui.activities.TimerDetailActivity
+import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.ui.helpers.ActivityThemeHelper
 import com.explosion204.tabatatimer.ui.helpers.ToolbarFontSizeHelper
 import com.explosion204.tabatatimer.viewmodels.BaseViewModel
@@ -28,7 +27,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
-class MainActivity : DaggerAppCompatActivity() {
+class ListActivity : DaggerAppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var fabMenu: FloatingActionMenu
 
@@ -42,7 +41,7 @@ class MainActivity : DaggerAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ActivityThemeHelper.setActivityTheme(this)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_list)
 
         val toolbar = findViewById<Toolbar>(R.id.app_bar)
         ToolbarFontSizeHelper.setToolbarFontSize(toolbar)
