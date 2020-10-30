@@ -1,7 +1,6 @@
 package com.explosion204.tabatatimer.ui.fragments
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -10,7 +9,6 @@ import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,10 +21,10 @@ import com.explosion204.tabatatimer.Constants.EXTRA_ASSOCIATED_TIMERS
 import com.explosion204.tabatatimer.Constants.EXTRA_DESCRIPTION
 import com.explosion204.tabatatimer.Constants.EXTRA_SEQUENCE
 import com.explosion204.tabatatimer.Constants.EXTRA_TITLE
-import com.explosion204.tabatatimer.Constants.NIGHT_MODE_PREFERENCE
 import com.explosion204.tabatatimer.ui.activities.SequenceDetailActivity
 import com.explosion204.tabatatimer.ui.activities.TimerActivity
 import com.explosion204.tabatatimer.ui.adapters.SequenceListAdapter
+import com.explosion204.tabatatimer.ui.helpers.FragmentThemeHelper
 import com.explosion204.tabatatimer.ui.interfaces.OnItemDialogButtonClickListener
 import com.explosion204.tabatatimer.ui.interfaces.OnItemCheckedChangeListener
 import com.explosion204.tabatatimer.ui.interfaces.OnItemClickListener
@@ -50,33 +48,12 @@ class SequenceListFragment : DaggerFragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var listAdapter: SequenceListAdapter
 
-    private lateinit var preferences: SharedPreferences
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        val nightModeEnabled = preferences.getBoolean(NIGHT_MODE_PREFERENCE, false)
-        val fontSize = preferences.getString(Constants.FONT_SIZE_PREFERENCE, "1")
-
-        val contextThemeWrapper = if (nightModeEnabled) {
-            when (fontSize) {
-                "0" -> ContextThemeWrapper(requireContext(), R.style.DarkTheme_SmallFont)
-                "1" -> ContextThemeWrapper(requireContext(), R.style.DarkTheme_MediumFont)
-                else -> ContextThemeWrapper(requireContext(), R.style.DarkTheme_LargeFont)
-            }
-        }
-        else {
-            when (fontSize) {
-                "0" -> ContextThemeWrapper(requireContext(), R.style.LightTheme_SmallFont)
-                "1" -> ContextThemeWrapper(requireContext(), R.style.LightTheme_MediumFont)
-                else -> ContextThemeWrapper(requireContext(), R.style.LightTheme_LargeFont)
-            }
-        }
-
-        val localInflater = inflater.cloneInContext(contextThemeWrapper)
-        return localInflater.inflate(R.layout.fragment_sequence_list, container, false)
+        return FragmentThemeHelper.buildCustomInflater(requireContext(), inflater)
+            .inflate(R.layout.fragment_sequence_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -178,14 +155,8 @@ class SequenceListFragment : DaggerFragment() {
                     }
 
                     override fun onDeleteButtonClick() {
-                        val builder = if (preferences.getBoolean(NIGHT_MODE_PREFERENCE, false)) {
-                            AlertDialog.Builder(requireContext(), R.style.AlertDialogDarkTheme)
-                        }
-                        else {
-                            AlertDialog.Builder(requireContext(), R.style.AlertDialogLightTheme)
-                        }
-
-                        builder.setMessage(getString(R.string.delete_this_item))
+                        AlertDialog.Builder(requireContext())
+                            .setMessage(getString(R.string.delete_this_item))
                             .setPositiveButton(getString(R.string.delete)) { _, _ ->
                                 viewModel.delete(item)
                                 dialogFragment.dismiss()
@@ -254,14 +225,8 @@ class SequenceListFragment : DaggerFragment() {
         when (item.itemId) {
             R.id.delete_item -> {
                 if (viewModel.selectedItems.size != 0) {
-                    val builder = if (preferences.getBoolean(NIGHT_MODE_PREFERENCE, false)) {
-                        AlertDialog.Builder(requireContext(), R.style.AlertDialogDarkTheme)
-                    }
-                    else {
-                        AlertDialog.Builder(requireContext(), R.style.AlertDialogLightTheme)
-                    }
-
-                    builder.setMessage(getString(R.string.delete_selected_items))
+                    AlertDialog.Builder(requireContext())
+                        .setMessage(getString(R.string.delete_selected_items))
                         .setPositiveButton(getString(R.string.delete)) { _, _ ->
                             viewModel.delete()
                             quitContextualActionMode()

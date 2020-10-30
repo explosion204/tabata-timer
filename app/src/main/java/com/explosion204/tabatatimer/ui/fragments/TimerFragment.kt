@@ -2,7 +2,6 @@ package com.explosion204.tabatatimer.ui.fragments
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.preference.PreferenceManager
-import com.explosion204.tabatatimer.Constants
 import com.explosion204.tabatatimer.Constants.ACTION_NEXT_TIMER
 import com.explosion204.tabatatimer.Constants.ACTION_PREV_TIMER
 import com.explosion204.tabatatimer.Constants.ACTION_SELECT_PHASE
@@ -24,6 +22,7 @@ import com.explosion204.tabatatimer.Constants.NIGHT_MODE_PREFERENCE
 import com.explosion204.tabatatimer.Constants.TAG_TIMER_FRAGMENT
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.services.TimerPhase
+import com.explosion204.tabatatimer.ui.helpers.FragmentThemeHelper
 import com.explosion204.tabatatimer.viewmodels.BaseViewModel
 import com.explosion204.tabatatimer.viewmodels.TimerViewModel
 
@@ -53,30 +52,14 @@ class TimerFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        val nightModeEnabled = preferences.getBoolean(NIGHT_MODE_PREFERENCE, false)
-        val fontSize = preferences.getString(Constants.FONT_SIZE_PREFERENCE, "1")
 
-        val contextThemeWrapper = if (nightModeEnabled) {
-            when (fontSize) {
-                "0" -> ContextThemeWrapper(requireContext(), R.style.DarkTheme_SmallFont)
-                "1" -> ContextThemeWrapper(requireContext(), R.style.DarkTheme_MediumFont)
-                else -> ContextThemeWrapper(requireContext(), R.style.DarkTheme_LargeFont)
-            }
-        }
-        else {
-            when (fontSize) {
-                "0" -> ContextThemeWrapper(requireContext(), R.style.LightTheme_SmallFont)
-                "1" -> ContextThemeWrapper(requireContext(), R.style.LightTheme_MediumFont)
-                else -> ContextThemeWrapper(requireContext(), R.style.LightTheme_LargeFont)
-            }
-        }
-
-        val localInflater = inflater.cloneInContext(contextThemeWrapper)
-        return localInflater.inflate(R.layout.fragment_timer, container, false)
+        return FragmentThemeHelper.buildCustomInflater(requireContext(), inflater)
+            .inflate(R.layout.fragment_timer, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+
         startButton = view.findViewById(R.id.start_button)
         pauseButton = view.findViewById(R.id.pause_button)
         previousButton = view.findViewById(R.id.previous_button)

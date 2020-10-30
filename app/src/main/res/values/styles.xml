@@ -48,7 +48,7 @@
         <item name="bottom_nav_color">@color/deepDarkColor</item>
         <item name="bottom_nav_item_icon_tint_active">@android:color/holo_blue_dark</item>
         <item name="bottom_nav_item_icon_tint_inactive">@android:color/darker_gray</item>
-        <item name="fab_color">@color/darkColor</item>
+        <item name="fab_color">@android:color/holo_blue_dark</item>
         <item name="dialog_color">@color/darkColor</item>
         <item name="edit_text_background_tint">@android:color/white</item>
         <item name="border_gray_solid_color">@color/deepDarkColor</item>

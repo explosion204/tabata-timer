@@ -1,6 +1,5 @@
 package com.explosion204.tabatatimer.ui.fragments
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,22 +7,18 @@ import android.view.*
 import android.widget.EditText
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.ActionBar
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.explosion204.tabatatimer.Constants
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.Constants.ACTION_ADD_NEW_ASSOCIATED_TIMERS
 import com.explosion204.tabatatimer.Constants.ACTION_SELECT_TIMERS_MODE
 import com.explosion204.tabatatimer.Constants.TAG_SEQUENCE_DETAIL_FRAGMENT
 import com.explosion204.tabatatimer.ui.adapters.TimerListAdapter
-import com.explosion204.tabatatimer.ui.helpers.ToolbarFontSizeHelper
+import com.explosion204.tabatatimer.ui.helpers.FragmentThemeHelper
 import com.explosion204.tabatatimer.viewmodels.BaseViewModel
 import com.explosion204.tabatatimer.viewmodels.SequenceDetailViewModel
 import com.explosion204.tabatatimer.viewmodels.ViewModelFactory
@@ -46,33 +41,12 @@ class SequenceDetailFragment : DaggerFragment() {
     private lateinit var titleEditText: EditText
     private lateinit var descEditText: EditText
 
-    private lateinit var preferences: SharedPreferences
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        val nightModeEnabled = preferences.getBoolean(Constants.NIGHT_MODE_PREFERENCE, false)
-        val fontSize = preferences.getString(Constants.FONT_SIZE_PREFERENCE, "1")
-
-        val contextThemeWrapper = if (nightModeEnabled) {
-            when (fontSize) {
-                "0" -> ContextThemeWrapper(requireContext(), R.style.DarkTheme_SmallFont)
-                "1" -> ContextThemeWrapper(requireContext(), R.style.DarkTheme_MediumFont)
-                else -> ContextThemeWrapper(requireContext(), R.style.DarkTheme_LargeFont)
-            }
-        }
-        else {
-            when (fontSize) {
-                "0" -> ContextThemeWrapper(requireContext(), R.style.LightTheme_SmallFont)
-                "1" -> ContextThemeWrapper(requireContext(), R.style.LightTheme_MediumFont)
-                else -> ContextThemeWrapper(requireContext(), R.style.LightTheme_LargeFont)
-            }
-        }
-
-        val localInflater = inflater.cloneInContext(contextThemeWrapper)
-        return localInflater.inflate(R.layout.fragment_sequence_detail, container, false)
+        return FragmentThemeHelper.buildCustomInflater(requireContext(), inflater)
+            .inflate(R.layout.fragment_sequence_detail, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

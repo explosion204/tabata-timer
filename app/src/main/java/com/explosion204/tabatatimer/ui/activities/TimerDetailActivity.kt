@@ -15,11 +15,11 @@ import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
-import com.explosion204.tabatatimer.Constants
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.Constants.EXTRA_TIMER
 import com.explosion204.tabatatimer.Constants.NIGHT_MODE_PREFERENCE
 import com.explosion204.tabatatimer.data.entities.Timer
+import com.explosion204.tabatatimer.ui.helpers.ActivityThemeHelper
 import com.explosion204.tabatatimer.ui.helpers.ToolbarFontSizeHelper
 import com.explosion204.tabatatimer.viewmodels.TimerDetailViewModel
 import com.explosion204.tabatatimer.viewmodels.ViewModelFactory
@@ -48,27 +48,10 @@ class TimerDetailActivity : DaggerAppCompatActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ActivityThemeHelper.setActivityTheme(this)
+        setContentView(R.layout.activity_timer_detail)
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this)
-        val nightModeEnabled = preferences.getBoolean(NIGHT_MODE_PREFERENCE, false)
-        val fontSize = preferences.getString(Constants.FONT_SIZE_PREFERENCE, "1")
-
-        if (nightModeEnabled) {
-            when (fontSize) {
-                "0" -> setTheme(R.style.DarkTheme_SmallFont)
-                "1" -> setTheme(R.style.DarkTheme_MediumFont)
-                else -> setTheme(R.style.DarkTheme_LargeFont)
-            }
-        }
-        else {
-            when (fontSize) {
-                "0" -> setTheme(R.style.LightTheme_SmallFont)
-                "1" -> setTheme(R.style.LightTheme_MediumFont)
-                else -> setTheme(R.style.LightTheme_LargeFont)
-            }
-        }
-
-        setContentView(R.layout.activity_timer_detail)
 
         toolbar = findViewById(R.id.app_bar)
         ToolbarFontSizeHelper.setToolbarFontSize(toolbar)
@@ -314,7 +297,6 @@ class TimerDetailActivity : DaggerAppCompatActivity(), View.OnClickListener {
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
             oldText = editText.text.toString()
         }
-
 
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
     }

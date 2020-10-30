@@ -2,10 +2,7 @@ package com.explosion204.tabatatimer.ui.activities
 
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
-import androidx.preference.PreferenceManager
-import com.explosion204.tabatatimer.Constants
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.data.entities.Timer
 import com.explosion204.tabatatimer.Constants.ACTION_ADD_NEW_ASSOCIATED_TIMERS
@@ -13,10 +10,9 @@ import com.explosion204.tabatatimer.Constants.ACTION_SELECT_TIMERS_MODE
 import com.explosion204.tabatatimer.Constants.EXTRA_ALL_TIMERS
 import com.explosion204.tabatatimer.Constants.EXTRA_ASSOCIATED_TIMERS
 import com.explosion204.tabatatimer.Constants.EXTRA_SEQUENCE
-import com.explosion204.tabatatimer.Constants.FONT_SIZE_PREFERENCE
-import com.explosion204.tabatatimer.Constants.NIGHT_MODE_PREFERENCE
 import com.explosion204.tabatatimer.Constants.TAG_SEQUENCE_DETAIL_FRAGMENT
 import com.explosion204.tabatatimer.data.entities.SequenceWithTimers
+import com.explosion204.tabatatimer.ui.helpers.ActivityThemeHelper
 import com.explosion204.tabatatimer.ui.helpers.ToolbarFontSizeHelper
 import com.explosion204.tabatatimer.viewmodels.BaseViewModel
 import com.explosion204.tabatatimer.viewmodels.SequenceDetailViewModel
@@ -37,26 +33,7 @@ class SequenceDetailActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
-        val nightModeEnabled = preferences.getBoolean(NIGHT_MODE_PREFERENCE, false)
-        val fontSize = preferences.getString(FONT_SIZE_PREFERENCE, "1")
-
-        if (nightModeEnabled) {
-            when (fontSize) {
-                "0" -> setTheme(R.style.DarkTheme_SmallFont)
-                "1" -> setTheme(R.style.DarkTheme_MediumFont)
-                else -> setTheme(R.style.DarkTheme_LargeFont)
-            }
-        }
-        else {
-            when (fontSize) {
-                "0" -> setTheme(R.style.LightTheme_SmallFont)
-                "1" -> setTheme(R.style.LightTheme_MediumFont)
-                else -> setTheme(R.style.LightTheme_LargeFont)
-            }
-        }
-
+        ActivityThemeHelper.setActivityTheme(this)
         setContentView(R.layout.activity_sequence_detail)
 
         val toolbar = findViewById<Toolbar>(R.id.app_bar)

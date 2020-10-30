@@ -7,42 +7,22 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
 import androidx.preference.PreferenceManager
-import com.explosion204.tabatatimer.Constants
 import com.explosion204.tabatatimer.Constants.LOCALE_PREFERENCE
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.ui.fragments.SettingsFragment
-import com.explosion204.tabatatimer.Constants.NIGHT_MODE_PREFERENCE
+import com.explosion204.tabatatimer.ui.helpers.ActivityThemeHelper
 import com.explosion204.tabatatimer.ui.helpers.ToolbarFontSizeHelper
 import java.util.*
 
 class SettingsActivity : AppCompatActivity() {
     private lateinit var listener: SharedPreferences.OnSharedPreferenceChangeListener
-    private lateinit var preferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        preferences = PreferenceManager.getDefaultSharedPreferences(this)
-        val nightModeEnabled = preferences.getBoolean(NIGHT_MODE_PREFERENCE, false)
-        val fontSize = preferences.getString(Constants.FONT_SIZE_PREFERENCE, "1")
-
-        if (nightModeEnabled) {
-            when (fontSize) {
-                "0" -> setTheme(R.style.DarkTheme_SmallFont)
-                "1" -> setTheme(R.style.DarkTheme_MediumFont)
-                else -> setTheme(R.style.DarkTheme_LargeFont)
-            }
-        }
-        else {
-            when (fontSize) {
-                "0" -> setTheme(R.style.LightTheme_SmallFont)
-                "1" -> setTheme(R.style.LightTheme_MediumFont)
-                else -> setTheme(R.style.LightTheme_LargeFont)
-            }
-        }
-
+        ActivityThemeHelper.setActivityTheme(this)
         updateLocale()
 
+        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
         listener = SharedPreferences.OnSharedPreferenceChangeListener { _, _ ->
             recreate()
         }
@@ -68,6 +48,7 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun updateLocale() {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
         val lang = preferences.getString(LOCALE_PREFERENCE, "en")
         val config = Configuration()
         val locale = Locale(lang)

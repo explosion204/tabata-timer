@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import androidx.preference.PreferenceManager
 import androidx.viewpager2.widget.ViewPager2
 import com.explosion204.tabatatimer.Constants.ACTION_NEXT_TIMER
 import com.explosion204.tabatatimer.Constants.ACTION_PREV_TIMER
@@ -20,8 +19,6 @@ import com.explosion204.tabatatimer.Constants.ACTION_SET_TIMER_STATE
 import com.explosion204.tabatatimer.Constants.ACTION_TIMER_STATE_CHANGED
 import com.explosion204.tabatatimer.Constants.EXTRA_SEQUENCE
 import com.explosion204.tabatatimer.Constants.EXTRA_TIMER
-import com.explosion204.tabatatimer.Constants.FONT_SIZE_PREFERENCE
-import com.explosion204.tabatatimer.Constants.NIGHT_MODE_PREFERENCE
 import com.explosion204.tabatatimer.Constants.TAG_TIMER_FRAGMENT
 import com.explosion204.tabatatimer.R
 import com.explosion204.tabatatimer.Constants.TIMER_BROADCAST_ACTION
@@ -33,6 +30,7 @@ import com.explosion204.tabatatimer.data.entities.Timer
 import com.explosion204.tabatatimer.services.TimerPhase
 import com.explosion204.tabatatimer.services.TimerService
 import com.explosion204.tabatatimer.ui.adapters.TimerPagerAdapter
+import com.explosion204.tabatatimer.ui.helpers.ActivityThemeHelper
 import com.explosion204.tabatatimer.ui.helpers.ToolbarFontSizeHelper
 import com.explosion204.tabatatimer.viewmodels.BaseViewModel
 import com.explosion204.tabatatimer.viewmodels.TimerViewModel
@@ -55,26 +53,7 @@ class TimerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
-        nightMode = preferences.getBoolean(NIGHT_MODE_PREFERENCE, false)
-        val fontSize = preferences.getString(FONT_SIZE_PREFERENCE, "1")
-
-        if (nightMode) {
-            when (fontSize) {
-                "0" -> setTheme(R.style.DarkTheme_SmallFont)
-                "1" -> setTheme(R.style.DarkTheme_MediumFont)
-                else -> setTheme(R.style.DarkTheme_LargeFont)
-            }
-        }
-        else {
-            when (fontSize) {
-                "0" -> setTheme(R.style.LightTheme_SmallFont)
-                "1" -> setTheme(R.style.LightTheme_MediumFont)
-                else -> setTheme(R.style.LightTheme_LargeFont)
-            }
-        }
-
+        ActivityThemeHelper.setActivityTheme(this)
         setContentView(R.layout.activity_timer)
 
         rootLayout = findViewById(R.id.root_layout)
